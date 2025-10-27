@@ -1,0 +1,25 @@
+{
+  "$schema": "https://v2.tauri.app/schema/config.json",
+  "productName": "Rusty Knowledge",
+  "identifier": "com.rusty-knowledge.app",
+  "build": {
+    "beforeDevCommand": "npm run dev",
+    "beforeBuildCommand": "npm run build",
+    "devUrl": "http://localhost:5173",
+    "frontendDist": "../dist"
+  },
+  "app": {
+    "windows": [
+      {
+        "title": "Rusty Knowledge",
+        "width": 1200,
+        "height": 800,
+        "minWidth": 800,
+        "minHeight": 600
+      }
+    ],
+    "security": {
+      "csp": null
+    }
+  }
+}

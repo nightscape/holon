@@ -1,0 +1,335 @@
+/* LogSeq-inspired Outliner Styles */
+
+:root {
+  --ls-primary-background-color: #ffffff;
+  --ls-secondary-background-color: #f9fafb;
+  --ls-tertiary-background-color: #f3f4f6;
+  --ls-block-bullet-color: #8fbc8f;
+  --ls-guideline-color: rgba(156, 163, 175, 0.3);
+  --ls-link-text-color: #3b82f6;
+  --ls-link-text-hover-color: #2563eb;
+  --ls-primary-text-color: #1f2937;
+  --ls-secondary-text-color: #6b7280;
+  --ls-border-color: #e5e7eb;
+}
+
+.dark {
+  --ls-primary-background-color: #1f2937;
+  --ls-secondary-background-color: #374151;
+  --ls-tertiary-background-color: #4b5563;
+  --ls-block-bullet-color: #6ee7b7;
+  --ls-guideline-color: rgba(156, 163, 175, 0.3);
+  --ls-link-text-color: #60a5fa;
+  --ls-link-text-hover-color: #93c5fd;
+  --ls-primary-text-color: #f3f4f6;
+  --ls-secondary-text-color: #9ca3af;
+  --ls-border-color: #4b5563;
+}
+
+/* Block Container */
+.ls-block {
+  @apply flex-1 relative py-0.5 transition-colors mx-auto w-full;
+  will-change: transform;
+}
+
+.ls-block.selected {
+  @apply rounded;
+  background-color: rgba(59, 130, 246, 0.1);
+}
+
+/* Block Main Container */
+.block-main-container {
+  @apply min-h-[24px];
+}
+
+/* Block Content */
+.block-content {
+  @apply min-h-[24px] max-w-full whitespace-pre-wrap break-words cursor-text;
+  color: var(--ls-primary-text-color);
+}
+
+.block-content p {
+  color: var(--ls-primary-text-color);
+}
+
+.block-content-wrapper {
+  user-select: text;
+}
+
+.block-content-or-editor-inner {
+  @apply flex flex-1 flex-col w-full pr-1;
+  color: var(--ls-primary-text-color);
+}
+
+/* Bullet Container */
+.bullet-container {
+  @apply flex justify-center items-center;
+  height: 16px;
+  width: 16px;
+  min-width: 16px;
+  border-radius: 50%;
+  transition: all 0.2s ease;
+}
+
+.bullet-container:hover {
+  background-color: var(--ls-guideline-color);
+}
+
+/* Bullet Dot */
+.bullet {
+  @apply rounded-full;
+  width: 6px;
+  height: 6px;
+  background-color: var(--ls-block-bullet-color);
+  opacity: 0.8;
+  transition: transform 0.2s ease;
+}
+
+.bullet-container:hover .bullet {
+  transform: scale(1.2);
+  opacity: 1;
+}
+
+/* Block Children Indentation */
+.block-children-container {
+  position: relative;
+  margin-left: 29px;
+}
+
+.block-children {
+  border-left: 1px solid var(--ls-guideline-color);
+}
+
+/* Clickable left border for collapsing */
+.block-children-left-border {
+  z-index: 1;
+  width: 4px;
+  left: -1px;
+  top: 0;
+  height: 100%;
+  cursor: pointer;
+  background-clip: content-box;
+  background-color: transparent;
+  position: absolute;
+  border-radius: 2px;
+  opacity: 0.6;
+}
+
+.block-children-left-border:hover {
+  background-color: var(--ls-primary-text-color);
+  opacity: 0.7;
+}
+
+.block-children-left-border:active {
+  opacity: 1;
+}
+
+/* Block Controls */
+.block-control {
+  @apply transition-opacity cursor-pointer select-none;
+  opacity: 0.4;
+}
+
+.block-control:hover {
+  opacity: 1;
+}
+
+.block-control:active {
+  opacity: 0.6;
+}
+
+/* Hover effects for blocks */
+.ls-block:hover {
+  background-color: var(--ls-secondary-background-color);
+  border-radius: 0.375rem;
+}
+
+/* When editing, use a slightly different background for better visibility */
+.ls-block.editing {
+  background-color: rgba(59, 130, 246, 0.05);
+  border-radius: 0.375rem;
+}
+
+.dark .ls-block.editing {
+  background-color: rgba(96, 165, 250, 0.1);
+}
+
+/* Group hover for showing controls */
+.group:hover .group-hover-visible {
+  @apply opacity-100;
+}
+
+.group-hover-visible {
+  @apply opacity-0 transition-opacity;
+}
+
+/* Headings */
+.ls-block h1 {
+  font-size: 2rem;
+  line-height: 1.38em;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--ls-border-color);
+}
+
+.ls-block h2 {
+  font-size: 1.5rem;
+  line-height: 1.38em;
+  font-weight: 600;
+  margin-top: 0.25rem;
+  margin-bottom: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--ls-border-color);
+}
+
+.ls-block h3 {
+  font-size: 1.2rem;
+  line-height: 1.15em;
+  font-weight: 600;
+}
+
+.ls-block h4 {
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.ls-block h5 {
+  font-size: 0.83rem;
+  font-weight: 600;
+}
+
+.ls-block h6 {
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+/* Links */
+.block-content a {
+  color: var(--ls-link-text-color);
+  text-decoration: none;
+}
+
+.block-content a:hover {
+  color: var(--ls-link-text-hover-color);
+  text-decoration: underline;
+}
+
+/* Block references */
+.block-ref {
+  @apply border-b border-blue-500 cursor-pointer;
+  margin-bottom: -1px;
+}
+
+.block-ref:hover {
+  color: var(--ls-link-text-hover-color);
+}
+
+/* Code blocks */
+.block-content code {
+  @apply bg-gray-100 dark:bg-gray-800 px-1 py-0.5 rounded text-sm;
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+}
+
+.block-content pre {
+  @apply bg-gray-100 dark:bg-gray-800 p-3 rounded my-2 overflow-x-auto;
+}
+
+.block-content pre code {
+  @apply bg-transparent p-0;
+}
+
+/* Lists */
+.block-content ul {
+  @apply list-disc list-inside;
+}
+
+.block-content ol {
+  @apply list-decimal list-inside;
+}
+
+/* Blockquotes */
+.block-content blockquote {
+  @apply border-l-4 border-gray-300 dark:border-gray-600 pl-4 py-1 my-2 italic;
+}
+
+/* Selection styling */
+::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+}
+
+/* Focus states */
+.block-content:focus-within {
+  @apply outline-none;
+}
+
+/* Animation for new blocks */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.ls-block-new {
+  animation: slideIn 0.2s ease-out;
+}
+
+/* Drag and drop states */
+.ls-block.dragging {
+  @apply opacity-50;
+}
+
+.ls-block.drop-target {
+  @apply border-2 border-blue-500 rounded;
+}
+
+/* Empty state */
+.outliner-empty-state {
+  @apply text-center text-gray-500 dark:text-gray-400 mt-8;
+}
+
+/* Layout Components */
+.main-layout {
+  @apply min-h-screen;
+}
+
+.top-toolbar {
+  @apply fixed top-0 left-0 right-0 h-12 bg-white dark:bg-gray-900 border-b border-gray-200 dark:border-gray-700 z-50;
+}
+
+.toolbar-button {
+  @apply p-2 rounded transition-colors;
+}
+
+.toolbar-button:hover {
+  @apply bg-gray-100 dark:bg-gray-800;
+}
+
+.left-sidebar {
+  @apply fixed left-0 top-12 bottom-0 w-60 bg-gray-50 dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 overflow-y-auto z-40;
+}
+
+.right-sidebar {
+  @apply fixed right-0 top-12 bottom-0 w-80 bg-gray-50 dark:bg-gray-800 border-l border-gray-200 dark:border-gray-700 overflow-y-auto z-40;
+}
+
+.main-content {
+  @apply pt-12;
+  min-height: calc(100vh - 48px);
+}
+
+/* Page Title */
+.page-title-container {
+  @apply mb-8;
+}
+
+/* Outliner Container */
+.outliner-container {
+  @apply relative;
+}
