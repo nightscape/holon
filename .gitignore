@@ -1,0 +1,35 @@
+# Added by cargo
+
+**/target/
+/build
+
+# Frontend
+node_modules/
+dist/
+*.log
+package-lock.json
+
+*.db
+*.db-wal
+*.db-shm
+
+# Auto Claude data directory
+.auto-claude/
+
+# Auto Claude generated files
+.auto-claude-security.json
+.auto-claude-status
+.claude_settings.json
+.worktrees/
+.security-key
+logs/security/
+
+# dora code context index
+.dora/
+
+# Claude Code
+.claude/
+.claude-flow/
+
+# IDE
+.idea/

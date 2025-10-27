@@ -1,0 +1,451 @@
+name: CI/CD
+
+on:
+  push:
+    branches: [main, master]
+    paths:
+      - 'frontends/flutter/**'
+      - 'crates/holon/**'
+      - '.github/workflows/ci.yml'
+  pull_request:
+    branches: [main, master]
+    paths:
+      - 'frontends/flutter/**'
+      - 'crates/holon/**'
+      - '.github/workflows/ci.yml'
+  workflow_dispatch:
+
+env:
+  FLUTTER_VERSION: "3.35.0"
+  RUST_VERSION: stable
+  FRB_VERSION: "2.11.1"
+
+jobs:
+  # Detect which parts of the codebase changed
+  changes:
+    name: Detect Changes
+    runs-on: ubuntu-latest
+    permissions:
+      pull-requests: read
+    outputs:
+      rust: ${{ steps.filter.outputs.rust }}
+      flutter: ${{ steps.filter.outputs.flutter }}
+      workflow: ${{ steps.filter.outputs.workflow }}
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Check for file changes
+        uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            rust:
+              - 'crates/holon/**'
+              - 'Cargo.toml'
+              - 'Cargo.lock'
+            flutter:
+              - 'frontends/flutter/**'
+            workflow:
+              - '.github/workflows/ci.yml'
+
+  # Rust quality checks
+  rust-checks:
+    name: Rust Checks
+    needs: changes
+    if: needs.changes.outputs.rust == 'true' || needs.changes.outputs.workflow == 'true' || github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v5
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+          components: rustfmt, clippy
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+            target/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Check formatting
+        run: cargo fmt --check
+
+      - name: Run clippy
+        run: cargo clippy -- -D warnings
+
+      - name: Run Rust tests
+        run: cargo test --workspace --exclude rust_lib_holon
+
+  # Flutter + FRB integration tests
+  flutter-integration:
+    name: Flutter Integration & Tests
+    needs: changes
+    if: needs.changes.outputs.flutter == 'true' || needs.changes.outputs.rust == 'true' || needs.changes.outputs.workflow == 'true' || github.event_name == 'workflow_dispatch' || github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontends/flutter
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            frontends/flutter/rust/target
+          key: ${{ runner.os }}-cargo-flutter-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-flutter-
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-flutter-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-
+
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Install flutter_rust_bridge_codegen
+        run: cargo binstall flutter_rust_bridge_codegen --version ${{ env.FRB_VERSION }}
+
+      - name: Verify flutter_rust_bridge integration
+        run: flutter_rust_bridge_codegen integrate
+
+      - name: Generate flutter_rust_bridge bindings
+        run: flutter_rust_bridge_codegen generate
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Verify FRB generated files
+        run: |
+          if [ ! -f "lib/src/rust/frb_generated.dart" ]; then
+            echo "FRB generated files not found!"
+            exit 1
+          fi
+
+      - name: Build Rust library
+        run: cd rust && cargo build --release
+
+      - name: Run Flutter build_runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Analyze Flutter code
+        run: flutter analyze
+
+      - name: Run Flutter tests
+        run: flutter test
+
+  # Quick platform verification (PR only)
+  quick-build:
+    name: Quick Build (${{ matrix.platform }})
+    if: github.event_name == 'pull_request' && (needs.changes.outputs.flutter == 'true' || needs.changes.outputs.rust == 'true' || needs.changes.outputs.workflow == 'true')
+    needs: [changes, rust-checks, flutter-integration]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - os: ubuntu-latest
+            platform: linux
+            build_args: "linux --release"
+          - os: ubuntu-latest
+            platform: android
+            build_args: "apk --debug"
+
+    defaults:
+      run:
+        working-directory: frontends/flutter
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Setup Java (for Android)
+        if: matrix.platform == 'android'
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang cmake ninja-build pkg-config libgtk-3-dev \
+            liblzma-dev libstdc++-12-dev
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            ~/.pub-cache
+            frontends/flutter/rust/target
+          key: ${{ runner.os }}-deps-${{ matrix.platform }}-${{ hashFiles('**/Cargo.lock', '**/pubspec.lock') }}
+
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Install flutter_rust_bridge_codegen
+        run: cargo binstall flutter_rust_bridge_codegen --version ${{ env.FRB_VERSION }}
+
+      - name: Integrate flutter_rust_bridge
+        run: flutter_rust_bridge_codegen integrate
+
+      - name: Generate FRB bindings
+        run: flutter_rust_bridge_codegen generate
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Build Rust library
+        run: cd rust && cargo build --release
+
+      - name: Run build_runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build Flutter app
+        run: flutter build ${{ matrix.build_args }}
+
+  # Full platform builds (main/master only)
+  full-build:
+    name: Build ${{ matrix.platform }}
+    if: github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master') && (needs.changes.outputs.flutter == 'true' || needs.changes.outputs.rust == 'true' || needs.changes.outputs.workflow == 'true')
+    needs: [changes, rust-checks, flutter-integration]
+    runs-on: ${{ matrix.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          # Android builds
+          - os: ubuntu-latest
+            platform: android-apk
+            build_args: "apk --release"
+            artifact_path: "build/app/outputs/apk/release/*.apk"
+            artifact_name: "android-apk"
+
+          - os: ubuntu-latest
+            platform: android-bundle
+            build_args: "appbundle --release"
+            artifact_path: "build/app/outputs/bundle/release/*.aab"
+            artifact_name: "android-aab"
+
+          # iOS build (unsigned for CI)
+          - os: macos-latest
+            platform: ios
+            build_args: "ios --no-codesign --release"
+            artifact_path: "build/ios/iphoneos/*.app"
+            artifact_name: "ios-app"
+
+          # macOS build
+          - os: macos-latest
+            platform: macos
+            build_args: "macos --release"
+            artifact_path: "build/macos/Build/Products/Release/*.app"
+            artifact_name: "macos-app"
+
+          # Linux build
+          - os: ubuntu-latest
+            platform: linux
+            build_args: "linux --release"
+            artifact_path: "build/linux/x64/release/bundle"
+            artifact_name: "linux-bundle"
+
+          # Windows build
+          - os: windows-latest
+            platform: windows
+            build_args: "windows --release"
+            artifact_path: "build/windows/x64/runner/Release"
+            artifact_name: "windows-executable"
+
+    defaults:
+      run:
+        working-directory: frontends/flutter
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: ${{ env.RUST_VERSION }}
+
+      - name: Setup Java (for Android)
+        if: contains(matrix.platform, 'android')
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: stable
+          cache: true
+
+      - name: Install Linux dependencies
+        if: matrix.platform == 'linux'
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            clang cmake ninja-build pkg-config libgtk-3-dev \
+            liblzma-dev libstdc++-12-dev
+
+      - name: Cache Rust dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            frontends/flutter/rust/target
+          key: ${{ runner.os }}-cargo-${{ matrix.platform }}-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-${{ matrix.platform }}-
+            ${{ runner.os }}-cargo-
+
+      - name: Cache Flutter dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.pub-cache
+          key: ${{ runner.os }}-flutter-${{ matrix.platform }}-${{ hashFiles('**/pubspec.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-flutter-${{ matrix.platform }}-
+            ${{ runner.os }}-flutter-
+
+      - uses: cargo-bins/cargo-binstall@main
+      - name: Install flutter_rust_bridge_codegen
+        run: cargo binstall flutter_rust_bridge_codegen --version ${{ env.FRB_VERSION }}
+
+      - name: Integrate flutter_rust_bridge
+        run: flutter_rust_bridge_codegen integrate
+
+      - name: Generate flutter_rust_bridge bindings
+        run: flutter_rust_bridge_codegen generate
+
+      - name: Get Flutter dependencies
+        run: flutter pub get
+
+      - name: Build Rust library
+        run: cd rust && cargo build --release
+
+      - name: Run Flutter build_runner
+        run: flutter pub run build_runner build --delete-conflicting-outputs
+
+      - name: Build Flutter app
+        run: flutter build ${{ matrix.build_args }}
+
+      - name: Create iOS IPA
+        if: matrix.platform == 'ios'
+        run: |
+          cd build/ios/iphoneos
+          mkdir -p Payload
+          cp -r Runner.app Payload/
+          zip -r ../../../holon.ipa Payload
+          cd ../../..
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact_name }}
+          path: |
+            frontends/flutter/${{ matrix.artifact_path }}
+            ${{ matrix.platform == 'ios' && 'frontends/flutter/holon.ipa' || '' }}
+          retention-days: 30
+          if-no-files-found: error
+
+  # Summary job
+  ci-complete:
+    name: CI Complete
+    needs: [changes, rust-checks, flutter-integration]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check status
+        run: |
+          # A job is considered OK if it succeeded or was skipped
+          rust_ok=false
+          flutter_ok=false
+
+          if [ "${{ needs.rust-checks.result }}" == "success" ] || [ "${{ needs.rust-checks.result }}" == "skipped" ]; then
+            rust_ok=true
+          fi
+
+          if [ "${{ needs.flutter-integration.result }}" == "success" ] || [ "${{ needs.flutter-integration.result }}" == "skipped" ]; then
+            flutter_ok=true
+          fi
+
+          if [ "$rust_ok" == "true" ] && [ "$flutter_ok" == "true" ]; then
+            echo "✅ All CI checks passed!"
+            echo "  - Rust checks: ${{ needs.rust-checks.result }}"
+            echo "  - Flutter integration: ${{ needs.flutter-integration.result }}"
+          else
+            echo "❌ Some CI checks failed. See logs above."
+            echo "  - Rust checks: ${{ needs.rust-checks.result }}"
+            echo "  - Flutter integration: ${{ needs.flutter-integration.result }}"
+            exit 1
+          fi
+
+  # Build summary (only for main/master builds)
+  build-complete:
+    name: Build Complete
+    needs: full-build
+    if: always() && (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'))
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check build status
+        run: |
+          # A build is considered OK if it succeeded or was skipped
+          if [ "${{ needs.full-build.result }}" == "success" ]; then
+            echo "✅ All platform builds completed successfully!"
+          elif [ "${{ needs.full-build.result }}" == "skipped" ]; then
+            echo "⏭️  Platform builds were skipped (no relevant changes)"
+          else
+            echo "❌ Some platform builds failed. Check the logs above."
+            echo "  - Build result: ${{ needs.full-build.result }}"
+            exit 1
+          fi

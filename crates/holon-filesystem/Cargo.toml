@@ -1,0 +1,17 @@
+[package]
+name = "holon-filesystem"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+anyhow.workspace = true
+tokio = { workspace = true, features = ["fs", "sync"] }
+walkdir.workspace = true
+tracing.workspace = true
+async-trait.workspace = true
+futures.workspace = true
+tokio-stream.workspace = true
+serde.workspace = true
+holon.workspace = true
+holon-macros.workspace = true
+holon-api.workspace = true

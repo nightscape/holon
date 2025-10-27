@@ -1,0 +1,90 @@
+[package]
+name = "holon"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "holon"
+path = "src/lib.rs"
+
+[features]
+default = ["iroh-sync"]
+# Enable test helpers for integration tests that need access to test utilities
+test-helpers = []
+# Enable Iroh P2P transport for syncing Loro documents across devices
+iroh-sync = ["iroh"]
+
+[dependencies]
+loro.workspace = true
+loro_fractional_index.workspace = true
+tokio-stream.workspace = true
+anyhow.workspace = true
+tracing.workspace = true
+tracing-subscriber.workspace = true
+opentelemetry.workspace = true
+opentelemetry_sdk.workspace = true
+tracing-opentelemetry.workspace = true
+serde.workspace = true
+serde_json.workspace = true
+chrono.workspace = true
+ulid.workspace = true
+async-trait.workspace = true
+turso.workspace = true
+turso_core.workspace = true
+turso_sdk_kit.workspace = true
+thiserror.workspace = true
+holon-macros.workspace = true
+holon-api.workspace = true
+holon-core.workspace = true
+similar.workspace = true
+holon-prql-render.workspace = true
+prqlc.workspace = true
+prqlc-parser.workspace = true
+rand.workspace = true
+sqlparser.workspace = true
+once_cell.workspace = true
+ferrous-di = { workspace = true, features = ["wasm"] }
+flutter_rust_bridge.workspace = true
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { workspace = true, features = ["full"] }
+iroh = { workspace = true, features = ["default"], optional = true }
+reqwest = { workspace = true, features = ["default-tls"] }
+uuid.workspace = true
+proptest.workspace = true
+proptest-state-machine.workspace = true
+
+# Android-specific dependencies
+# Disable iroh for Android - it pulls in OpenSSL which is complex to build for Android
+# iroh is used for P2P features which may not be needed on mobile
+# Use rustls instead of OpenSSL for Android (OpenSSL requires native compilation)
+[target.'cfg(target_os = "android")'.dependencies]
+iroh = { workspace = true, optional = true }
+reqwest = { workspace = true, features = ["rustls-tls"] }
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+tokio = { workspace = true, default-features = false, features = ["sync", "macros", "rt", "time"] }
+getrandom.workspace = true
+reqwest.workspace = true
+uuid = { workspace = true, features = ["js"] }
+
+[dev-dependencies]
+proptest.workspace = true
+proptest-state-machine.workspace = true
+cucumber.workspace = true
+tokio = { workspace = true, features = ["rt-multi-thread", "macros"] }
+futures.workspace = true
+serial_test.workspace = true
+tempfile.workspace = true
+similar-asserts = "1.7.0"
+
+[[test]]
+name = "cucumber"
+harness = false
+
+[[test]]
+name = "e2e_backend_engine_test"
+required-features = ["test-helpers"]
+
+[[test]]
+name = "json_aggregation_e2e_test"
+required-features = ["test-helpers"]

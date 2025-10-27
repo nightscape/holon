@@ -1,0 +1,20 @@
+# Monokai theme family
+themes:
+  monokai:
+    name: "Monokai"
+    isDark: true
+    colors:
+      primary: "#66D9EF"
+      primaryDark: "#4EC9B0"
+      primaryLight: "#A1EFE4"
+      textPrimary: "#F8F8F2"
+      textSecondary: "#E6DB74"
+      textTertiary: "#75715E"
+      background: "#272822"
+      backgroundSecondary: "#1E1F1C"
+      sidebarBackground: "#1E1F1C"
+      border: "#3E3D32"
+      borderFocus: "#66D9EF"
+      success: "#A6E22E"
+      error: "#F92672"
+      warning: "#E6DB74"

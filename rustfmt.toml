@@ -1,0 +1,8 @@
+# Rust formatting configuration
+# Note: group_imports requires nightly, so we use stable-compatible options
+
+# Reorder imports alphabetically (default: true)
+reorder_imports = true
+
+# Reorder mod declarations alphabetically
+reorder_modules = true

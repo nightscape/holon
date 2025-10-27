@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   width="512"
+   height="512"
+   viewBox="0 0 512 512"
+   version="1.1"
+   id="svg7"
+   sodipodi:docname="holon.ico"
+   inkscape:version="1.4.2 (ebf0e940, 2025-05-08)"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <sodipodi:namedview
+     id="namedview7"
+     pagecolor="#ffffff"
+     bordercolor="#000000"
+     borderopacity="0.25"
+     inkscape:showpageshadow="2"
+     inkscape:pageopacity="0.0"
+     inkscape:pagecheckerboard="0"
+     inkscape:deskcolor="#d1d1d1"
+     inkscape:zoom="0.05078125"
+     inkscape:cx="246.15385"
+     inkscape:cy="256"
+     inkscape:window-width="896"
+     inkscape:window-height="245"
+     inkscape:window-x="0"
+     inkscape:window-y="34"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg7" />
+  <defs
+     id="defs4">
+    <!-- Background gradient -->
+    <linearGradient
+       id="bgGradient"
+       x1="0%"
+       y1="0%"
+       x2="100%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#7D3AC1"
+         id="stop1" />
+      <stop
+         offset="100%"
+         stop-color="#502B8F"
+         id="stop2" />
+    </linearGradient>
+    <!-- Inner icon gradient (slightly lighter) -->
+    <linearGradient
+       id="innerGradient"
+       x1="0%"
+       y1="0%"
+       x2="100%"
+       y2="100%">
+      <stop
+         offset="0%"
+         stop-color="#E1B7FF"
+         id="stop3" />
+      <stop
+         offset="100%"
+         stop-color="#C388FF"
+         id="stop4" />
+    </linearGradient>
+  </defs>
+  <!-- Rounded-square background -->
+  <rect
+     x="32"
+     y="32"
+     width="448"
+     height="448"
+     rx="112"
+     ry="112"
+     fill="url(#bgGradient)"
+     id="rect4" />
+  <!-- Inner rounded square, inset a bit to give depth -->
+  <rect
+     x="88"
+     y="88"
+     width="336"
+     height="336"
+     rx="96"
+     ry="96"
+     fill="url(#innerGradient)"
+     id="rect5" />
+  <!-- Concentric circles (holon motif) -->
+  <!-- Outer ring -->
+  <circle
+     cx="256"
+     cy="256"
+     r="120"
+     fill="none"
+     stroke="#B46CFF"
+     stroke-width="20"
+     stroke-linecap="round"
+     id="circle5" />
+  <!-- Middle ring -->
+  <circle
+     cx="256"
+     cy="256"
+     r="78"
+     fill="none"
+     stroke="#B46CFF"
+     stroke-width="18"
+     stroke-linecap="round"
+     opacity="0.95"
+     id="circle6" />
+  <!-- Inner disc -->
+  <circle
+     cx="256"
+     cy="256"
+     r="40"
+     fill="#B46CFF"
+     id="circle7" />
+</svg>

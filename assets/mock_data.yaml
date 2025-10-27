@@ -1,0 +1,119 @@
+# Mock data for UI-only development mode
+# Used when running with --dart-define=USE_MOCK_BACKEND=true
+
+# Row templates define how each entity type is rendered
+row_templates:
+  - index: 0
+    entity_name: mock_folders
+    entity_short_name: folder
+    # Renders as: [folder icon] [spacer] [text content]
+    expr:
+      function: row
+      args:
+        - function: icon
+          args: ['folder']
+        - function: spacer
+          args: [10]
+        - function: text
+          named_args:
+            content: { column: content }
+
+  - index: 1
+    entity_name: mock_items
+    entity_short_name: item
+    # Renders as: [checkbox] [spacer] [text content]
+    expr:
+      function: row
+      args:
+        - function: checkbox
+          named_args:
+            checked: { column: completed }
+        - function: spacer
+          args: [10]
+        - function: text
+          named_args:
+            content: { column: content }
+
+# Tree configuration
+tree:
+  parent_id_column: parent_id
+  sort_key_column: sort_key
+  item_template_column: ui
+
+# Sample hierarchical data
+data:
+  # Root folders
+  - id: folder-1
+    parent_id: null
+    content: Work Projects
+    entity_name: mock_folders
+    sort_key: '01'
+    completed: false
+    ui: 0
+
+  - id: folder-2
+    parent_id: null
+    content: Personal
+    entity_name: mock_folders
+    sort_key: '02'
+    completed: false
+    ui: 0
+
+  # Items under Work Projects
+  - id: item-1
+    parent_id: folder-1
+    content: Review pull requests
+    entity_name: mock_items
+    sort_key: '01'
+    completed: true
+    ui: 1
+
+  - id: item-2
+    parent_id: folder-1
+    content: Update documentation
+    entity_name: mock_items
+    sort_key: '02'
+    completed: false
+    ui: 1
+
+  - id: item-3
+    parent_id: folder-1
+    content: Fix CI pipeline
+    entity_name: mock_items
+    sort_key: '03'
+    completed: false
+    ui: 1
+
+  # Nested folder under Work Projects
+  - id: folder-3
+    parent_id: folder-1
+    content: Backend Tasks
+    entity_name: mock_folders
+    sort_key: '04'
+    completed: false
+    ui: 0
+
+  - id: item-6
+    parent_id: folder-3
+    content: Optimize database queries
+    entity_name: mock_items
+    sort_key: '01'
+    completed: false
+    ui: 1
+
+  # Items under Personal
+  - id: item-4
+    parent_id: folder-2
+    content: Buy groceries
+    entity_name: mock_items
+    sort_key: '01'
+    completed: false
+    ui: 1
+
+  - id: item-5
+    parent_id: folder-2
+    content: Call mom
+    entity_name: mock_items
+    sort_key: '02'
+    completed: true
+    ui: 1

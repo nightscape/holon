@@ -1,0 +1,39 @@
+# Nord theme family
+themes:
+  nordDark:
+    name: "Nord Dark"
+    isDark: true
+    colors:
+      primary: "#5E81AC"
+      primaryDark: "#4C566A"
+      primaryLight: "#81A1C1"
+      textPrimary: "#D8DEE9"
+      textSecondary: "#E5E9F0"
+      textTertiary: "#616E88"
+      background: "#2E3440"
+      backgroundSecondary: "#3B4252"
+      sidebarBackground: "#3B4252"
+      border: "#4C566A"
+      borderFocus: "#5E81AC"
+      success: "#A3BE8C"
+      error: "#BF616A"
+      warning: "#EBCB8B"
+
+  nordLight:
+    name: "Nord Light"
+    isDark: false
+    colors:
+      primary: "#5E81AC"
+      primaryDark: "#4C566A"
+      primaryLight: "#81A1C1"
+      textPrimary: "#2E3440"
+      textSecondary: "#3B4252"
+      textTertiary: "#616E88"
+      background: "#ECEFF4"
+      backgroundSecondary: "#E5E9F0"
+      sidebarBackground: "#E5E9F0"
+      border: "#D8DEE9"
+      borderFocus: "#5E81AC"
+      success: "#A3BE8C"
+      error: "#BF616A"
+      warning: "#EBCB8B"

@@ -1,0 +1,23 @@
+# Todoist Hierarchy Query
+# Combines projects and tasks into a unified tree view
+# Note: JsonAggregationTransformer automatically injects json_object with all columns
+
+from todoist_projects
+filter (is_archived == null || is_archived == false)
+derive {
+    content = name,
+    entity_name = "todoist_projects",
+    sort_key = id
+}
+derive { ui = (render (row (draggable (pie_menu (icon 'todoist') fields:this.*) on:'drag') (spacer 10) (text this.content))) }
+append (
+    from todoist_tasks
+    filter (is_deleted == null || is_deleted == false)
+    derive {
+        parent_id = parent_id ?? project_id,
+        entity_name = "todoist_tasks",
+        sort_key = id
+    }
+    derive { ui = (render (row (draggable (pie_menu (icon 'todoist') fields:this.*) on:'drag') (spacer 10) (checkbox checked:this.completed) (editable_text content:this.content) (badge content:this.priority color:"cyan"))) }
+)
+render (tree parent_id:parent_id sortkey:sort_key item_template:this.ui)

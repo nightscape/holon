@@ -1,0 +1,37 @@
+[package]
+name = "holon-mcp"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "holon-mcp"
+path = "src/main.rs"
+
+[dependencies]
+rmcp = { git = "https://github.com/modelcontextprotocol/rust-sdk", tag = "rmcp-v0.12.0", features = ["server", "macros", "transport-io", "transport-streamable-http-server"] }
+tokio = { workspace = true, features = ["full"] }
+tokio-stream = { workspace = true }
+serde = { workspace = true }
+serde_json = { workspace = true }
+schemars = "1.1"
+anyhow = { workspace = true }
+async-trait = { workspace = true }
+holon = { workspace = true }
+holon-api = { workspace = true }
+holon-frontend = { workspace = true }
+holon-orgmode = { workspace = true, features = ["di"] }
+holon-prql-render = { workspace = true }
+ferrous-di = { workspace = true, features = ["async"] }
+uuid = { workspace = true }
+tracing = { workspace = true }
+tracing-subscriber = { workspace = true, features = ["env-filter", "fmt", "ansi"] }
+# OpenTelemetry support (optional - only enabled if OTEL_TRACES_EXPORTER env var is set)
+tracing-opentelemetry = { workspace = true, features = ["tracing-log"] }
+opentelemetry = { workspace = true }
+opentelemetry_sdk = { workspace = true }
+opentelemetry-otlp = { version = "0.31", features = ["http", "http-proto"] }
+opentelemetry-stdout = "0.31"
+opentelemetry-appender-tracing = "0.31"
+axum = "0.8"
+tower-http = { version = "0.6", features = ["cors"] }
+tokio-util = "0.7"

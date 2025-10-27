@@ -1,0 +1,3 @@
+# Proptest configuration
+# Disable fork mode for tokio runtime compatibility
+fork = false

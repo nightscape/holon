@@ -1,0 +1,56 @@
+[package]
+name = "holon-integration-tests"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "holon_integration_tests"
+path = "src/lib.rs"
+
+[[test]]
+name = "cucumber"
+harness = false
+
+[features]
+default = ["test-infra"]
+test-infra = [
+    "dep:holon",
+    "dep:holon-frontend",
+    "dep:holon-orgmode",
+    "dep:holon-api",
+    "dep:tokio",
+    "dep:tokio-stream",
+    "dep:tempfile",
+    "dep:anyhow",
+    "dep:ferrous-di",
+    "dep:indexmap",
+    "dep:futures",
+]
+
+[dependencies]
+holon = { workspace = true, features = ["test-helpers"], optional = true }
+holon-frontend = { workspace = true, optional = true }
+holon-orgmode = { workspace = true, optional = true }
+holon-api = { workspace = true, optional = true }
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "time", "fs", "sync"], optional = true }
+tokio-stream = { workspace = true, optional = true }
+tempfile = { workspace = true, optional = true }
+anyhow = { workspace = true, optional = true }
+ferrous-di = { workspace = true, features = ["wasm"], optional = true }
+indexmap = { workspace = true, optional = true }
+futures = { workspace = true, optional = true }
+
+[dev-dependencies]
+# Testing infrastructure
+proptest.workspace = true
+proptest-state-machine.workspace = true
+cucumber.workspace = true
+futures.workspace = true
+similar-asserts = "1.7.0"
+regex.workspace = true
+
+# CRDT reference model for concurrent mutation testing
+loro.workspace = true
+
+# JSON parsing for properties
+serde_json.workspace = true

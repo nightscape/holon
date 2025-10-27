@@ -1,0 +1,40 @@
+# Solarized theme family
+# Based on the Solarized color palette by Ethan Schoonover
+themes:
+  solarizedLight:
+    name: "Solarized Light"
+    isDark: false
+    colors:
+      primary: "#268BD2"
+      primaryDark: "#1E6FA8"
+      primaryLight: "#4FA3D9"
+      textPrimary: "#657B83"
+      textSecondary: "#586E75"
+      textTertiary: "#93A1A1"
+      background: "#FDF6E3"
+      backgroundSecondary: "#EEE8D5"
+      sidebarBackground: "#EEE8D5"
+      border: "#93A1A1"
+      borderFocus: "#268BD2"
+      success: "#859900"
+      error: "#DC322F"
+      warning: "#B58900"
+
+  solarizedDark:
+    name: "Solarized Dark"
+    isDark: true
+    colors:
+      primary: "#268BD2"
+      primaryDark: "#1E6FA8"
+      primaryLight: "#4FA3D9"
+      textPrimary: "#839496"
+      textSecondary: "#93A1A1"
+      textTertiary: "#657B83"
+      background: "#002B36"
+      backgroundSecondary: "#073642"
+      sidebarBackground: "#073642"
+      border: "#657B83"
+      borderFocus: "#268BD2"
+      success: "#859900"
+      error: "#DC322F"
+      warning: "#B58900"

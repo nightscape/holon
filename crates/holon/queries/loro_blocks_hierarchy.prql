@@ -1,0 +1,21 @@
+# Loro Blocks Hierarchy Query
+# Unified tree view for Loro CRDT blocks
+#
+# Block structure:
+# - id: URI-based identifier (e.g., "local://uuid")
+# - parent_id: Parent block ID (ROOT_PARENT for top-level)
+# - content: Text content (title + body)
+# - properties: Key-value map (TODO, PRIORITY, TAGS, DEADLINE, etc.)
+
+from blocks
+derive {
+    title = s"CASE WHEN instr({content}, char(10)) > 0 THEN substr({content}, 1, instr({content}, char(10)) - 1) ELSE {content} END",
+    task_state = s"json_extract({properties}, 'TODO')",
+    priority = s"json_extract({properties}, 'PRIORITY')",
+    tags = s"json_extract({properties}, 'TAGS')",
+    entity_name = "blocks",
+    sort_key = created_at
+}
+derive { ui = (render (row (draggable (pie_menu (bullet) fields:this.*) on:'drag') (spacer 10) (state_toggle this.task_state) (editable_text content:this.title) (badge content:this.priority color:"cyan"))) }
+select { id, parent_id, entity_name, sort_key, ui }
+render (tree parent_id:parent_id sortkey:sort_key item_template:this.ui)

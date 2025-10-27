@@ -1,0 +1,7 @@
+# Seeds for failure cases proptest has generated in the past. It is
+# automatically read and these particular cases re-run before any
+# novel cases are generated.
+#
+# It is recommended to check this file in to source control so that
+# everyone who runs the test benefits from these saved cases.
+cc 1a5564ff4ec1a376cbdc5490edf10017604fa7e3c13b0e2d9651317470ec45af # shrinks to (initial_state, transitions, seen_counter) = (IvmBugReferenceState { blocks_table_created: false, navigation_tables_created: false, current_focus_matview: false, blocks_with_paths_matview: false, cdc_registered: false, blocks: {}, nav_history: [], nav_cursor: {}, spawned_task_count: 0, bug_detection: BugDetection { panic_message: Mutex { data: None, poisoned: false, .. }, hang_detected: false }, handle: Handle { inner: MultiThread(multi_thread::Handle { ... }) }, _runtime: Some(Runtime { scheduler: MultiThread(MultiThread), handle: Handle { inner: MultiThread(multi_thread::Handle { ... }) }, blocking_pool: BlockingPool }) }, [], None)

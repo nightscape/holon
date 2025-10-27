@@ -1,0 +1,127 @@
+[workspace]
+members = [
+    "crates/holon",
+    "crates/holon-todoist",
+    "crates/holon-api",
+    "crates/holon-core",
+    "crates/holon-orgmode",
+    "crates/holon-filesystem",
+    "crates/holon-frontend",
+    "crates/holon-integration-tests",
+    "crates/holon-prql-render",
+    "crates/holon-macros",
+    "crates/holon-macros-test",
+    "frontends/mcp",
+]
+resolver = "2"
+
+[workspace.dependencies]
+# === Serialization ===
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serde_yaml = "0.9"
+
+# === Async ===
+tokio = { version = "1", default-features = false }
+tokio-stream = { version = "0.1", features = ["sync"] }
+async-trait = "0.1"
+futures = "0.3"
+
+# === Error handling ===
+anyhow = "1.0"
+thiserror = "2.0"
+miette = "7.4"
+
+# === Observability ===
+tracing = "0.1"
+tracing-core = "0.1"
+tracing-subscriber = { version = "0.3", features = ["env-filter", "fmt"] }
+tracing-opentelemetry = { version = "0.32", features = ["tracing-log"] }
+opentelemetry = "0.31"
+opentelemetry_sdk = "0.31"
+
+# === Time/IDs ===
+chrono = { version = "0.4", features = ["serde"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+ulid = "1.1"
+
+# === Data structures ===
+loro = "1.0"
+loro_fractional_index = "1.0"
+indexmap = "2.12"
+regex = "1.10"
+rand = "0.8"
+once_cell = "1.19"
+similar = "2.7"
+
+# === SQL parsing ===
+sqlparser = "0.40"
+
+# === Network ===
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
+iroh = { version = "0.93.2", default-features = false }
+
+# === Testing ===
+proptest = "1.6"
+proptest-state-machine = "0.5.0"
+cucumber = "0.21"
+serial_test = "3.2"
+tempfile = "3.23"
+
+# === Proc macro ===
+syn = { version = "2.0", features = ["full"] }
+quote = "1.0"
+proc-macro2 = "1.0"
+
+# === File system ===
+walkdir = "2"
+
+# === Crypto ===
+sha2 = "0.10"
+hex = "0.4"
+
+# === TUI ===
+unicode-segmentation = "1.11"
+portable-pty = "0.8"
+is_ci = "1.2"
+strip-ansi-escapes = "0.2"
+
+# === Other ===
+orgize = "0.10.0-alpha.10"
+libsql = { version = "0.9", features = ["core", "remote"] }
+getrandom = { version = "0.3", features = ["wasm_js"] }
+
+# === External path deps ===
+turso = { path = "/Users/martin/Workspaces/bigdata/turso/bindings/rust", default-features = false }
+turso_core = { path = "/Users/martin/Workspaces/bigdata/turso/core", default-features = false, features = ["json"] }
+turso_sdk_kit = { path = "/Users/martin/Workspaces/bigdata/turso/sdk-kit", default-features = false }
+prqlc = { path = "/Users/martin/Workspaces/bigdata/prql/prqlc/prqlc" }
+prqlc-parser = { path = "/Users/martin/Workspaces/bigdata/prql/prqlc/prqlc-parser" }
+ferrous-di = { path = "/Users/martin/Workspaces/rust/ferrous-di", default-features = false }
+r3bl_tui = { path = "/Users/martin/Workspaces/rust/r3bl-open-core/tui" }
+
+# === Internal crates ===
+holon = { path = "crates/holon" }
+holon-api = { path = "crates/holon-api" }
+holon-core = { path = "crates/holon-core" }
+holon-frontend = { path = "crates/holon-frontend" }
+holon-macros = { path = "crates/holon-macros" }
+holon-todoist = { path = "crates/holon-todoist" }
+holon-orgmode = { path = "crates/holon-orgmode", features = ["di"] }
+holon-filesystem = { path = "crates/holon-filesystem" }
+holon-prql-render = { path = "crates/holon-prql-render" }
+
+# Coverage profile for runtime code coverage collection
+# This profile enables LLVM source-based coverage instrumentation
+# Usage: cargo build --profile coverage
+[profile.coverage]
+inherits = "dev"
+debug = true
+# Enable LLVM source-based code coverage instrumentation
+# This adds -Cinstrument-coverage flag automatically
+[profile.coverage.package."*"]
+# Coverage instrumentation is enabled via RUSTFLAGS environment variable
+# See scripts/run-with-coverage.sh for usage
+
+#[patch.crates-io]
+#sqlparser = { version = "0.33", default-features = false, features = [] }

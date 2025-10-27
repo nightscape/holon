@@ -1,0 +1,18 @@
+# Undo/Redo State Query
+# Returns recent undoable and redoable operations for UI consumption
+# Operations are independent across different entities/systems
+
+from operations
+filter inverse != null
+sort {-id}
+take 20
+select {
+    id,
+    display_name,
+    entity_name,
+    op_name,
+    status,
+    created_at,
+    operation,
+    inverse
+}

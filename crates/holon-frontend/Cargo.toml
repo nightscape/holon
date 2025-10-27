@@ -1,0 +1,21 @@
+[package]
+name = "holon-frontend"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = []
+
+[dependencies]
+anyhow.workspace = true
+tokio = { workspace = true, features = ["time"] }
+tracing.workspace = true
+
+holon.workspace = true
+holon-orgmode.workspace = true
+holon-todoist.workspace = true
+holon-api.workspace = true
+ferrous-di.workspace = true
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+uuid.workspace = true

@@ -1,0 +1,62 @@
+# Nextest configuration for Holon workspace
+# cargo-nextest provides a faster test runner with better output formatting
+
+[profile.default]
+# Number of test threads to use. Uses all available CPUs by default.
+# Can be overridden with --test-threads flag
+test-threads = "auto"
+
+# Output format for test results
+# Options: "dot" (compact), "pretty" (default), "json" (machine-readable)
+output.format = "pretty"
+
+# Show stdout/stderr from tests
+output.verbose = false
+
+# Timeout for individual tests (in seconds)
+# Tests exceeding this timeout are marked as failed
+timeout = 300
+
+# Retries for flaky tests
+# Set to 0 to disable retries
+retries = 0
+
+# Fail fast: stop after first failure
+fail-fast = false
+
+# Nextest can run filters to exclude certain tests
+# For example, to skip tests marked as ignored:
+[profile.default.filters]
+# Define custom filters here if needed
+
+# Profile for quick sanity checks (parallel, no retries)
+[profile.quick]
+test-threads = "auto"
+output.format = "pretty"
+timeout = 60
+retries = 0
+
+# Profile for strict CI/CD runs (sequential, with retries)
+[profile.ci]
+test-threads = 1
+output.format = "json"
+output.verbose = false
+timeout = 600
+retries = 2
+fail-fast = false
+
+# Profile for local development with detailed output
+[profile.dev]
+test-threads = "auto"
+output.format = "pretty"
+output.verbose = true
+timeout = 300
+retries = 0
+fail-fast = true
+
+# Per-package configuration
+# Customize behavior for specific crates if needed
+# Example: increase timeout for integration tests
+[package.holon-integration-tests]
+timeout = 600
+retries = 1
