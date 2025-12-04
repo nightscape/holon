@@ -5,9 +5,9 @@
 **Status:** Planning → Implementation
 
 **Related:**
-- Operations: `crates/rusty-knowledge/src/operations/block_ops.rs`
-- Fractional Indexing: `crates/rusty-knowledge/src/storage/fractional_index.rs`
-- Database: `crates/rusty-knowledge/src/storage/turso.rs`
+- Operations: `crates/holon/src/operations/block_ops.rs`
+- Fractional Indexing: `crates/holon/src/storage/fractional_index.rs`
+- Database: `crates/holon/src/storage/turso.rs`
 - Implementation Plan: `codev/plans/0001-reactive-prql-rendering.md` (Phase 3.2)
 
 ---
@@ -29,7 +29,7 @@
 **Note:** RenderEngine now combines database + query compilation + operations + CDC streaming in one API.
 
 ### 1.2 Initialize RenderEngine in Launcher
-- [ ] Add rusty-knowledge dependency to Cargo.toml
+- [ ] Add holon dependency to Cargo.toml
 - [ ] Import RenderEngine (no need for OperationRegistry!)
 - [ ] Initialize RenderEngine:
   - [ ] Use `RenderEngine::new_in_memory().await` for MVP
@@ -71,7 +71,7 @@
 - [x] Method locks backend internally and passes to operation
 - [x] Added comprehensive tests (9 tests passing) ✅
 
-**Files:** `crates/rusty-knowledge/src/api/render_engine.rs`
+**Files:** `crates/holon/src/api/render_engine.rs`
 
 **Benefits:**
 - ✅ Matches FFI bridge design (no registry parameter in API)

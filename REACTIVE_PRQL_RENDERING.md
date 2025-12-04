@@ -231,7 +231,7 @@ render(
 **V1: Test Turso CDC/DBSP Functionality** ✅ **COMPLETED** (2025-11-03)
 ```bash
 # Comprehensive test suite implemented at:
-# crates/rusty-knowledge/src/storage/sqlite_tests.rs:396-1028
+# crates/holon/src/storage/sqlite_tests.rs:396-1028
 cargo test --lib storage::turso::tests::cdc_tests
 cargo test --lib storage::turso::tests::incremental_view_maintenance_tests
 ```

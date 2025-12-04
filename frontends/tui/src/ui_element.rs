@@ -1,5 +1,6 @@
 use query_render::OperationWiring;
 use r3bl_tui::TuiColor;
+use tracing::debug;
 
 /// Intermediate representation of UI elements with operations attached.
 /// This separates the interpretation phase (RenderSpec → UIElement)
@@ -53,11 +54,6 @@ impl UIElement {
         }
     }
 
-    /// Check if this element is editable (EditableText)
-    pub fn is_editable(&self) -> bool {
-        matches!(self, UIElement::EditableText { .. })
-    }
-
     /// Find the first EditableText child recursively, if any
     pub fn find_editable_text(&self) -> Option<&UIElement> {
         match self {
@@ -71,6 +67,49 @@ impl UIElement {
                 None
             }
             _ => None,
+        }
+    }
+
+    /// Find an operation descriptor by operation name (e.g., "outdent", "indent")
+    pub fn find_operation_descriptor(
+        &self,
+        op_name: &str,
+    ) -> Option<&holon_api::OperationDescriptor> {
+        match self {
+            UIElement::Checkbox { operations, .. } | UIElement::EditableText { operations, .. } => {
+                debug!(
+                    "Searching for '{}' in {} operations",
+                    op_name,
+                    operations.len()
+                );
+                for op in operations.iter() {
+                    debug!(
+                        "  Checking operation: name='{}', entity='{}'",
+                        op.descriptor.name, op.descriptor.entity_name
+                    );
+                }
+                operations
+                    .iter()
+                    .find(|op| op.descriptor.name == op_name)
+                    .map(|op| &op.descriptor)
+            }
+            UIElement::Row { children } => {
+                debug!(
+                    "Searching Row with {} children for operation '{}'",
+                    children.len(),
+                    op_name
+                );
+                children
+                    .iter()
+                    .find_map(|child| child.find_operation_descriptor(op_name))
+            }
+            _ => {
+                debug!(
+                    "Element type {:?} has no operations",
+                    std::mem::discriminant(self)
+                );
+                None
+            }
         }
     }
 }

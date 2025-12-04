@@ -4,125 +4,68 @@
 
 use flutter_rust_bridge::frb;
 use serde::{Deserialize, Serialize};
+use std::collections::HashMap;
+// Re-export SpanContext for generated code
+pub use opentelemetry::trace::SpanContext;
 
 // Re-export opaque types from backend
 // Block will be generated as an opaque type in Dart
 // Fields are accessed via BlockOps methods (getId, getContent, etc.)
-pub use rusty_knowledge::api::{Block, BlockMetadata, NewBlock, Traversal};
+pub use super::{Block, BlockMetadata, NewBlock, Traversal};
 
-// Define enums directly for proper Dart codegen (mirror doesn't work well for enums)
+// Re-export Change from holon-api (moved from holon)
+pub use holon_api::Change;
 
-/// Origin of a change event (local vs. remote).
-#[frb]
-#[derive(Debug, Clone, Copy, Serialize, Deserialize, PartialEq, Eq)]
-pub enum ChangeOrigin {
-    /// Change initiated by this client
-    Local,
-    /// Change received from P2P sync
-    Remote,
-}
+// Re-export backend types for use in Rust code (not mirror types!)
+// These are what we actually use in Rust code
+pub use super::ApiError;
+// Re-export streaming types from holon-api (moved from holon)
+pub use holon_api::{ChangeOrigin, StreamPosition};
 
-impl From<rusty_knowledge::api::ChangeOrigin> for ChangeOrigin {
-    fn from(origin: rusty_knowledge::api::ChangeOrigin) -> Self {
-        match origin {
-            rusty_knowledge::api::ChangeOrigin::Local => ChangeOrigin::Local,
-            rusty_knowledge::api::ChangeOrigin::Remote => ChangeOrigin::Remote,
-        }
-    }
-}
+// Value is marked non-opaque via comment in holon-api/src/lib.rs - no mirror needed
+
+// All these types are marked non-opaque via comments in holon-api - no mirrors needed:
+// - BlockContent, SourceBlock, BlockResult, ResultOutput (in block.rs)
+// - DynamicEntity (in entity.rs)
+// - Value (in lib.rs)
+
+// Type aliases for Change<T> variants
+// BlockChange is now exported directly from holon-api
+pub use holon_api::{
+    Batch, BatchMapChange, BatchMapChangeWithMetadata, BatchMetadata, BatchTraceContext,
+    BatchWithMetadata, BlockChange, MapChange, WithMetadata,
+};
+
+// Type alias for RowChange (same as MapChange, used for query result changes)
+// This is a Dart-only type alias, so we add it via dart_code
+#[frb(dart_code = "
+  import 'third_party/holon_api/streaming.dart' show MapChange;
+  typedef RowChange = MapChange;
+")]
+pub struct _RowChangePlaceholder;
 
 /// Position in the change stream to start watching from.
-#[frb]
+/// Now mirrored from holon-api
+#[frb(mirror(holon_api::StreamPosition))]
 #[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
-pub enum StreamPosition {
-    /// Start from the beginning
+pub enum _StreamPosition {
     Beginning,
-    /// Start from a specific version
     Version(Vec<u8>),
 }
 
-impl From<StreamPosition> for rusty_knowledge::api::StreamPosition {
-    fn from(pos: StreamPosition) -> Self {
-        match pos {
-            StreamPosition::Beginning => rusty_knowledge::api::StreamPosition::Beginning,
-            StreamPosition::Version(v) => rusty_knowledge::api::StreamPosition::Version(v),
-        }
-    }
-}
-
-/// Change notification event.
-#[frb]
-#[derive(Debug, Clone, Serialize, Deserialize)]
-pub enum BlockChange {
-    /// Block was created
-    Created {
-        id: String,
-        parent_id: String,
-        content: String,
-        children: Vec<String>,
-        origin: ChangeOrigin,
-    },
-    /// Block content was updated
-    Updated {
-        id: String,
-        content: String,
-        origin: ChangeOrigin,
-    },
-    /// Block was deleted
-    Deleted { id: String, origin: ChangeOrigin },
-    /// Block was moved
-    Moved {
-        id: String,
-        new_parent: String,
-        after: Option<String>,
-        origin: ChangeOrigin,
-    },
-}
-
-impl From<rusty_knowledge::api::BlockChange> for BlockChange {
-    fn from(change: rusty_knowledge::api::BlockChange) -> Self {
-        match change {
-            rusty_knowledge::api::BlockChange::Created { block, origin } => {
-                BlockChange::Created {
-                    id: block.id,
-                    parent_id: block.parent_id,
-                    content: block.content,
-                    children: block.children,
-                    origin: origin.into(),
-                }
-            }
-            rusty_knowledge::api::BlockChange::Updated {
-                id,
-                content,
-                origin,
-            } => BlockChange::Updated {
-                id,
-                content,
-                origin: origin.into(),
-            },
-            rusty_knowledge::api::BlockChange::Deleted { id, origin } => BlockChange::Deleted {
-                id,
-                origin: origin.into(),
-            },
-            rusty_knowledge::api::BlockChange::Moved {
-                id,
-                new_parent,
-                after,
-                origin,
-            } => BlockChange::Moved {
-                id,
-                new_parent,
-                after,
-                origin: origin.into(),
-            },
-        }
-    }
+/// Origin of a change event (local vs. remote).
+/// Now mirrored from holon-api
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+#[frb(mirror(holon_api::ChangeOrigin))]
+pub enum _ChangeOrigin {
+    Local { operation_id: Option<String> },
+    Remote { operation_id: Option<String> },
 }
 
 /// Structured error types for API operations.
-#[frb]
+#[frb(mirror(ApiError))]
 #[derive(Debug, Clone, Serialize, Deserialize, thiserror::Error)]
-pub enum ApiError {
+pub enum _ApiError {
     #[error("Block not found: {id}")]
     BlockNotFound { id: String },
 
@@ -142,25 +85,63 @@ pub enum ApiError {
     InternalError { message: String },
 }
 
-impl From<rusty_knowledge::api::ApiError> for ApiError {
-    fn from(err: rusty_knowledge::api::ApiError) -> Self {
-        match err {
-            rusty_knowledge::api::ApiError::BlockNotFound { id } => ApiError::BlockNotFound { id },
-            rusty_knowledge::api::ApiError::DocumentNotFound { doc_id } => {
-                ApiError::DocumentNotFound { doc_id }
-            }
-            rusty_knowledge::api::ApiError::CyclicMove { id, target_parent } => {
-                ApiError::CyclicMove { id, target_parent }
-            }
-            rusty_knowledge::api::ApiError::InvalidOperation { message } => {
-                ApiError::InvalidOperation { message }
-            }
-            rusty_knowledge::api::ApiError::NetworkError { message } => {
-                ApiError::NetworkError { message }
-            }
-            rusty_knowledge::api::ApiError::InternalError { message } => {
-                ApiError::InternalError { message }
-            }
+/// Trace context for propagating OpenTelemetry trace information across FFI boundary.
+///
+/// Uses W3C TraceContext format (traceparent header format) for serialization.
+/// flutter_rust_bridge:non_opaque
+#[derive(Debug, Clone, Serialize, Deserialize, PartialEq, Eq)]
+pub struct TraceContext {
+    /// Trace ID (16-byte hex string, 32 hex characters)
+    pub trace_id: String,
+    /// Span ID (8-byte hex string, 16 hex characters)
+    pub span_id: String,
+    /// Trace flags (1 byte, typically 0x01 for sampled)
+    pub trace_flags: u8,
+    /// Optional trace state (key-value pairs)
+    pub trace_state: Option<String>,
+}
+
+#[frb(dart_code = "
+  /// Get operation ID from trace context (uses span_id)
+  String? get operationId {
+    return spanId;
+  }
+")]
+impl TraceContext {
+    /// Create a new TraceContext from OpenTelemetry span context
+    pub fn from_span_context(span_context: &opentelemetry::trace::SpanContext) -> Self {
+        Self {
+            trace_id: format!("{:032x}", span_context.trace_id()),
+            span_id: format!("{:016x}", span_context.span_id()),
+            trace_flags: if span_context.is_sampled() {
+                0x01
+            } else {
+                0x00
+            },
+            trace_state: None, // TODO: Extract trace state if needed
         }
+    }
+
+    /// Convert to OpenTelemetry span context
+    pub fn to_span_context(&self) -> Option<opentelemetry::trace::SpanContext> {
+        use opentelemetry::trace::{SpanContext, SpanId, TraceFlags, TraceId, TraceState};
+        use std::str::FromStr;
+
+        let trace_id = TraceId::from_hex(&self.trace_id).ok()?;
+        let span_id = SpanId::from_hex(&self.span_id).ok()?;
+        let trace_flags = TraceFlags::new(self.trace_flags);
+        let trace_state = self
+            .trace_state
+            .as_ref()
+            .and_then(|s| TraceState::from_str(s).ok())
+            .unwrap_or_default();
+
+        Some(SpanContext::new(
+            trace_id,
+            span_id,
+            trace_flags,
+            true,
+            trace_state,
+        ))
     }
 }

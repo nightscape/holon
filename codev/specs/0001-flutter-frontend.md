@@ -4,7 +4,7 @@
 **Updated with Agent Feedback** - GPT-5 and Gemini-2.5-Pro reviewed, recommendations incorporated
 
 ## Overview
-Add a Flutter-based frontend to rusty-knowledge that provides a LogSeq-like block-based editing experience using the outliner-flutter library. This will run as a parallel frontend option alongside the existing Tauri implementation, using Flutter-Rust-Bridge for backend communication.
+Add a Flutter-based frontend to holon that provides a LogSeq-like block-based editing experience using the outliner-flutter library. This will run as a parallel frontend option alongside the existing Tauri implementation, using Flutter-Rust-Bridge for backend communication.
 
 ## Background
 
@@ -81,12 +81,12 @@ Add a Flutter-based frontend to rusty-knowledge that provides a LogSeq-like bloc
 **Purpose**: Provide a clean, technology-agnostic interface for frontend communication.
 
 **Location**: API module within main crate for cross-frontend consistency
-- **Shared Types**: `crates/rusty-knowledge/src/api/types.rs` - Core data types used by all frontends
-- **Domain Service**: `crates/rusty-knowledge/src/api/repository.rs` - `DocumentRepository` trait and implementations
+- **Shared Types**: `crates/holon/src/api/types.rs` - Core data types used by all frontends
+- **Domain Service**: `crates/holon/src/api/repository.rs` - `DocumentRepository` trait and implementations
 - **Flutter Adapter**: `frontends/flutter/rust/src/bridge.rs` - FRB-specific bindings using shared types
 - **Tauri Adapter**: `src-tauri/src/commands.rs` - Tauri commands using shared types
 
-**Interface** (`crates/rusty-knowledge/src/api/types.rs`):
+**Interface** (`crates/holon/src/api/types.rs`):
 ```rust
 // Core data types
 pub struct Block {
@@ -511,7 +511,7 @@ pub async fn move_block(&self, id: &str, new_parent: Option<String>, after: Opti
 - Verify transaction atomicity with real CRDT semantics
 
 **Implementation Steps**:
-1. Create shared API module (`crates/rusty-knowledge/src/api/`)
+1. Create shared API module (`crates/holon/src/api/`)
 2. Adapt CollaborativeDoc to hierarchical block model using normalized adjacency-list
 3. Implement CRUD operations with comprehensive test coverage
 4. Create change notification system with character-level granularity
@@ -577,15 +577,15 @@ dev_dependencies:
 ```
 
 ### Existing Dependencies
-- rusty-knowledge core library
+- holon core library
 - Loro CRDT
 - Iroh P2P networking
 - All remain unchanged
 
 ### API Module Integration
-**`crates/rusty-knowledge/src/api/`** (new module within main crate):
+**`crates/holon/src/api/`** (new module within main crate):
 ```toml
-# Dependencies already in crates/rusty-knowledge/Cargo.toml:
+# Dependencies already in crates/holon/Cargo.toml:
 serde = { version = "1", features = ["derive"] }
 loro = "1.0"
 anyhow = "1"
@@ -597,7 +597,7 @@ proptest = "1.6"
 proptest-stateful = "0.1"
 ```
 
-Purpose: Shared API types and traits for all frontends (Tauri, Flutter, future REST), integrated within the main rusty-knowledge crate for simplified architecture.
+Purpose: Shared API types and traits for all frontends (Tauri, Flutter, future REST), integrated within the main holon crate for simplified architecture.
 
 ## Testing Strategy
 
@@ -725,7 +725,7 @@ The following key decisions have been made to guide implementation:
    - See "Multi-Document Architecture" in Future Enhancements
 
 6. **API Isolation**: Shared crate for cross-frontend consistency
-   - New `crates/rusty-knowledge-api` crate
+   - New `crates/holon-api` crate
    - Ensures Tauri, Flutter, and future frontends use identical types
    - Prevents API divergence over time
 
@@ -735,7 +735,7 @@ The following key decisions have been made to guide implementation:
 - [Flutter-Rust-Bridge](https://cjycode.com/flutter_rust_bridge/)
 - [Loro Documentation](https://loro.dev/)
 - [Iroh Documentation](https://iroh.computer/docs)
-- Existing `rusty-knowledge` architecture in `README.md`
+- Existing `holon` architecture in `README.md`
 
 ---
 
@@ -750,7 +750,7 @@ The following key decisions have been made to guide implementation:
 **Integrated API into main crate**
 
 **Architectural Change**:
-- Changed from separate `crates/rusty-knowledge-api` workspace member to integrated `crates/rusty-knowledge/src/api/` module
+- Changed from separate `crates/holon-api` workspace member to integrated `crates/holon/src/api/` module
 - Simplifies build and dependency management
 - Maintains same clean interface boundaries for cross-frontend consistency
 - All references updated throughout specification
@@ -768,7 +768,7 @@ The following key decisions have been made to guide implementation:
 **Incorporated user comments and finalized key decisions**
 
 **Architecture Refinements**:
-1. **Shared API Module**: Added `crates/rusty-knowledge/src/api/` for cross-frontend consistency
+1. **Shared API Module**: Added `crates/holon/src/api/` for cross-frontend consistency
    - Shared types, traits, and domain logic within main crate
    - Prevents API divergence between Tauri and Flutter
    - Enables future REST/Web frontends

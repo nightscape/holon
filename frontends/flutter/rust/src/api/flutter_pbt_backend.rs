@@ -1,6 +1,7 @@
 use async_trait::async_trait;
 use flutter_rust_bridge::frb;
 
+use crate::api::{ApiError, BlockMetadata, NewBlock};
 /// Flutter UI backend for property-based testing
 ///
 /// This module provides a CoreOperations implementation that drives the Flutter UI
@@ -19,12 +20,12 @@ use flutter_rust_bridge::frb;
 /// PBT Test calls get_all_blocks() → Dart callback → Read UI state
 /// ```
 use flutter_rust_bridge::DartFnFuture;
-use rusty_knowledge::api::repository::{CoreOperations, Lifecycle};
-use rusty_knowledge::api::types::{ApiError, BlockMetadata, NewBlock};
+use holon::api::repository::{CoreOperations, Lifecycle};
 use std::sync::Arc;
 
 // Re-export for FRB generated code (explicitly for wildcard imports)
-pub use super::types::{Block, Traversal};
+pub use super::types::Block;
+pub use holon::api::types::Traversal;
 
 /// Callback type for reading blocks from Dart/Flutter
 #[frb(ignore)]
@@ -45,8 +46,7 @@ pub type DeleteBlockCallback = Arc<dyn Fn(String) -> DartFnFuture<()> + Send + S
 
 /// Callback type for moving a block in Dart/Flutter
 #[frb(ignore)]
-pub type MoveBlockCallback =
-    Arc<dyn Fn(String, String) -> DartFnFuture<()> + Send + Sync>;
+pub type MoveBlockCallback = Arc<dyn Fn(String, String) -> DartFnFuture<()> + Send + Sync>;
 
 /// Flutter UI backend for PBT testing
 ///
@@ -124,7 +124,7 @@ impl CoreOperations for FlutterPbtBackend {
             .ok_or_else(|| ApiError::BlockNotFound { id: id.to_string() })
     }
 
-    async fn get_all_blocks(&self, _traversal: rusty_knowledge::api::Traversal) -> Result<Vec<Block>, ApiError> {
+    async fn get_all_blocks(&self, _traversal: Traversal) -> Result<Vec<Block>, ApiError> {
         // Wait for any pending writes to settle
         self.flush_pending_writes().await;
 
@@ -150,14 +150,15 @@ impl CoreOperations for FlutterPbtBackend {
     async fn create_block(
         &self,
         parent_id: String,
-        content: String,
+        content: holon_api::BlockContent,
         id: Option<String>,
     ) -> Result<Block, ApiError> {
         // Generate ID if not provided (PBT will provide it)
         let block_id = id.unwrap_or_else(|| uuid::Uuid::new_v4().to_string());
 
-        // Call Dart to create the block in the UI
-        (self.create_block_callback)(block_id.clone(), parent_id.clone(), content.clone()).await;
+        // Call Dart to create the block in the UI - convert to plain text for callback
+        let content_str = content.to_plain_text().to_string();
+        (self.create_block_callback)(block_id.clone(), parent_id.clone(), content_str).await;
 
         // Return immediately with expected result
         // The actual state will be verified via get_all_blocks() later
@@ -165,6 +166,7 @@ impl CoreOperations for FlutterPbtBackend {
             id: block_id,
             parent_id,
             content,
+            properties: std::collections::HashMap::new(),
             children: vec![],
             metadata: BlockMetadata {
                 created_at: chrono::Utc::now().timestamp_millis(),
@@ -173,9 +175,14 @@ impl CoreOperations for FlutterPbtBackend {
         })
     }
 
-    async fn update_block(&self, id: &str, content: String) -> Result<(), ApiError> {
-        // Call Dart to update the block in the UI
-        (self.update_block_callback)(id.to_string(), content).await;
+    async fn update_block(
+        &self,
+        id: &str,
+        content: holon_api::BlockContent,
+    ) -> Result<(), ApiError> {
+        // Call Dart to update the block in the UI - convert to plain text for callback
+        let content_str = content.to_plain_text().to_string();
+        (self.update_block_callback)(id.to_string(), content_str).await;
         Ok(())
     }
 
@@ -224,7 +231,7 @@ impl CoreOperations for FlutterPbtBackend {
             (self.create_block_callback)(
                 block_id.clone(),
                 new_block.parent_id.clone(),
-                new_block.content.clone(),
+                new_block.content.to_string(),
             )
             .await;
 
@@ -233,6 +240,7 @@ impl CoreOperations for FlutterPbtBackend {
                 id: block_id,
                 parent_id: new_block.parent_id,
                 content: new_block.content,
+                properties: std::collections::HashMap::new(),
                 children: vec![],
                 metadata: BlockMetadata {
                     created_at: chrono::Utc::now().timestamp_millis(),

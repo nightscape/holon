@@ -893,7 +893,7 @@ Several factors explain the limited real-world adoption:
 
 ## Considerations for Different App Types
 
-### Personal Knowledge Management (like rusty-knowledge)
+### Personal Knowledge Management (like holon)
 
 **Typical performance requirements**:
 - Search: Users tolerate 100-500ms easily

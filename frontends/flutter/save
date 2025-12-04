@@ -1,0 +1,978 @@
+warning: unused imports: `GenericsInfo` and `parse_generics_info`
+  --> frb_codegen/src/library/codegen/parser/mir/parser/extra_type.rs:11:26
+   |
+11 |     is_generic_template, parse_generics_info, GenericsInfo,
+   |                          ^^^^^^^^^^^^^^^^^^^  ^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_imports)]` (part of `#[warn(unused)]`) on by default
+
+warning: unused import: `crate::codegen::ir::mir::ty::generic::MirTypeGeneric`
+ --> frb_codegen/src/library/codegen/parser/mir/parser/ty/type_substitution.rs:5:5
+  |
+5 | use crate::codegen::ir::mir::ty::generic::MirTypeGeneric;
+  |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: method `is_parsing_or_parsed` is never used
+   --> frb_codegen/src/library/codegen/parser/mir/parser/ty/enum_or_struct.rs:200:12
+    |
+191 | impl<Id, Obj> EnumOrStructParserInfo<Id, Obj> {
+    | --------------------------------------------- method in this implementation
+...
+200 |     pub fn is_parsing_or_parsed(&self, name: &NamespacedName) -> bool {
+    |            ^^^^^^^^^^^^^^^^^^^^
+    |
+    = note: `#[warn(dead_code)]` (part of `#[warn(unused)]`) on by default
+
+warning: method `parse_type_path_data_enum` is never used
+  --> frb_codegen/src/library/codegen/parser/mir/parser/ty/enumeration.rs:31:19
+   |
+30 | impl TypeParserWithContext<'_, '_, '_> {
+   | -------------------------------------- method in this implementation
+31 |     pub(crate) fn parse_type_path_data_enum(
+   |                   ^^^^^^^^^^^^^^^^^^^^^^^^^
+
+warning: methods `parse_type_path` and `parse_type_path_core` are never used
+  --> frb_codegen/src/library/codegen/parser/mir/parser/ty/path.rs:10:19
+   |
+ 9 | impl TypeParserWithContext<'_, '_, '_> {
+   | -------------------------------------- methods in this implementation
+10 |     pub(crate) fn parse_type_path(&mut self, type_path: &TypePath) -> anyhow::Result<MirType> {
+   |                   ^^^^^^^^^^^^^^^
+...
+27 |     fn parse_type_path_core(
+   |        ^^^^^^^^^^^^^^^^^^^^
+
+warning: method `parse_type_inner` is never used
+   --> frb_codegen/src/library/codegen/parser/mir/parser/ty/ty.rs:161:8
+    |
+  8 | impl TypeParserWithContext<'_, '_, '_> {
+    | -------------------------------------- method in this implementation
+...
+161 |     fn parse_type_inner(&mut self, ty: &Type) -> anyhow::Result<MirType> {
+    |        ^^^^^^^^^^^^^^^^
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/api_dart/spec_generator/base.rs:6:1
+   |
+ 6 | / codegen_generator_structs!(
+ 7 | |     #[enum_dispatch(ApiDartGeneratorInfoTrait)]
+ 8 | |     #[enum_dispatch(ApiDartGeneratorClassTrait)]
+ 9 | |     ApiDartGenerator
+10 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: `#[warn(mismatched_lifetime_syntaxes)]` on by default
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/api_dart/spec_generator/base.rs:6:1
+    |
+  6 | / codegen_generator_structs!(
+  7 | |     #[enum_dispatch(ApiDartGeneratorInfoTrait)]
+  8 | |     #[enum_dispatch(ApiDartGeneratorClassTrait)]
+  9 | |     ApiDartGenerator
+ 10 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/api_dart/spec_generator/class/field.rs:45:45
+   |
+45 | fn default_value_maybe_to_dart_style(value: &str, enable: bool) -> Cow<str> {
+   |                                             ^^^^                   ^^^^^^^^ the same lifetime is hidden here
+   |                                             |
+   |                                             the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+45 | fn default_value_maybe_to_dart_style(value: &str, enable: bool) -> Cow<'_, str> {
+   |                                                                        +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/codec/sse/ty/mod.rs:26:1
+   |
+26 | / codegen_generator_structs!(
+27 | |     #[enum_dispatch(CodecSseTyTrait)]
+28 | |     CodecSseTy
+29 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/codec/sse/ty/mod.rs:26:1
+    |
+ 26 | / codegen_generator_structs!(
+ 27 | |     #[enum_dispatch(CodecSseTyTrait)]
+ 28 | |     CodecSseTy
+ 29 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/codec/sse/ty/mod.rs:45:39
+   |
+45 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext {
+   |                                       ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+45 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext<'_> {
+   |                                                                        ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/codec/sse/ty/record.rs:19:34
+   |
+19 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator {
+   |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                  |
+   |                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+19 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator<'_> {
+   |                                                                      ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/codec/sse/ty/structure.rs:23:34
+   |
+23 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator {
+   |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                  |
+   |                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+23 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator<'_> {
+   |                                                                      ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/base.rs:12:1
+   |
+12 | / codegen_generator_structs!(
+13 | |     #[enum_dispatch(WireDartGeneratorImplTrait)]
+14 | |     #[enum_dispatch(WireDartGeneratorMiscTrait)]
+15 | |     #[enum_dispatch(WireDartGeneratorDart2RustTrait)]
+16 | |     #[enum_dispatch(WireDartGeneratorRust2DartTrait)]
+17 | |     WireDartGenerator
+18 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/base.rs:12:1
+    |
+ 12 | / codegen_generator_structs!(
+ 13 | |     #[enum_dispatch(WireDartGeneratorImplTrait)]
+ 14 | |     #[enum_dispatch(WireDartGeneratorMiscTrait)]
+ 15 | |     #[enum_dispatch(WireDartGeneratorDart2RustTrait)]
+ 16 | |     #[enum_dispatch(WireDartGeneratorRust2DartTrait)]
+ 17 | |     WireDartGenerator
+ 18 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/base.rs:30:39
+   |
+30 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext {
+   |                                       ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+30 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext<'_> {
+   |                                                                        ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/base.rs:37:50
+   |
+37 |     pub(crate) fn as_wire_dart_codec_cst_context(&self) -> WireDartCodecCstGeneratorContext {
+   |                                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                  |
+   |                                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+37 |     pub(crate) fn as_wire_dart_codec_cst_context(&self) -> WireDartCodecCstGeneratorContext<'_> {
+   |                                                                                            ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/base.rs:46:50
+   |
+46 |     pub(crate) fn as_wire_dart_codec_dco_context(&self) -> WireDartCodecDcoGeneratorContext {
+   |                                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                  |
+   |                                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+46 |     pub(crate) fn as_wire_dart_codec_dco_context(&self) -> WireDartCodecDcoGeneratorContext<'_> {
+   |                                                                                            ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/base.rs:53:50
+   |
+53 |     pub(crate) fn as_wire_dart_codec_sse_context(&self) -> WireDartCodecSseGeneratorContext {
+   |                                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                  |
+   |                                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+53 |     pub(crate) fn as_wire_dart_codec_sse_context(&self) -> WireDartCodecSseGeneratorContext<'_> {
+   |                                                                                            ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/cst/base.rs:9:1
+   |
+ 9 | / codegen_generator_structs!(
+10 | |     #[enum_dispatch(WireDartCodecCstGeneratorImplTrait)]
+11 | |     #[enum_dispatch(WireDartCodecCstGeneratorEncoderTrait)]
+12 | |     WireDartCodecCstGenerator
+13 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/cst/base.rs:9:1
+    |
+  9 | / codegen_generator_structs!(
+ 10 | |     #[enum_dispatch(WireDartCodecCstGeneratorImplTrait)]
+ 11 | |     #[enum_dispatch(WireDartCodecCstGeneratorEncoderTrait)]
+ 12 | |     WireDartCodecCstGenerator
+ 13 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/cst/base.rs:24:40
+   |
+24 |     pub(crate) fn as_wire_rust_context(&self) -> WireRustCodecCstGeneratorContext {
+   |                                        ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                        |
+   |                                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+24 |     pub(crate) fn as_wire_rust_context(&self) -> WireRustCodecCstGeneratorContext<'_> {
+   |                                                                                  ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/cst/base.rs:33:39
+   |
+33 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext {
+   |                                       ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+33 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext<'_> {
+   |                                                                        ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/cst/encoder/ty/record.rs:24:34
+   |
+24 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator {
+   |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                  |
+   |                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+24 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator<'_> {
+   |                                                                      ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/cst/encoder/ty/structure.rs:30:34
+   |
+30 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator {
+   |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                  |
+   |                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+30 |     fn new_generalized_generator(&self) -> GeneralizedStructGenerator<'_> {
+   |                                                                      ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/dco/base.rs:6:1
+   |
+ 6 | / codegen_generator_structs!(
+ 7 | |     #[enum_dispatch(WireDartCodecDcoGeneratorImplTrait)]
+ 8 | |     #[enum_dispatch(WireDartCodecDcoGeneratorEncoderTrait)]
+ 9 | |     #[enum_dispatch(WireDartCodecDcoGeneratorDecoderTrait)]
+10 | |     WireDartCodecDcoGenerator
+11 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/dco/base.rs:6:1
+    |
+  6 | / codegen_generator_structs!(
+  7 | |     #[enum_dispatch(WireDartCodecDcoGeneratorImplTrait)]
+  8 | |     #[enum_dispatch(WireDartCodecDcoGeneratorEncoderTrait)]
+  9 | |     #[enum_dispatch(WireDartCodecDcoGeneratorDecoderTrait)]
+ 10 | |     WireDartCodecDcoGenerator
+ 11 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/dco/base.rs:20:39
+   |
+20 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext {
+   |                                       ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+20 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext<'_> {
+   |                                                                        ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/sse/base.rs:6:1
+   |
+ 6 | / codegen_generator_structs!(
+ 7 | |     #[enum_dispatch(WireDartCodecSseGeneratorImplTrait)]
+ 8 | |     #[enum_dispatch(WireDartCodecSseGeneratorEncoderTrait)]
+ 9 | |     #[enum_dispatch(WireDartCodecSseGeneratorDecoderTrait)]
+10 | |     WireDartCodecSseGenerator
+11 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/sse/base.rs:6:1
+    |
+  6 | / codegen_generator_structs!(
+  7 | |     #[enum_dispatch(WireDartCodecSseGeneratorImplTrait)]
+  8 | |     #[enum_dispatch(WireDartCodecSseGeneratorEncoderTrait)]
+  9 | |     #[enum_dispatch(WireDartCodecSseGeneratorDecoderTrait)]
+ 10 | |     WireDartCodecSseGenerator
+ 11 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/dart/spec_generator/codec/sse/base.rs:20:39
+   |
+20 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext {
+   |                                       ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+20 |     pub(crate) fn as_api_dart_context(&self) -> ApiDartGeneratorContext<'_> {
+   |                                                                        ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/base.rs:11:1
+   |
+11 | / codegen_generator_structs!(
+12 | |     #[enum_dispatch(WireRustGeneratorImplTrait)]
+13 | |     #[enum_dispatch(WireRustGeneratorRust2DartTrait)]
+14 | |     #[enum_dispatch(WireRustGeneratorDart2RustTrait)]
+15 | |     #[enum_dispatch(WireRustGeneratorMiscTrait)]
+16 | |     WireRustGenerator
+17 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/base.rs:11:1
+    |
+ 11 | / codegen_generator_structs!(
+ 12 | |     #[enum_dispatch(WireRustGeneratorImplTrait)]
+ 13 | |     #[enum_dispatch(WireRustGeneratorRust2DartTrait)]
+ 14 | |     #[enum_dispatch(WireRustGeneratorDart2RustTrait)]
+ 15 | |     #[enum_dispatch(WireRustGeneratorMiscTrait)]
+ 16 | |     WireRustGenerator
+ 17 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/base.rs:28:50
+   |
+28 |     pub(crate) fn as_wire_rust_codec_cst_context(&self) -> WireRustCodecCstGeneratorContext {
+   |                                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                  |
+   |                                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+28 |     pub(crate) fn as_wire_rust_codec_cst_context(&self) -> WireRustCodecCstGeneratorContext<'_> {
+   |                                                                                            ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/base.rs:37:50
+   |
+37 |     pub(crate) fn as_wire_rust_codec_dco_context(&self) -> WireRustCodecDcoGeneratorContext {
+   |                                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                  |
+   |                                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+37 |     pub(crate) fn as_wire_rust_codec_dco_context(&self) -> WireRustCodecDcoGeneratorContext<'_> {
+   |                                                                                            ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/base.rs:43:50
+   |
+43 |     pub(crate) fn as_wire_rust_codec_sse_context(&self) -> WireRustCodecSseGeneratorContext {
+   |                                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                                  |
+   |                                                  the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+43 |     pub(crate) fn as_wire_rust_codec_sse_context(&self) -> WireRustCodecSseGeneratorContext<'_> {
+   |                                                                                            ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/base.rs:8:1
+   |
+ 8 | / codegen_generator_structs!(
+ 9 | |     #[enum_dispatch(WireRustCodecCstGeneratorImplTrait)]
+10 | |     #[enum_dispatch(WireRustCodecCstGeneratorEncoderTrait)]
+11 | |     #[enum_dispatch(WireRustCodecCstGeneratorDecoderTrait)]
+12 | |     WireRustCodecCstGenerator
+13 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/base.rs:8:1
+    |
+  8 | / codegen_generator_structs!(
+  9 | |     #[enum_dispatch(WireRustCodecCstGeneratorImplTrait)]
+ 10 | |     #[enum_dispatch(WireRustCodecCstGeneratorEncoderTrait)]
+ 11 | |     #[enum_dispatch(WireRustCodecCstGeneratorDecoderTrait)]
+ 12 | |     WireRustCodecCstGenerator
+ 13 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/base.rs:24:40
+   |
+24 |     pub(crate) fn as_wire_dart_context(&self) -> WireDartCodecCstGeneratorContext {
+   |                                        ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                        |
+   |                                        the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+24 |     pub(crate) fn as_wire_dart_context(&self) -> WireDartCodecCstGeneratorContext<'_> {
+   |                                                                                  ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/mod.rs:35:42
+   |
+35 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<Cow<str>> {
+   |                                          ^^^^^            ^^^^^^^^ the same lifetime is hidden here
+   |                                          |
+   |                                          the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+35 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<Cow<'_, str>> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/boxed.rs:40:42
+   |
+40 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<str>> {
+   |                                          ^^^^^            ^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                          |
+   |                                          the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+40 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<'_, str>> {
+   |                                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/delegate.rs:118:42
+    |
+118 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<str>> {
+    |                                          ^^^^^            ^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                          |
+    |                                          the lifetime is elided here
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+    |
+118 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<'_, str>> {
+    |                                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/primitive.rs:18:42
+   |
+18 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<str>> {
+   |                                          ^^^^^            ^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                          |
+   |                                          the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+18 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<'_, str>> {
+   |                                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/primitive_list.rs:47:42
+   |
+47 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<str>> {
+   |                                          ^^^^^            ^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                          |
+   |                                          the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+47 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<std::borrow::Cow<'_, str>> {
+   |                                                                            +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/record.rs:48:39
+   |
+48 |     pub(crate) fn as_struct_generator(&self) -> StructRefWireRustCodecCstGenerator {
+   |                                       ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                                       |
+   |                                       the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+48 |     pub(crate) fn as_struct_generator(&self) -> StructRefWireRustCodecCstGenerator<'_> {
+   |                                                                                   ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/rust_auto_opaque_implicit.rs:20:42
+   |
+20 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<Cow<str>> {
+   |                                          ^^^^^            ^^^^^^^^ the same lifetime is hidden here
+   |                                          |
+   |                                          the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+20 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<Cow<'_, str>> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/cst/decoder/ty/rust_opaque.rs:17:42
+   |
+17 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<Cow<str>> {
+   |                                          ^^^^^            ^^^^^^^^ the same lifetime is hidden here
+   |                                          |
+   |                                          the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+17 |     fn generate_impl_decode_jsvalue_body(&self) -> Option<Cow<'_, str>> {
+   |                                                               +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/dco/base.rs:4:1
+   |
+ 4 | / codegen_generator_structs!(
+ 5 | |     #[enum_dispatch(WireRustCodecDcoGeneratorImplTrait)]
+ 6 | |     #[enum_dispatch(WireRustCodecDcoGeneratorEncoderTrait)]
+ 7 | |     #[enum_dispatch(WireRustCodecDcoGeneratorDecoderTrait)]
+ 8 | |     WireRustCodecDcoGenerator
+ 9 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/dco/base.rs:4:1
+    |
+  4 | / codegen_generator_structs!(
+  5 | |     #[enum_dispatch(WireRustCodecDcoGeneratorImplTrait)]
+  6 | |     #[enum_dispatch(WireRustCodecDcoGeneratorEncoderTrait)]
+  7 | |     #[enum_dispatch(WireRustCodecDcoGeneratorDecoderTrait)]
+  8 | |     WireRustCodecDcoGenerator
+  9 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:85:28
+   |
+85 |                   fn context(&self) -> [<$generator_name Context>];
+   |                              ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+   |                              |
+   |                              the lifetime is elided here
+   |
+  ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/sse/base.rs:5:1
+   |
+ 5 | / codegen_generator_structs!(
+ 6 | |     #[enum_dispatch(WireRustCodecSseGeneratorImplTrait)]
+ 7 | |     #[enum_dispatch(WireRustCodecSseGeneratorEncoderTrait)]
+ 8 | |     #[enum_dispatch(WireRustCodecSseGeneratorDecoderTrait)]
+ 9 | |     WireRustCodecSseGenerator
+10 | | );
+   | |_- in this macro invocation
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+   = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+   |
+85 |                 fn context(&self) -> [<$generator_name Context>]<'_>;
+   |                                                                 ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+   --> frb_codegen/src/library/codegen/generator/misc/structs_macro.rs:104:32
+    |
+104 |                       fn context(&self) -> [<$generator_name Context>] { self.context }
+    |                                  ^^^^^     ^^^^^^^^^^^^^^^^^^^^^^^^^^^ the same lifetime is hidden here
+    |                                  |
+    |                                  the lifetime is elided here
+    |
+   ::: frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/codec/sse/base.rs:5:1
+    |
+  5 | / codegen_generator_structs!(
+  6 | |     #[enum_dispatch(WireRustCodecSseGeneratorImplTrait)]
+  7 | |     #[enum_dispatch(WireRustCodecSseGeneratorEncoderTrait)]
+  8 | |     #[enum_dispatch(WireRustCodecSseGeneratorDecoderTrait)]
+  9 | |     WireRustCodecSseGenerator
+ 10 | | );
+    | |_- in this macro invocation
+    |
+    = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+    = note: this warning originates in the macro `$crate::codegen_generator_structs` which comes from the expansion of the macro `codegen_generator_structs` (in Nightly builds, run with -Z macro-backtrace for more info)
+help: use `'_` for type paths
+    |
+104 |                     fn context(&self) -> [<$generator_name Context>]<'_> { self.context }
+    |                                                                     ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/generator/wire/rust/spec_generator/misc/function/lockable.rs:87:33
+   |
+87 | fn filter_interest_fields(func: &MirFunc) -> Vec<FieldInfo> {
+   |                                 ^^^^^^^^         ^^^^^^^^^ the same lifetime is hidden here
+   |                                 |
+   |                                 the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+87 | fn filter_interest_fields(func: &MirFunc) -> Vec<FieldInfo<'_>> {
+   |                                                           ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/codegen/ir/mir/default.rs:11:35
+   |
+11 |     pub(crate) fn to_dart_literal(&self) -> Cow<str> {
+   |                                   ^^^^^     ^^^^^^^^ the same lifetime is hidden here
+   |                                   |
+   |                                   the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+11 |     pub(crate) fn to_dart_literal(&self) -> Cow<'_, str> {
+   |                                                 +++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+ --> frb_codegen/src/library/codegen/parser/mir/parser/ty/unencodable.rs:7:40
+  |
+7 | pub(crate) fn splay_segments(segments: &[NameComponent]) -> Vec<SplayedSegment> {
+  |                                        ^^^^^^^^^^^^^^^^         ^^^^^^^^^^^^^^ the same lifetime is hidden here
+  |                                        |
+  |                                        the lifetime is elided here
+  |
+  = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+  |
+7 | pub(crate) fn splay_segments(segments: &[NameComponent]) -> Vec<SplayedSegment<'_>> {
+  |                                                                               ++++
+
+warning: hiding a lifetime that's elided elsewhere is confusing
+  --> frb_codegen/src/library/commands/cargo_expand/real.rs:43:44
+   |
+43 | fn decode_macro_frb_encoded_comments(code: &str) -> Cow<str> {
+   |                                            ^^^^     ^^^^^^^^ the same lifetime is hidden here
+   |                                            |
+   |                                            the lifetime is elided here
+   |
+   = help: the same lifetime is referred to in inconsistent ways, making the signature confusing
+help: use `'_` for type paths
+   |
+43 | fn decode_macro_frb_encoded_comments(code: &str) -> Cow<'_, str> {
+   |                                                         +++
+
+warning: `flutter_rust_bridge_codegen` (lib) generated 56 warnings (run `cargo fix --lib -p flutter_rust_bridge_codegen` to apply 52 suggestions)
+    Finished `release` profile [optimized] target(s) in 0.13s
+     Running `external/flutter_rust_bridge/target/release/flutter_rust_bridge_codegen generate -f /tmp/frb_codegen.txt`
+error: unexpected argument '-f' found
+
+Usage: flutter_rust_bridge_codegen generate [OPTIONS]
+
+For more information, try '--help'.

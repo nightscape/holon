@@ -5,12 +5,13 @@
 //! against the MemoryBackend reference implementation.
 
 use super::tui_pbt_backend::TuiR3blPbtBackend;
-use rusty_knowledge::api::pbt_infrastructure::*;
-use rusty_knowledge::api::repository::CoreOperations;
-use rusty_knowledge::api::backend_engine::BackendEngine;
-use rusty_knowledge::di;
-use rusty_knowledge::api::operation_dispatcher::OperationModule;
-use ferrous_di::{ServiceCollection, ServiceCollectionModuleExt, Resolver};
+use ferrous_di::{Resolver, ServiceCollection, ServiceCollectionModuleExt};
+use holon::api::backend_engine::BackendEngine;
+use holon::api::operation_dispatcher::OperationModule;
+use holon::api::pbt_infrastructure::*;
+use holon::api::repository::CoreOperations;
+use holon::api::types::Traversal;
+use holon::di;
 use std::collections::HashMap;
 use std::sync::Arc;
 
@@ -38,7 +39,8 @@ impl StateMachineTest for TuiR3blBlockTreeTest {
             let mut services = ServiceCollection::new();
 
             // Register OperationModule to collect providers from DI
-            services.add_module_mut(OperationModule)
+            services
+                .add_module_mut(OperationModule)
                 .expect("Failed to register OperationModule");
 
             // Register core services with in-memory database
@@ -91,11 +93,7 @@ impl StateMachineTest for TuiR3blBlockTreeTest {
         if !created_blocks.is_empty() {
             let ref_blocks = state
                 .runtime
-                .block_on(
-                    ref_state
-                        .backend
-                        .get_all_blocks(rusty_knowledge::api::Traversal::ALL_BUT_ROOT),
-                )
+                .block_on(ref_state.backend.get_all_blocks(Traversal::ALL_BUT_ROOT))
                 .expect("Failed to get reference blocks");
 
             update_id_map_after_create(
@@ -114,4 +112,3 @@ impl StateMachineTest for TuiR3blBlockTreeTest {
         verify_backends_match(&ref_state.backend, &state.backend, &ref_state.handle);
     }
 }
-

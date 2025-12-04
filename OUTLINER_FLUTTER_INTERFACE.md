@@ -7,7 +7,7 @@ The `OutlinerRepository` abstract class defines 15 methods you must implement to
 ### Reading Operations
 
 #### getRootBlocks()
-**Returns**: `Future<List<Block>>`  
+**Returns**: `Future<List<Block>>`
 **Purpose**: Load all root-level blocks (top level of hierarchy)
 
 ```dart
@@ -21,7 +21,7 @@ Future<List<Block>> getRootBlocks() async {
 ```
 
 #### findBlockById(String blockId)
-**Returns**: `Future<Block?>`  
+**Returns**: `Future<Block?>`
 **Purpose**: Find any block by its ID (including nested blocks)
 
 ```dart
@@ -38,7 +38,7 @@ Future<Block?> findBlockById(String blockId) async {
 ```
 
 #### findParentId(String blockId)
-**Returns**: `Future<String?>`  
+**Returns**: `Future<String?>`
 **Purpose**: Get the parent block ID of a block (or null if root)
 
 ```dart
@@ -54,7 +54,7 @@ Future<String?> findParentId(String blockId) async {
 ```
 
 #### findBlockIndex(String blockId)
-**Returns**: `Future<int>`  
+**Returns**: `Future<int>`
 **Purpose**: Get the position index of a block among its siblings
 
 ```dart
@@ -71,7 +71,7 @@ Future<int> findBlockIndex(String blockId) async {
 ```
 
 #### getTotalBlocks()
-**Returns**: `Future<int>`  
+**Returns**: `Future<int>`
 **Purpose**: Count total blocks (including all nested)
 
 ```dart
@@ -88,8 +88,8 @@ Future<int> getTotalBlocks() async {
 ### Write Operations (Root Level)
 
 #### addRootBlock(Block block)
-**Parameters**: `Block block`  
-**Returns**: `Future<void>`  
+**Parameters**: `Block block`
+**Returns**: `Future<void>`
 **Purpose**: Add a new block at root level
 
 ```dart
@@ -101,8 +101,8 @@ Future<void> addRootBlock(Block block) async {
 ```
 
 #### insertRootBlock(int index, Block block)
-**Parameters**: `int index`, `Block block`  
-**Returns**: `Future<void>`  
+**Parameters**: `int index`, `Block block`
+**Returns**: `Future<void>`
 **Purpose**: Insert block at specific position among root blocks
 
 ```dart
@@ -118,8 +118,8 @@ Future<void> insertRootBlock(int index, Block block) async {
 ```
 
 #### removeRootBlock(Block block)
-**Parameters**: `Block block`  
-**Returns**: `Future<void>`  
+**Parameters**: `Block block`
+**Returns**: `Future<void>`
 **Purpose**: Remove a block from root level
 
 ```dart
@@ -135,8 +135,8 @@ Future<void> removeRootBlock(Block block) async {
 ### Write Operations (Any Block)
 
 #### updateBlock(String blockId, String content)
-**Parameters**: `String blockId`, `String content`  
-**Returns**: `Future<void>`  
+**Parameters**: `String blockId`, `String content`
+**Returns**: `Future<void>`
 **Purpose**: Update the text content of a block
 
 ```dart
@@ -151,8 +151,8 @@ Future<void> updateBlock(String blockId, String content) async {
 ```
 
 #### toggleBlockCollapse(String blockId)
-**Parameters**: `String blockId`  
-**Returns**: `Future<void>`  
+**Parameters**: `String blockId`
+**Returns**: `Future<void>`
 **Purpose**: Toggle the collapsed state of a block
 
 ```dart
@@ -169,8 +169,8 @@ Future<void> toggleBlockCollapse(String blockId) async {
 ```
 
 #### removeBlock(String blockId)
-**Parameters**: `String blockId`  
-**Returns**: `Future<void>`  
+**Parameters**: `String blockId`
+**Returns**: `Future<void>`
 **Purpose**: Remove any block (including all children)
 
 ```dart
@@ -186,8 +186,8 @@ Future<void> removeBlock(String blockId) async {
 ### Write Operations (Hierarchy)
 
 #### addChildBlock(String parentId, Block child)
-**Parameters**: `String parentId`, `Block child`  
-**Returns**: `Future<void>`  
+**Parameters**: `String parentId`, `Block child`
+**Returns**: `Future<void>`
 **Purpose**: Add a block as child of another block
 
 ```dart
@@ -202,8 +202,8 @@ Future<void> addChildBlock(String parentId, Block child) async {
 ```
 
 #### moveBlock(String blockId, String? newParentId, int newIndex)
-**Parameters**: `String blockId`, `String? newParentId`, `int newIndex`  
-**Returns**: `Future<void>`  
+**Parameters**: `String blockId`, `String? newParentId`, `int newIndex`
+**Returns**: `Future<void>`
 **Purpose**: Move block to new parent and/or position
 
 ```dart
@@ -216,7 +216,7 @@ Future<void> moveBlock(
   // Move block to new parent and position
   // newParentId = null means move to root level
   // Important: Prevent moving block into its own descendants
-  
+
   if (newParentId != null && await _isDescendantOf(newParentId, blockId)) {
     return; // Prevent circular relationships
   }
@@ -244,8 +244,8 @@ bool _checkDescendant(Block block, String descendantId) {
 ```
 
 #### indentBlock(String blockId)
-**Parameters**: `String blockId`  
-**Returns**: `Future<void>`  
+**Parameters**: `String blockId`
+**Returns**: `Future<void>`
 **Purpose**: Increase nesting (make previous sibling the parent)
 
 ```dart
@@ -274,8 +274,8 @@ Future<void> indentBlock(String blockId) async {
 ```
 
 #### outdentBlock(String blockId)
-**Parameters**: `String blockId`  
-**Returns**: `Future<void>`  
+**Parameters**: `String blockId`
+**Returns**: `Future<void>`
 **Purpose**: Decrease nesting (move to parent's parent)
 
 ```dart
@@ -302,8 +302,8 @@ Future<void> outdentBlock(String blockId) async {
 ### Complex Operations
 
 #### splitBlock(String blockId, int cursorPosition)
-**Parameters**: `String blockId`, `int cursorPosition`  
-**Returns**: `Future<void>`  
+**Parameters**: `String blockId`, `int cursorPosition`
+**Returns**: `Future<void>`
 **Purpose**: Split a block at cursor position (text before/after)
 
 ```dart
@@ -324,11 +324,11 @@ Future<void> splitBlock(String blockId, int cursorPosition) async {
 
   // 4. Create new sibling block after this one
   final newBlock = Block.create(content: afterCursor);
-  
+
   // 5. Insert new block as sibling (after current)
   final parentId = await findParentId(blockId);
   final currentIndex = await findBlockIndex(blockId);
-  
+
   if (parentId == null) {
     // Current block is root
     final roots = await getRootBlocks();
@@ -374,9 +374,9 @@ class Block with _$Block {
   })
 
   factory Block.fromJson(Map<String, dynamic> json) => _$BlockFromJson(json);
-  
+
   Map<String, dynamic> toJson() => _$BlockToJson(this);
-  
+
   bool get hasChildren => children.isNotEmpty;
   int get totalBlocks => 1 + children.fold(0, (sum, child) => sum + child.totalBlocks);
   Block? findBlockById(String blockId) => /* recursive search */;
@@ -460,12 +460,12 @@ class RustyOutlinerRepository implements OutlinerRepository {
 If calling native Rust directly:
 
 ```dart
-const platform = MethodChannel('com.rustyknowledge/outliner');
+const platform = MethodChannel('space.holon/outliner');
 
 class RustyOutlinerRepository implements OutlinerRepository {
   @override
   Future<List<Block>> getRootBlocks() async {
-    final List<dynamic> result = 
+    final List<dynamic> result =
         await platform.invokeMethod('getRootBlocks');
     return result
         .map((json) => Block.fromJson(Map<String, dynamic>.from(json)))
@@ -497,7 +497,7 @@ void main() {
     test('addRootBlock persists block', () async {
       final block = Block.create(content: 'Test');
       await repo.addRootBlock(block);
-      
+
       final blocks = await repo.getRootBlocks();
       expect(blocks.any((b) => b.id == block.id), true);
     });
@@ -505,9 +505,9 @@ void main() {
     test('updateBlock changes content', () async {
       final block = Block.create(content: 'Original');
       await repo.addRootBlock(block);
-      
+
       await repo.updateBlock(block.id, 'Updated');
-      
+
       final updated = await repo.findBlockById(block.id);
       expect(updated?.content, 'Updated');
     });
@@ -515,13 +515,13 @@ void main() {
     test('moveBlock prevents circular relationships', () async {
       final parent = Block.create(content: 'Parent');
       final child = Block.create(content: 'Child');
-      
+
       await repo.addRootBlock(parent);
       await repo.addChildBlock(parent.id, child);
-      
+
       // Should not allow moving parent into child
       await repo.moveBlock(parent.id, child.id, 0);
-      
+
       final parentParent = await repo.findParentId(parent.id);
       expect(parentParent, isNull);
     });

@@ -1,7 +1,6 @@
+use holon_api::{OperationDescriptor, OperationParam, OperationWiring, TypeHint};
 /// Integration tests for editable_text widget functionality
-
 use tui_r3bl_frontend::UIElement;
-use query_render::{OperationDescriptor, OperationParam, OperationWiring, TypeHint};
 
 // Helper function to extract field name from OperationWiring
 fn get_field_name(op: &OperationWiring) -> String {
@@ -15,7 +14,6 @@ fn test_editable_text_creation() {
         modified_param: "content".to_string(),
         descriptor: OperationDescriptor {
             entity_name: "block".to_string(),
-            table: "blocks".to_string(),
             id_column: "id".to_string(),
             name: "set_field".to_string(),
             display_name: "Set field".to_string(),
@@ -59,7 +57,6 @@ fn test_editable_text_get_operation() {
         modified_param: "content".to_string(),
         descriptor: OperationDescriptor {
             entity_name: "block".to_string(),
-            table: "blocks".to_string(),
             id_column: "id".to_string(),
             name: "set_field".to_string(),
             display_name: "Set field".to_string(),
@@ -95,7 +92,6 @@ fn test_editable_text_get_operation() {
     let op = editable.get_operation();
     assert!(op.is_some());
     assert_eq!(get_field_name(op.unwrap()), "content");
-    assert_eq!(op.unwrap().descriptor.table, "blocks");
 }
 
 #[test]
@@ -105,7 +101,6 @@ fn test_editable_text_in_row() {
         modified_param: "content".to_string(),
         descriptor: OperationDescriptor {
             entity_name: "block".to_string(),
-            table: "blocks".to_string(),
             id_column: "id".to_string(),
             name: "set_field".to_string(),
             display_name: "Set field".to_string(),
@@ -172,4 +167,3 @@ fn test_is_editable() {
 
     assert!(!text.is_editable());
 }
-

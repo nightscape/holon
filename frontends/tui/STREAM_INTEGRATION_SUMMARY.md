@@ -13,7 +13,7 @@ The tui frontend **does not need immediate changes** to work with the new stream
 - **All existing functionality**: Unchanged
 
 ### ⚠️ What Needs Integration (If Adding Todoist Support)
-- Add `rusty-knowledge-todoist` dependency
+- Add `holon-todoist` dependency
 - Initialize `TodoistProvider` and `QueryableCache` in launcher
 - Add Todoist state fields to `State` struct
 - Subscribe to Todoist change streams
@@ -57,7 +57,7 @@ The tui frontend **does not need immediate changes** to work with the new stream
 
 See `STREAM_INTEGRATION_GUIDE.md` for detailed steps. Quick overview:
 
-1. **Add dependency**: `rusty-knowledge-todoist` to `Cargo.toml`
+1. **Add dependency**: `holon-todoist` to `Cargo.toml`
 2. **Initialize in launcher**: Create `TodoistProvider` + `QueryableCache`
 3. **Update State**: Add Todoist cache/provider fields
 4. **Subscribe to streams**: Wire up change stream ingestion

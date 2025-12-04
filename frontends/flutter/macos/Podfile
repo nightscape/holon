@@ -39,7 +39,7 @@ post_install do |installer|
   installer.pods_project.targets.each do |target|
     flutter_additional_macos_build_settings(target)
 
-    if target.name == 'rust_lib_rusty_knowledge'
+    if target.name == 'rust_lib_holon'
       target.build_configurations.each do |config|
         config.build_settings['OTHER_LDFLAGS'] ||= ['$(inherited)']
         config.build_settings['OTHER_LDFLAGS'] << '-framework SystemConfiguration'

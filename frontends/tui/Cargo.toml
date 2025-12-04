@@ -8,7 +8,7 @@ name = "tui_r3bl_frontend"
 path = "src/lib.rs"
 
 [[bin]]
-name = "tui-demo"
+name = "tui-frontend"
 path = "src/main.rs"
 
 [dependencies]
@@ -34,8 +34,9 @@ unicode-segmentation = "1.11"
 
 # Local dependencies
 libsql = { version = "0.9", features = ["core", "remote"] }
-rusty-knowledge = { path = "../../crates/rusty-knowledge" }
-rusty-knowledge-todoist = { path = "../../crates/rusty-knowledge-todoist" }
+holon = { path = "../../crates/holon" }
+holon-todoist = { path = "../../crates/holon-todoist" }
+holon-api = { path = "../../crates/holon-api" }
 query-render = { path = "../../crates/query-render" }
 ferrous-di = { path = "/Users/martin/Workspaces/rust/ferrous-di", features = ["async"] }
 uuid = { version = "1", features = ["v4"] }

@@ -1,0 +1,39 @@
+# Gruvbox theme family
+themes:
+  gruvboxDark:
+    name: "Gruvbox Dark"
+    isDark: true
+    colors:
+      primary: "#458588"
+      primaryDark: "#076678"
+      primaryLight: "#83A598"
+      textPrimary: "#EBDBB2"
+      textSecondary: "#D5C4A1"
+      textTertiary: "#928374"
+      background: "#282828"
+      backgroundSecondary: "#3C3836"
+      sidebarBackground: "#3C3836"
+      border: "#504945"
+      borderFocus: "#458588"
+      success: "#98971A"
+      error: "#CC241D"
+      warning: "#D79921"
+
+  gruvboxLight:
+    name: "Gruvbox Light"
+    isDark: false
+    colors:
+      primary: "#458588"
+      primaryDark: "#076678"
+      primaryLight: "#83A598"
+      textPrimary: "#3C3836"
+      textSecondary: "#504945"
+      textTertiary: "#928374"
+      background: "#FBF1C7"
+      backgroundSecondary: "#EBDBB2"
+      sidebarBackground: "#EBDBB2"
+      border: "#D5C4A1"
+      borderFocus: "#458588"
+      success: "#98971A"
+      error: "#CC241D"
+      warning: "#D79921"

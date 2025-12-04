@@ -1,8 +1,8 @@
-# Testing Patterns Analysis: R3BL vs Rusty-Knowledge
+# Testing Patterns Analysis: R3BL vs holon
 
 ## Executive Summary
 
-R3BL has a **sophisticated, production-grade testing infrastructure** centered on PTY-based integration tests with extensive testing utilities. Rusty-Knowledge has adopted some of these patterns but is still developing its approach. Both projects prioritize integration testing over unit tests, recognizing that TUI components need real terminal interaction verification.
+R3BL has a **sophisticated, production-grade testing infrastructure** centered on PTY-based integration tests with extensive testing utilities. holon has adopted some of these patterns but is still developing its approach. Both projects prioritize integration testing over unit tests, recognizing that TUI components need real terminal interaction verification.
 
 ---
 
@@ -32,7 +32,7 @@ src/component/
     └── test_case_2.rs
 ```
 
-### Rusty-Knowledge Approach
+### holon Approach
 **Test isolation in separate directory:**
 - All tests in `tests/` directory at crate root
 - Tests separated from source code
@@ -53,7 +53,7 @@ crate/
         └── page_objects.rs
 ```
 
-**Recommendation:** Adopt R3BL's categorical fixture organization if testing scope expands. Currently, Rusty-Knowledge's centralized approach is manageable but could become unwieldy with many tests.
+**Recommendation:** Adopt R3BL's categorical fixture organization if testing scope expands. Currently, holon's centralized approach is manageable but could become unwieldy with many tests.
 
 ---
 
@@ -90,7 +90,7 @@ generate_pty_test! {
 
 **Observation:** R3BL tests both "real terminal" (PTY) and "mock device" paths.
 
-### Rusty-Knowledge Patterns
+### holon Patterns
 
 #### A. Manual PTY Coordination
 - Manual implementation instead of macro
@@ -130,7 +130,7 @@ generate_pty_test! {
 - Auto-skip PTY tests in CI (cannot allocate controlling terminal)
 - Markers: `#[ignore]` on PTY tests, `#[test]` on unit tests
 
-### Rusty-Knowledge Infrastructure
+### holon Infrastructure
 
 **1. PtySession Wrapper**
 - Encapsulates reader/writer/child process
@@ -173,7 +173,7 @@ generate_pty_test! {
 - **Pyramid structure:** Many unit tests, fewer integration tests (inverted)
 - **Actually runs:** Even integration tests marked `#[ignore]` CAN run locally
 
-### Rusty-Knowledge Strategy
+### holon Strategy
 - **Mostly integration-focused:**
   - 2 main PTY integration tests (navigation_test, pty_infrastructure_test)
   - Both marked `#[ignore]` (not run by default)
@@ -217,10 +217,10 @@ child: Box<dyn portable_pty::Child>
 
 **Important:** PTY merges stdout/stderr - use content-based filtering, not stream type.
 
-### Rusty-Knowledge PTY Implementation
+### holon PTY Implementation
 - Manual environment variable checking (duplicated per test)
 - PtySession wrapper over pty_pair
-- **Strengths:** 
+- **Strengths:**
   - Direct, understandable flow
   - No macro magic to debug
 - **Weaknesses:**
@@ -236,15 +236,15 @@ child: Box<dyn portable_pty::Child>
 3. Slave reports back via println!("RECEIVED: 0x{:02x}")
 4. Master parses protocol messages
 
-**Rusty-Knowledge approach:**
+**holon approach:**
 1. Master sends via `session.send_key(Key::Down)`
 2. Master reads entire lines via `read_line()`
 3. Uses `wait_for()` to find expected text
 4. PageObject provides high-level assertions
 
-**R3BL is more granular** (byte-level), **Rusty-Knowledge is more abstracted** (line-level).
+**R3BL is more granular** (byte-level), **holon is more abstracted** (line-level).
 - R3BL good for: Terminal protocol verification
-- Rusty-Knowledge good for: Application workflow testing
+- holon good for: Application workflow testing
 
 ---
 
@@ -286,7 +286,7 @@ pub trait InputDeviceExtMock {
 - Backward compatible
 - Trait-based vs concrete type
 
-### Rusty-Knowledge Fixtures
+### holon Fixtures
 
 **1. PtySession (120 LOC)**
 - Wrapper around PTY pair and child process
@@ -312,7 +312,7 @@ pub trait InputDeviceExtMock {
 
 ### Comparison
 
-| Aspect | R3BL | Rusty-Knowledge |
+| Aspect | R3BL | holon |
 |--------|------|-----------------|
 | **Mock Types** | Device-level (Input/Output) | Session-level (PTY wrapper) |
 | **Concurrency** | Arc<Mutex> for sharing | Single-threaded assumptions |
@@ -325,7 +325,7 @@ pub trait InputDeviceExtMock {
 
 ## SUMMARY: GAPS & RECOMMENDATIONS
 
-### Gaps in Rusty-Knowledge
+### Gaps in holon
 
 1. **Timeout enforcement**
    - Currently using Duration params in methods
@@ -467,7 +467,7 @@ let cleaned = strip_ansi_escapes::strip(&output);
 
 ## CONCLUSION
 
-R3BL's testing infrastructure is **comprehensive, well-organized, and production-ready**. Rusty-Knowledge has made good progress adopting PTY-based integration testing and PageObject pattern, but should:
+R3BL's testing infrastructure is **comprehensive, well-organized, and production-ready**. holon has made good progress adopting PTY-based integration testing and PageObject pattern, but should:
 
 1. **Immediate:** Add Deadline + improve ANSI stripping (HIGH impact, LOW effort)
 2. **Short-term:** Create test pyramid with unit + mock tests (HIGH impact, MEDIUM effort)

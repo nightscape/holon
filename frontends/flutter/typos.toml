@@ -1,0 +1,22 @@
+# Typos configuration for Flutter frontend
+# https://github.com/crate-ci/typos
+
+[files]
+extend-exclude = [
+    "external/",
+    "lib/src/rust/",
+    "build/",
+    ".dart_tool/",
+    "macos/",           # Xcode project files contain hex IDs
+    "ios/",             # Xcode project files contain hex IDs
+    "android/",         # Gradle/Android project files
+    "windows/",         # Windows project files
+    "linux/",           # Linux project files
+    "*.lock",
+]
+
+[default.extend-words]
+# Add false positive corrections here
+
+[default.extend-identifiers]
+# Hex IDs in Xcode project files

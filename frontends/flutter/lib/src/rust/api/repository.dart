@@ -4,6 +4,9 @@
 // ignore_for_file: invalid_use_of_internal_member, unused_import, unnecessary_import
 
 import '../frb_generated.dart';
+import '../third_party/holon_api.dart';
+import '../third_party/holon_api/block.dart';
+import '../third_party/holon_api/streaming.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'types.dart';
 
@@ -53,9 +56,6 @@ String blockGetContent({required Block block}) =>
 /// Get the children IDs of a block
 List<String> blockGetChildren({required Block block}) =>
     RustLib.instance.api.crateApiRepositoryBlockGetChildren(block: block);
-
-// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<Block>>
-abstract class Block implements RustOpaqueInterface {}
 
 // Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<NewBlock>>
 abstract class NewBlock implements RustOpaqueInterface {}

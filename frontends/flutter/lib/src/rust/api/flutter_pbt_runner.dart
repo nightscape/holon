@@ -7,6 +7,7 @@ import '../frb_generated.dart';
 import 'flutter_pbt_backend.dart';
 import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 
+// These functions are ignored because they are not marked as `pub`: `run_proptest_cases_native`, `run_single_proptest_case_native`
 // These functions have error during generation (see debug logs or enable `stop_on_error: true` for more details): `run_proptest_cases`
 
 /// Run a single proptest case with N random transitions

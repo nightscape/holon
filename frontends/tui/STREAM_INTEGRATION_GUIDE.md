@@ -45,7 +45,7 @@ This is for **external systems** like Todoist that need to sync with remote APIs
 ```toml
 [dependencies]
 # ... existing dependencies ...
-rusty-knowledge-todoist = { path = "../../crates/rusty-knowledge-todoist" }
+holon-todoist = { path = "../../crates/holon-todoist" }
 ```
 
 ### 2. Update State Structure
@@ -71,9 +71,9 @@ pub struct State {
     pub data: Vec<HashMap<String, Value>>,
 
     // NEW: External system integration
-    pub todoist_cache: Option<Arc<rusty_knowledge::core::StreamCache as QueryableCache<rusty_knowledge_todoist::TodoistTask>>>,
-    pub todoist_provider: Option<Arc<rusty_knowledge_todoist::stream_provider::TodoistProvider>>,
-    pub todoist_data: Vec<rusty_knowledge_todoist::TodoistTask>,  // Cached Todoist tasks
+    pub todoist_cache: Option<Arc<holon::core::StreamCache as QueryableCache<holon_todoist::TodoistTask>>>,
+    pub todoist_provider: Option<Arc<holon_todoist::stream_provider::TodoistProvider>>,
+    pub todoist_data: Vec<holon_todoist::TodoistTask>,  // Cached Todoist tasks
     pub todoist_selected_index: Option<usize>,  // Selected Todoist task index
 }
 ```
@@ -85,11 +85,11 @@ pub struct State {
 **Add Todoist initialization** (optional - only if API key provided):
 
 ```rust
-use rusty_knowledge::core::StreamCache as QueryableCache;
-use rusty_knowledge::storage::turso::TursoBackend;
-use rusty_knowledge_todoist::stream_provider::TodoistProvider;
-use rusty_knowledge_todoist::stream_datasource::TodoistTaskDataSource;
-use rusty_knowledge_todoist::models::TodoistTask;
+use holon::core::StreamCache as QueryableCache;
+use holon::storage::turso::TursoBackend;
+use holon_todoist::stream_provider::TodoistProvider;
+use holon_todoist::stream_datasource::TodoistTaskDataSource;
+use holon_todoist::models::TodoistTask;
 
 pub async fn run_app(db_path: PathBuf) -> CommonResult<()> {
     // ... existing RenderEngine setup ...
@@ -102,7 +102,7 @@ pub async fn run_app(db_path: PathBuf) -> CommonResult<()> {
 
         // Create cache database (separate from blocks database)
         let todoist_db = Arc::new(RwLock::new(
-            Box::new(TursoBackend::new_in_memory().await?) as Box<dyn rusty_knowledge::storage::backend::StorageBackend>
+            Box::new(TursoBackend::new_in_memory().await?) as Box<dyn holon::storage::backend::StorageBackend>
         ));
 
         // Create cache wrapping datasource
@@ -113,7 +113,7 @@ pub async fn run_app(db_path: PathBuf) -> CommonResult<()> {
         ));
 
         // Create provider with builder pattern
-        let client = rusty_knowledge_todoist::TodoistClient::new(&api_key);
+        let client = holon_todoist::TodoistClient::new(&api_key);
         let provider = Arc::new(
             TodoistProvider::new(client)
                 .with_tasks(cache.clone())
@@ -123,7 +123,7 @@ pub async fn run_app(db_path: PathBuf) -> CommonResult<()> {
         // Initial sync to populate cache
         let mut provider_mut = Arc::try_unwrap(provider.clone()).unwrap_or_else(|arc| {
             // If Arc has multiple references, create a new provider
-            let client = rusty_knowledge_todoist::TodoistClient::new(&api_key);
+            let client = holon_todoist::TodoistClient::new(&api_key);
             TodoistProvider::new(client)
                 .with_tasks(cache.clone())
                 .build()
@@ -177,7 +177,7 @@ impl State {
         &self,
         task_id: &str,
         field: &str,
-        value: rusty_knowledge::storage::types::Value,
+        value: holon::storage::types::Value,
     ) -> Result<(), String> {
         if let Some(ref cache) = self.todoist_cache {
             cache.set_field(task_id, field, value).await
@@ -190,7 +190,7 @@ impl State {
     /// Create new Todoist task
     pub async fn create_todoist_task(
         &self,
-        fields: std::collections::HashMap<String, rusty_knowledge::storage::types::Value>,
+        fields: std::collections::HashMap<String, holon::storage::types::Value>,
     ) -> Result<String, String> {
         if let Some(ref cache) = self.todoist_cache {
             cache.create(fields).await
@@ -294,7 +294,7 @@ match input_event {
                 // Get current task
                 if let Ok(Some(task)) = cache.get_by_id(&task_id).await {
                     // Toggle completion
-                    let new_value = rusty_knowledge::storage::types::Value::Boolean(!task.completed);
+                    let new_value = holon::storage::types::Value::Boolean(!task.completed);
                     let _ = cache.set_field(&task_id, "completed", new_value).await;
                 }
             });
@@ -339,7 +339,7 @@ match input_event {
 ### Use Fake Datasource for Testing
 ```rust
 // In tests or development mode
-use rusty_knowledge_todoist::fake::TodoistTaskFake;
+use holon_todoist::fake::TodoistTaskFake;
 
 let fake = Arc::new(TodoistTaskFake::new().await?);
 let cache = Arc::new(QueryableCache::new(
@@ -360,7 +360,7 @@ let cache = Arc::new(QueryableCache::new(
 ## Implementation Checklist
 
 ### Phase 1: Basic Integration
-- [ ] Add `rusty-knowledge-todoist` dependency
+- [ ] Add `holon-todoist` dependency
 - [ ] Update State to include Todoist cache/provider
 - [ ] Initialize Todoist in launcher (if API key provided)
 - [ ] Add methods to State for Todoist operations

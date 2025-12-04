@@ -4,13 +4,15 @@ version = "0.1.0"
 edition = "2021"
 
 [dependencies]
-prqlc = { git = "https://github.com/nightscape/prql", branch = "fix-union-lineage", package = "prqlc" }
-prqlc-parser = { git = "https://github.com/nightscape/prql", branch = "fix-union-lineage", package = "prqlc-parser" }
+prqlc = { git = "https://github.com/nightscape/prql", branch = "fix-lineage-with-ctes", package = "prqlc" }
+prqlc-parser = { git = "https://github.com/nightscape/prql", branch = "fix-lineage-with-ctes", package = "prqlc-parser" }
 serde = { version = "1.0", features = ["derive"] }
 serde_json = "1.0"
 indexmap = "2.12"
 thiserror = "2.0"
 anyhow = "1.0"
 regex = "1.10"
+chrono = { version = "0.4", features = ["serde"] }
+holon-api = { path = "../holon-api" }
 
 [dev-dependencies]

@@ -1,0 +1,78 @@
+[package]
+name = "holon"
+version = "0.1.0"
+edition = "2024"
+
+[lib]
+name = "holon"
+path = "src/lib.rs"
+
+[features]
+default = []
+# Enable test helpers for integration tests that need access to test utilities
+test-helpers = []
+
+[dependencies]
+loro = "1.0"
+loro_fractional_index = "1.0"
+tokio-stream = { version = "0.1", features = ["sync"] }
+anyhow = "1.0"
+tracing = "0.1"
+tracing-subscriber = "0.3"
+opentelemetry = "0.25"
+opentelemetry_sdk = "0.25"
+tracing-opentelemetry = "0.25"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+chrono = { version = "0.4", features = ["serde"] }
+async-trait = "0.1"
+turso = { path = "/Users/martin/Workspaces/bigdata/turso/bindings/rust", default-features = false }
+turso_core = { path = "/Users/martin/Workspaces/bigdata/turso/core", default-features = false }
+thiserror = "2.0"
+holon-macros = { path = "../holon-macros" }
+holon-api = { path = "../holon-api" }
+holon-core = { path = "../holon-core" }
+similar = "2.7.0"
+query-render = { path = "../query-render" }
+prqlc = { git = "https://github.com/nightscape/prql", branch = "fix-lineage-with-ctes", package = "prqlc" }
+prqlc-parser = { git = "https://github.com/nightscape/prql", branch = "fix-lineage-with-ctes", package = "prqlc-parser" }
+rand = "0.8"
+once_cell = "1.19"
+# Disable async feature for ferrous-di to avoid tokio/rt-multi-thread on WASM
+ferrous-di = { path = "/Users/martin/Workspaces/rust/ferrous-di", default-features = false, features = ["wasm"] }
+# If possible, let's get rid of this later by using comments
+flutter_rust_bridge = "=2.11.1"
+
+[target.'cfg(not(target_arch = "wasm32"))'.dependencies]
+tokio = { version = "1", features = ["full"] }
+iroh = "0.93.2"
+reqwest = { version = "0.12", features = ["json", "default-tls"] }
+uuid = { version = "1", features = ["v4", "serde"] }
+proptest = "1.6"
+proptest-state-machine = "0.5.0"
+
+# Android-specific dependencies
+# Disable iroh for Android - it pulls in OpenSSL which is complex to build for Android
+# iroh is used for P2P features which may not be needed on mobile
+# Use rustls instead of OpenSSL for Android (OpenSSL requires native compilation)
+[target.'cfg(target_os = "android")'.dependencies]
+iroh = { version = "0.93.2", default-features = false, features = [] }
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+[target.'cfg(target_arch = "wasm32")'.dependencies]
+tokio = { version = "1", features = ["sync", "macros", "rt", "time"] }
+getrandom = { version = "0.3", features = ["wasm_js"] }
+reqwest = { version = "0.12", default-features = false, features = ["json"] }
+uuid = { version = "1", features = ["v4", "serde", "js"] }
+
+[dev-dependencies]
+proptest = "1.6"
+proptest-state-machine = "0.5.0"
+cucumber = "0.21"
+tokio = { version = "1", features = ["rt-multi-thread", "macros"] }
+futures = "0.3"
+serial_test = "3.2"
+tempfile = "3.23.0"
+
+[[test]]
+name = "cucumber"
+harness = false

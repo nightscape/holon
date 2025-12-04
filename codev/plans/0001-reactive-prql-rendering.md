@@ -157,8 +157,8 @@ Based on consensus review (GPT-5-Pro: 8/10, Gemini-2.5-Pro: 9/10) + architectura
 
 **Files**:
 - `crates/query-render/src/lib.rs` (PRQL compilation)
-- `crates/rusty-knowledge/src/storage/turso.rs` (execute_sql, bind_parameters)
-- `crates/rusty-knowledge/src/api/render_engine.rs` (execute_query wrapper)
+- `crates/holon/src/storage/turso.rs` (execute_sql, bind_parameters)
+- `crates/holon/src/api/render_engine.rs` (execute_query wrapper)
 
 #### 1.3: Database Layer with CDC ✅ MOSTLY COMPLETE
 **Status**: Row change notifications via materialized views fully implemented and tested
@@ -176,7 +176,7 @@ Based on consensus review (GPT-5-Pro: 8/10, Gemini-2.5-Pro: 9/10) + architectura
 - ⚠️ Materialized views need experimental flag but ARE supported
 - ⚠️ API differences from libsql: `Row.column_name()` doesn't exist, use `Statement.columns()` instead
 
-**Already implemented** in `crates/rusty-knowledge/src/storage/turso.rs`:
+**Already implemented** in `crates/holon/src/storage/turso.rs`:
 - ✅ Turso/SQLite connection (`TursoBackend::new`, `new_in_memory`)
 - ✅ CRUD operations (`get`, `query`, `insert`, `update`, `delete`)
 - ✅ **SQL Injection Prevention**: All operations now use prepared statements ✅ **SECURITY FIX**
@@ -244,13 +244,13 @@ Based on consensus review (GPT-5-Pro: 8/10, Gemini-2.5-Pro: 9/10) + architectura
   - PBT tests verify view change notifications with coalescing
   - Removed redundant ignored tests that used wrong approach (turso_cdc table directly)
 
-**Files**: `crates/rusty-knowledge/src/storage/turso.rs`, `crates/rusty-knowledge/src/storage/cdc.rs` (new), `crates/rusty-knowledge/src/storage/schema.sql`
+**Files**: `crates/holon/src/storage/turso.rs`, `crates/holon/src/storage/cdc.rs` (new), `crates/holon/src/storage/schema.sql`
 
 #### 1.4: Fractional Indexing ✅ COMPLETE
 **Status**: Fractional indexing library integrated and tested
 **Completed**: 2025-01-05
 
-**Implemented** in `crates/rusty-knowledge/src/storage/fractional_index.rs`:
+**Implemented** in `crates/holon/src/storage/fractional_index.rs`:
 - ✅ **Library chosen**: `loro_fractional_index` v1.0 (matches Loro integration)
 - ✅ **Key generation functions**:
   - `gen_key_between(prev, next)` - Generate key between two optional keys
@@ -282,7 +282,7 @@ Based on consensus review (GPT-5-Pro: 8/10, Gemini-2.5-Pro: 9/10) + architectura
 - Fractional index library generates new sort_key
 - No UI knowledge of sort_keys required (clean separation)
 
-**Files**: `crates/rusty-knowledge/src/storage/fractional_index.rs` (190 lines)
+**Files**: `crates/holon/src/storage/fractional_index.rs` (190 lines)
 
 
 ---
@@ -333,8 +333,8 @@ Based on consensus review (GPT-5-Pro: 8/10, Gemini-2.5-Pro: 9/10) + architectura
 **Completed**: 2025-01-04
 
 **Implementation**:
-- ✅ Added `query-render` dependency to `crates/rusty-knowledge/Cargo.toml`
-- ✅ Re-exported query-render types from `crates/rusty-knowledge/src/lib.rs`:
+- ✅ Added `query-render` dependency to `crates/holon/Cargo.toml`
+- ✅ Re-exported query-render types from `crates/holon/src/lib.rs`:
   ```rust
   pub use query_render::types::{Arg, BinaryOperator, RenderExpr, RenderSpec};
   ```
@@ -359,7 +359,7 @@ Based on consensus review (GPT-5-Pro: 8/10, Gemini-2.5-Pro: 9/10) + architectura
 
 **Files**:
 - `crates/query-render/src/types.rs` (source types with FRB comments)
-- `crates/rusty-knowledge/src/lib.rs` (re-exports)
+- `crates/holon/src/lib.rs` (re-exports)
 - `frontends/flutter/flutter_rust_bridge.yaml` (FRB config)
 - `frontends/flutter/lib/src/rust/third_party/query_render/types.dart` (FRB-generated)
 
@@ -517,7 +517,7 @@ FunctionCall {
 - `crates/query-render/src/types.rs` ✅ **UPDATED** - `RenderExpr::FunctionCall.operations` field
 - `crates/query-render/src/compiler.rs` ✅ **UPDATED** - Initialize empty operations Vec
 - `crates/query-render/src/lineage.rs` ⚠️ **MOSTLY UNUSED** - Complex approach kept for reference, tests disabled
-- `crates/rusty-knowledge/src/api/render_engine.rs` ✅ **UPDATED** - Uses `parse_query_render_with_operations()`
+- `crates/holon/src/api/render_engine.rs` ✅ **UPDATED** - Uses `parse_query_render_with_operations()`
 - `examples/test-lineage/` ℹ️ **ARCHIVED** - POC for complex approach (not used in final implementation)
 
 #### 2.5: Helper Function Resolution
@@ -539,7 +539,7 @@ FunctionCall {
 **Status**: Operation trait, RowView, and Registry implementation complete with tests
 **Completed**: 2025-01-05
 
-**Implemented** in `crates/rusty-knowledge/src/operations/`:
+**Implemented** in `crates/holon/src/operations/`:
 - ✅ `Operation` trait (no return value - one-directional flow):
   ```rust
   pub trait Operation: Send + Sync {
@@ -564,7 +564,7 @@ FunctionCall {
 
 **Note**: Operations mutate DB directly. UI updates happen via CDC → query re-run → new render. This is the Elm/Redux unidirectional data flow: Action → Model → View.
 
-**Files**: `crates/rusty-knowledge/src/operations/mod.rs`, `crates/rusty-knowledge/src/operations/registry.rs`, `crates/rusty-knowledge/src/operations/row_view.rs`
+**Files**: `crates/holon/src/operations/mod.rs`, `crates/holon/src/operations/registry.rs`, `crates/holon/src/operations/row_view.rs`
 
 #### 3.2: Core Block Operations ⏳ IN PROGRESS
 **Status**: UpdateField operation complete, remaining operations pending
@@ -595,7 +595,7 @@ FunctionCall {
 
 **Key Insight**: UI handles "toggle" logic by reading current state and sending explicit values to backend. This prevents distributed systems issues where stale UI state causes incorrect toggles.
 
-**Files**: `crates/rusty-knowledge/src/operations/block_ops.rs`
+**Files**: `crates/holon/src/operations/block_ops.rs`
 
 #### 3.3: Database Mutation & CDC
 - [ ] Operations mutate database directly via SQL UPDATE/INSERT/DELETE
@@ -608,7 +608,7 @@ FunctionCall {
   - [ ] Test CDC with experimental materialized views (if using PRQL-generated views)
 - [ ] Integration tests: Mutation → turso_cdc capture → Query changes → RowEvent stream
 
-**Files**: `crates/rusty-knowledge/src/operations/` (operations mutate via turso.rs, no separate executor)
+**Files**: `crates/holon/src/operations/` (operations mutate via turso.rs, no separate executor)
 
 #### 3.4: Stream-Based External System Integration (Reactive Sync) ✅ COMPLETE
 **Status**: Stream-based architecture fully implemented and compiling
@@ -698,7 +698,7 @@ FunctionCall {
 
 **Implementation Tasks**:
 
-- [x] **Core Traits** (`crates/rusty-knowledge/src/core/datasource.rs`): ✅ **COMPLETE**
+- [x] **Core Traits** (`crates/holon/src/core/datasource.rs`): ✅ **COMPLETE**
   ```rust
   // Change representation for stream updates
   pub enum Change<T> {
@@ -976,7 +976,7 @@ FunctionCall {
      - Prevents calling `indent_task()` on non-task entities
   ```
 
-- [x] **Real DataSource** (`crates/rusty-knowledge-todoist/src/stream_datasource.rs`): ✅ **COMPLETE**
+- [x] **Real DataSource** (`crates/holon-todoist/src/stream_datasource.rs`): ✅ **COMPLETE**
   ```rust
   pub struct TodoistTaskDataSource {
       client: TodoistClient,  // NO cache - stateless!
@@ -1021,7 +1021,7 @@ FunctionCall {
   }
   ```
 
-- [x] **Fake DataSource** (`crates/rusty-knowledge-todoist/src/fake.rs`): ✅ **COMPLETE**
+- [x] **Fake DataSource** (`crates/holon-todoist/src/fake.rs`): ✅ **COMPLETE**
   ```rust
   pub struct TodoistTaskFake {
       // Read access to cache (for getting current state)
@@ -1102,7 +1102,7 @@ FunctionCall {
   }
   ```
 
-- [x] **QueryableCache as Transparent Proxy** (`crates/rusty-knowledge/src/core/stream_cache.rs`): ✅ **COMPLETE**
+- [x] **QueryableCache as Transparent Proxy** (`crates/holon/src/core/stream_cache.rs`): ✅ **COMPLETE**
   ```rust
   pub struct QueryableCache<T> {
       datasource: Arc<dyn CrudOperationProvider<T>>,
@@ -1194,7 +1194,7 @@ FunctionCall {
   }
   ```
 
-- [x] **Provider Layer with Builder Pattern** (`crates/rusty-knowledge-todoist/src/stream_provider.rs`): ✅ **COMPLETE**
+- [x] **Provider Layer with Builder Pattern** (`crates/holon-todoist/src/stream_provider.rs`): ✅ **COMPLETE**
 
   **Phase 1: Explicit Builder (Immediate Implementation)**
   ```rust
@@ -1368,7 +1368,7 @@ FunctionCall {
   }
   ```
 
-- [ ] **`#[operations_trait]` Macro** (`crates/rusty-knowledge-macros/src/lib.rs`): ⏳ **DEFERRED**
+- [ ] **`#[operations_trait]` Macro** (`crates/holon-macros/src/lib.rs`): ⏳ **DEFERRED**
 
   Generates operation descriptors for all methods in a trait.
 
@@ -1637,7 +1637,7 @@ FunctionCall {
   }
   ```
 
-- [x] **Integration Tests** (`crates/rusty-knowledge-todoist/src/stream_integration_test.rs`): ✅ **COMPLETE**
+- [x] **Integration Tests** (`crates/holon-todoist/src/stream_integration_test.rs`): ✅ **COMPLETE**
   - ✅ Verify fake datasource emits stream on operations
   - ✅ Test cache reads from local database
   - ✅ Test cache delegates writes to datasource
@@ -1698,8 +1698,8 @@ FunctionCall {
    - All tests passing ✅
 
 **Compilation Status**:
-- ✅ `rusty-knowledge` crate: compiles successfully (3 warnings)
-- ✅ `rusty-knowledge-todoist` crate: compiles successfully (6 warnings)
+- ✅ `holon` crate: compiles successfully (3 warnings)
+- ✅ `holon-todoist` crate: compiles successfully (6 warnings)
 
 **Key Fixes Applied**:
 - Fixed API mismatches (StorageEntity methods, Value types)
@@ -1735,15 +1735,15 @@ UI reads from Cache → Fast local reads → No network calls
 - ✅ **Optional validation**: Add anodized contracts incrementally as bugs are found
 
 **Files**:
-- `crates/rusty-knowledge/src/core/datasource.rs` (DataSource, CrudOperationProvider, Change, OperationDescriptor, BlockEntity, TaskEntity, MutableBlockDataSource, MutableTaskDataSource)
-- `crates/rusty-knowledge/src/core/stream_cache.rs` (QueryableCache transparent proxy, exported as StreamCache)
-- `crates/rusty-knowledge/src/core/mod.rs` (module exports)
-- `crates/rusty-knowledge-todoist/src/stream_datasource.rs` (real HTTP implementation)
-- `crates/rusty-knowledge-todoist/src/fake.rs` (fake implementation with broadcast channel)
-- `crates/rusty-knowledge-todoist/src/stream_provider.rs` (sync coordinator with builder pattern)
-- `crates/rusty-knowledge-todoist/src/models.rs` (BlockEntity and TaskEntity implementations for TodoistTask)
-- `crates/rusty-knowledge-todoist/src/stream_integration_test.rs` (integration tests)
-- `crates/rusty-knowledge-todoist/src/lib.rs` (module exports)
+- `crates/holon/src/core/datasource.rs` (DataSource, CrudOperationProvider, Change, OperationDescriptor, BlockEntity, TaskEntity, MutableBlockDataSource, MutableTaskDataSource)
+- `crates/holon/src/core/stream_cache.rs` (QueryableCache transparent proxy, exported as StreamCache)
+- `crates/holon/src/core/mod.rs` (module exports)
+- `crates/holon-todoist/src/stream_datasource.rs` (real HTTP implementation)
+- `crates/holon-todoist/src/fake.rs` (fake implementation with broadcast channel)
+- `crates/holon-todoist/src/stream_provider.rs` (sync coordinator with builder pattern)
+- `crates/holon-todoist/src/models.rs` (BlockEntity and TaskEntity implementations for TodoistTask)
+- `crates/holon-todoist/src/stream_integration_test.rs` (integration tests)
+- `crates/holon-todoist/src/lib.rs` (module exports)
 
 ---
 
@@ -1782,10 +1782,10 @@ UI reads from Cache → Fast local reads → No network calls
 **Note**: `execute_operation` doesn't return new IDs. One-directional flow: Operation → DB → CDC → Query → Render → UI (new IDs appear in next render).
 
 **Files**:
-- `crates/rusty-knowledge/src/api/render_engine.rs` (RenderEngine with SQL execution)
-- `crates/rusty-knowledge/src/api/ffi_bridge.rs` (FFI exports)
-- `crates/rusty-knowledge/src/storage/turso.rs` (execute_sql, bind_parameters)
-- `crates/rusty-knowledge/src/api/mod.rs` (re-exports)
+- `crates/holon/src/api/render_engine.rs` (RenderEngine with SQL execution)
+- `crates/holon/src/api/ffi_bridge.rs` (FFI exports)
+- `crates/holon/src/storage/turso.rs` (execute_sql, bind_parameters)
+- `crates/holon/src/api/mod.rs` (re-exports)
 - `flutter/lib/src/rust/` (FRB-generated Dart bindings)
 
 #### 4.2: Flutter Widget Mappings
@@ -1823,7 +1823,7 @@ UI reads from Cache → Fast local reads → No network calls
 - [ ] Broadcast cursor updates via WebSocket/CRDT sync
 - [ ] Periodic save to Turso (every 5s + on blur)
 
-**Files**: `crates/rusty-knowledge/src/integrations/loro.rs` (new), `crates/rusty-knowledge/src/integrations/cursor_sync.rs` (new)
+**Files**: `crates/holon/src/integrations/loro.rs` (new), `crates/holon/src/integrations/cursor_sync.rs` (new)
 
 #### 5.2: Extension System
 - [ ] Implement `extension_area` primitive in RenderNode enum
@@ -1831,7 +1831,7 @@ UI reads from Cache → Fast local reads → No network calls
 - [ ] Allow plugins to register custom widgets for areas ("metadata", "actions")
 - [ ] Example: JIRA extension (story points badge, "View in JIRA" button)
 
-**Files**: `crates/rusty-knowledge/src/extensions/mod.rs` (new), `crates/rusty-knowledge/src/extensions/registry.rs` (new)
+**Files**: `crates/holon/src/extensions/mod.rs` (new), `crates/holon/src/extensions/registry.rs` (new)
 
 #### 5.3: Unified Block View via Materialized Views
 **Goal**: Create a single `blocks` materialized view that merges data from multiple sources (Loro, Todoist, etc.)
@@ -1856,7 +1856,7 @@ UI reads from Cache → Fast local reads → No network calls
 - How do we handle conflicts when same entity exists in multiple sources?
 - Does fractional indexing happen at insert time (Rust) or via triggers (DB)?
 
-**Files**: `crates/rusty-knowledge/src/storage/schema.sql`, `codev/specs/0002-multi-source-blocks.md` (new spec needed)
+**Files**: `crates/holon/src/storage/schema.sql`, `codev/specs/0002-multi-source-blocks.md` (new spec needed)
 
 #### 5.4: Performance Optimizations
 - [ ] Profile recursive CTE performance at scale (1k, 10k blocks)
@@ -2079,18 +2079,18 @@ Errors propagate through the system with proper context at each layer:
 
 ✅ **Phase 1.1**: Noted existing `crates/query-render/` parser, focused on testing PRQL functions in render()
 ✅ **Phase 1.2**: Removed redundant SQL compilation (prqlc handles it), focused on parameter binding
-✅ **Phase 1.3**: Referenced existing `crates/rusty-knowledge/src/storage/turso.rs`, flagged CDC-for-views investigation
+✅ **Phase 1.3**: Referenced existing `crates/holon/src/storage/turso.rs`, flagged CDC-for-views investigation
 ✅ **Phase 1.4**: Updated fractional indexing library links (loro_fractional_index, fractional_index)
 ✅ **Phase 2.1-2.2**: Clarified FRB **translatable** types (not opaque/JSON), auto-generated Dart classes
 ✅ **Phase 3.1**: Removed Action return type from Operation trait (one-directional flow: Op → DB → CDC → UI)
 ✅ **Phase 3.3**: Clarified CDC dirty marking depends on Turso IVM investigation (Phase 1.3)
 ✅ **All Phases**: Updated file paths to use existing structure:
   - `crates/query-render/src/` for PRQL parsing/compilation
-  - `crates/rusty-knowledge/src/storage/` for DB layer
-  - `crates/rusty-knowledge/src/operations/` for operations
-  - `crates/rusty-knowledge/src/api/` for FFI exports
-  - `crates/rusty-knowledge/src/integrations/` for Loro
-  - `crates/rusty-knowledge/src/extensions/` for extension system
+  - `crates/holon/src/storage/` for DB layer
+  - `crates/holon/src/operations/` for operations
+  - `crates/holon/src/api/` for FFI exports
+  - `crates/holon/src/integrations/` for Loro
+  - `crates/holon/src/extensions/` for extension system
 ✅ **Risk Mitigations**: All addressed in phase checkboxes (type safety via RowView, server-side validation, CDC streaming, etc.)
 ✅ **Phase 2.4**: Added automatic operation inference from PRQL lineage (2025-01-06)
   - Validated feasibility via POC in `examples/test-lineage/`
@@ -2335,12 +2335,12 @@ Both use the **same Provider** but for different purposes:
 - Contract validation on responses
 
 **Files**:
-- `crates/rusty-knowledge-todoist/src/provider.rs` (stream-based sync + command application)
-- `crates/rusty-knowledge/src/core/queryable_cache.rs` (stream ingestion)
-- `crates/rusty-knowledge/src/sync/manager.rs` (new - lifecycle management)
-- `crates/rusty-knowledge/src/core/traits.rs` (`Change<T>` enum, `SyncableProvider` trait)
-- `crates/rusty-knowledge/src/contracts/` (contract specs - unchanged)
-- `crates/rusty-knowledge/src/integrations/todoist_fake.rs` (fake implementation - unchanged)
-- `crates/rusty-knowledge/src/integrations/todoist_client.rs` (real HTTP client - unchanged)
-- `crates/rusty-knowledge/src/commands/executor.rs` (command execution - unchanged)
-- `crates/rusty-knowledge/src/commands/sync_worker.rs` (background sync - uses Provider.sync())
+- `crates/holon-todoist/src/provider.rs` (stream-based sync + command application)
+- `crates/holon/src/core/queryable_cache.rs` (stream ingestion)
+- `crates/holon/src/sync/manager.rs` (new - lifecycle management)
+- `crates/holon/src/core/traits.rs` (`Change<T>` enum, `SyncableProvider` trait)
+- `crates/holon/src/contracts/` (contract specs - unchanged)
+- `crates/holon/src/integrations/todoist_fake.rs` (fake implementation - unchanged)
+- `crates/holon/src/integrations/todoist_client.rs` (real HTTP client - unchanged)
+- `crates/holon/src/commands/executor.rs` (command execution - unchanged)
+- `crates/holon/src/commands/sync_worker.rs` (background sync - uses Provider.sync())

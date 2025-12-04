@@ -1,0 +1,51 @@
+# Example GitHub Actions workflow using the FRB fork
+# Copy this to .github/workflows/ci.yml and customize as needed
+
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Rust
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.29.2'
+
+      - name: Cache FRB repository
+        uses: actions/cache@v3
+        with:
+          path: ~/.cache/flutter_rust_bridge_fork
+          key: frb-fork-${{ github.sha }}
+          restore-keys: |
+            frb-fork-
+
+      - name: Cache Cargo registry
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/bin/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
+            ~/.cargo/git/db/
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+
+      - name: Generate FRB bindings
+        working-directory: frontends/flutter
+        run: ./run_frb_codegen.sh generate
+
+      - name: Build Flutter app
+        working-directory: frontends/flutter
+        run: flutter build

@@ -2,7 +2,7 @@
 
 ## Overview
 
-This document describes the comprehensive integration test suite for the `rusty-knowledge` collaborative document synchronization library. The test suite is designed to ensure super-reliability for production use.
+This document describes the comprehensive integration test suite for the `holon` collaborative document synchronization library. The test suite is designed to ensure super-reliability for production use.
 
 ## Test Organization
 

@@ -1,13 +1,12 @@
 /// Simple PTY infrastructure test
 /// This test verifies the PTY session and PageObject infrastructure work correctly
 /// without depending on the full TUI application.
-
 mod pty_support;
 
-use pty_support::{PtySession, page_objects::Screen};
 use portable_pty::{CommandBuilder, NativePtySystem, PtySize, PtySystem};
-use std::time::Duration;
+use pty_support::{page_objects::Screen, PtySession};
 use std::io::Write;
+use std::time::Duration;
 
 #[test]
 #[ignore] // Requires terminal support
@@ -57,25 +56,30 @@ fn test_pty_session_basic() {
     let test_binary = std::env::current_exe().expect("Failed to get exe");
     let mut cmd = CommandBuilder::new(&test_binary);
     cmd.env(PTY_SLAVE_ENV_VAR, "1");
-    cmd.args(&["--test-threads", "1", "--nocapture", "--ignored", "test_pty_session_basic"]);
+    cmd.args(&[
+        "--test-threads",
+        "1",
+        "--nocapture",
+        "--ignored",
+        "test_pty_session_basic",
+    ]);
 
-    let child = pty_pair
-        .slave
-        .spawn_command(cmd)
-        .expect("Failed to spawn");
+    let child = pty_pair.slave.spawn_command(cmd).expect("Failed to spawn");
 
     // Create session
     let mut session = PtySession::new(pty_pair, child);
 
     // Test 1: Wait for slave to start
     eprintln!("📝 Test 1: Waiting for slave start");
-    session.wait_for("SLAVE_STARTING", Duration::from_secs(2))
+    session
+        .wait_for("SLAVE_STARTING", Duration::from_secs(2))
         .expect("Slave did not start");
     eprintln!("  ✓ Slave started");
 
     // Test 2: Wait for specific message
     eprintln!("📝 Test 2: Waiting for hello message");
-    session.wait_for("Hello from PTY", Duration::from_secs(2))
+    session
+        .wait_for("Hello from PTY", Duration::from_secs(2))
         .expect("Hello message not found");
     eprintln!("  ✓ Hello message received");
 
@@ -89,13 +93,20 @@ fn test_pty_session_basic() {
     let output = lines.join("\n");
     let screen = Screen::parse(&output);
 
-    assert!(screen.contains("Test content"), "Should contain test content");
-    assert!(screen.contains("More content"), "Should contain more content");
+    assert!(
+        screen.contains("Test content"),
+        "Should contain test content"
+    );
+    assert!(
+        screen.contains("More content"),
+        "Should contain more content"
+    );
     eprintln!("  ✓ Screen parsed correctly");
 
     // Test 5: Wait for success message
     eprintln!("📝 Test 5: Waiting for success");
-    session.wait_for("SUCCESS", Duration::from_secs(2))
+    session
+        .wait_for("SUCCESS", Duration::from_secs(2))
         .expect("Success message not found");
     eprintln!("  ✓ Success message received");
 

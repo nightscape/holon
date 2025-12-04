@@ -1,0 +1,16 @@
+[package]
+name = "holon-core"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+holon-api = { path = "../holon-api" }
+holon-macros = { path = "../holon-macros" }
+anyhow = "1.0"
+loro_fractional_index = "1.0"
+serde = { version = "1.0", features = ["derive"] }
+serde_json = "1.0"
+uuid = { version = "1", features = ["v4"] }
+

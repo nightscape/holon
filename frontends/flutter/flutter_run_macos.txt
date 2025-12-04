@@ -1,0 +1,54 @@
+Launching lib/main.dart on macOS in debug mode...
+Building macOS application...
+✓ Built build/macos/Build/Products/Debug/holon.app
+2025-11-20 11:26:08.500 holon[60608:5718207] Running with merged UI and platform thread. Experimental.
+flutter: [MCPToolkit] Posted tool registration events: 3 tools, 0 resources
+[FFI] Tracing subscriber initialized - Rust logs will appear below
+[FFI] Tracing subscriber initialized - Rust logs will appear below
+[FFI] Registering TodoistConfig with API key
+[FFI] Registering TodoistModule
+[TodoistModule] register_services called
+[FFI] TodoistModule registered successfully
+2025-11-20T10:26:08.761277Z  INFO holon_todoist::di: [TodoistModule] register_services called
+2025-11-20T10:26:08.762783Z DEBUG turso_core::io::unix: Using IO backend 'syscall'
+
+thread '<unnamed>' (5718390) panicked at /Users/martin/Workspaces/pkm/holon/crates/holon/src/di/mod.rs:104:22:
+Failed to create TursoBackend: DatabaseError("Locking error: Failed locking file. File is locked by another process")
+note: run with `RUST_BACKTRACE=1` environment variable to display a backtrace
+
+thread 'tokio-runtime-worker' (5718383) panicked at /Users/martin/Workspaces/pkm/holon/crates/holon/src/di/mod.rs:107:14:
+Thread panicked while creating TursoBackend: Any { .. }
+flutter: Error during app initialization: PanicException(Thread panicked while creating TursoBackend: Any { .. })
+flutter: Stack trace: #0      SimpleDecoder.decode (package:flutter_rust_bridge/src/codec/base.dart:35:9)
+flutter: #1      SseCodec._decode (package:flutter_rust_bridge/src/codec/sse.dart:45:55)
+flutter: #2      SseCodec.decodeObject (package:flutter_rust_bridge/src/codec/sse.dart:35:12)
+flutter: #3      _rootRunUnary (dart:async/zone.dart:1538:47)
+flutter: #4      _CustomZone.runUnary (dart:async/zone.dart:1429:19)
+flutter: <asynchronous suspension>
+flutter: #5      main.<anonymous closure> (package:holon/main.dart:137:24)
+flutter: <asynchronous suspension>
+flutter:
+flutter: Zone error handler caught: PanicException(Thread panicked while creating TursoBackend: Any { .. })
+flutter: Stack trace: #0      SimpleDecoder.decode (package:flutter_rust_bridge/src/codec/base.dart:35:9)
+flutter: #1      SseCodec._decode (package:flutter_rust_bridge/src/codec/sse.dart:45:55)
+flutter: #2      SseCodec.decodeObject (package:flutter_rust_bridge/src/codec/sse.dart:35:12)
+flutter: #3      _rootRunUnary (dart:async/zone.dart:1538:47)
+flutter: #4      _CustomZone.runUnary (dart:async/zone.dart:1429:19)
+flutter: <asynchronous suspension>
+flutter: #5      main.<anonymous closure> (package:holon/main.dart:137:24)
+flutter: <asynchronous suspension>
+flutter:
+Syncing files to device macOS...                                    18ms
+
+Flutter run key commands.
+r Hot reload. 🔥🔥🔥
+R Hot restart.
+h List all available interactive commands.
+d Detach (terminate "flutter run" but leave application running).
+c Clear the screen
+q Quit (terminate the application on the device).
+
+A Dart VM Service on macOS is available at: http://127.0.0.1:8181/
+The Flutter DevTools debugger and profiler on macOS is available at: http://127.0.0.1:9103?uri=http://127.0.0.1:8181/
+flutter: ScreenshotService: Successfully captured screenshot for main view (22233 bytes).
+Application finished.

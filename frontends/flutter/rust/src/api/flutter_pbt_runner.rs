@@ -1,11 +1,19 @@
 use super::flutter_pbt_backend::FlutterPbtBackend;
+#[cfg(not(target_arch = "wasm32"))]
 use super::flutter_pbt_state_machine::FlutterBlockTreeTest;
+
 /// Manual proptest runner for Flutter PBT
 ///
 /// Since the `prop_state_machine!` macro can't be called from library code,
 /// this module provides a manual runner that mimics proptest's behavior.
-use rusty_knowledge::api::pbt_infrastructure::*;
-use rusty_knowledge::api::repository::CoreOperations;
+use holon::api::pbt_infrastructure::{self, PBT_UNSUPPORTED_REASON};
+#[cfg(not(target_arch = "wasm32"))]
+use holon::api::pbt_infrastructure::{ReferenceState, ReferenceStateMachine, StateMachineTest};
+#[cfg(not(target_arch = "wasm32"))]
+use holon::api::repository::CoreOperations;
+#[cfg(not(target_arch = "wasm32"))]
+use holon::api::types::Traversal;
+#[cfg(not(target_arch = "wasm32"))]
 use std::collections::HashMap;
 
 /// Run a single proptest case with N random transitions
@@ -21,6 +29,30 @@ pub async fn run_single_proptest_case(
     seed: u64,
     flutter_backend: FlutterPbtBackend,
 ) -> Result<String, String> {
+    if !pbt_infrastructure::is_pbt_supported() {
+        return Err(PBT_UNSUPPORTED_REASON.to_string());
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = (case_num, num_steps, seed, flutter_backend);
+        unreachable!("is_pbt_supported already returned false on wasm targets");
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    return run_single_proptest_case_native(case_num, num_steps, seed, flutter_backend).await;
+
+    #[allow(unreachable_code)]
+    Err(PBT_UNSUPPORTED_REASON.to_string())
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+async fn run_single_proptest_case_native(
+    case_num: u32,
+    num_steps: usize,
+    seed: u64,
+    flutter_backend: FlutterPbtBackend,
+) -> Result<String, String> {
     eprintln!(
         "\n[PBT Case {}] Starting with {} steps (seed: {})",
         case_num, num_steps, seed
@@ -28,7 +60,7 @@ pub async fn run_single_proptest_case(
 
     // 0. Clean up any existing blocks from previous test cases
     let existing_blocks = flutter_backend
-        .get_all_blocks(rusty_knowledge::api::Traversal::ALL_BUT_ROOT)
+        .get_all_blocks(Traversal::ALL_BUT_ROOT)
         .await
         .unwrap_or_default();
     let num_existing = existing_blocks.len();
@@ -50,9 +82,10 @@ pub async fn run_single_proptest_case(
     };
 
     // 3. Create proptest test runner with deterministic seed
-    use rusty_knowledge::api::pbt_infrastructure::prop::test_runner::{
+    use holon::api::pbt_infrastructure::prop::test_runner::{
         Config, RngAlgorithm, TestRng, TestRunner,
     };
+    use holon::api::pbt_infrastructure::Strategy;
     let config = Config {
         cases: 1,
         failure_persistence: None,
@@ -117,6 +150,30 @@ pub async fn run_single_proptest_case(
 ///
 /// Each case gets a different random seed for diversity.
 pub async fn run_proptest_cases(
+    num_cases: u32,
+    steps_per_case: usize,
+    backend_factory: impl Fn(u32) -> FlutterPbtBackend,
+) -> Result<String, String> {
+    if !pbt_infrastructure::is_pbt_supported() {
+        return Err(PBT_UNSUPPORTED_REASON.to_string());
+    }
+
+    #[cfg(target_arch = "wasm32")]
+    {
+        let _ = (num_cases, steps_per_case);
+        let _ = backend_factory;
+        unreachable!("is_pbt_supported already returned false on wasm targets");
+    }
+
+    #[cfg(not(target_arch = "wasm32"))]
+    return run_proptest_cases_native(num_cases, steps_per_case, backend_factory).await;
+
+    #[allow(unreachable_code)]
+    Err(PBT_UNSUPPORTED_REASON.to_string())
+}
+
+#[cfg(not(target_arch = "wasm32"))]
+async fn run_proptest_cases_native(
     num_cases: u32,
     steps_per_case: usize,
     backend_factory: impl Fn(u32) -> FlutterPbtBackend,

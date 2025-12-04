@@ -1,4 +1,7 @@
-use r3bl_tui::{CommonResult, FlexBoxId, TuiStylesheet, new_style, throws_with_return, tui_color, tui_stylesheet};
+use r3bl_tui::{
+    new_style, throws_with_return, tui_color, tui_stylesheet, CommonResult, FlexBoxId,
+    TuiStylesheet,
+};
 
 /// Style IDs for consistent styling across the application
 #[repr(u8)]

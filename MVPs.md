@@ -6,9 +6,9 @@ This document outlines a series of Minimum Viable Products (MVPs) that progressi
 
 The current architecture provides:
 - **RenderEngine**: Manages internal blocks with PRQL queries and CDC streaming via Turso materialized views
-- **ChangeNotifications**: Stream-based change notification system (`crates/rusty-knowledge/src/api/streaming.rs`)
+- **ChangeNotifications**: Stream-based change notification system (`crates/holon/src/api/streaming.rs`)
 - **QueryableCache**: Transparent caching layer wrapping DataSource implementations
-- **Todoist Integration**: Stream-based sync provider (`crates/rusty-knowledge-todoist/`) with `TodoistSyncProvider` and `QueryableCache` support
+- **Todoist Integration**: Stream-based sync provider (`crates/holon-todoist/`) with `TodoistSyncProvider` and `QueryableCache` support
 
 The TUI frontend (`frontends/tui/`) currently:
 - Uses `RenderEngine.query_and_watch()` for internal blocks
@@ -77,7 +77,7 @@ The TUI frontend (`frontends/tui/`) currently:
 
 #### 1. Make SyncableProvider an Operation Trait
 
-**File**: `crates/rusty-knowledge/src/core/datasource.rs`
+**File**: `crates/holon/src/core/datasource.rs`
 
 ```rust
 /// Type-independent sync trait for providers
@@ -94,7 +94,7 @@ The TUI frontend (`frontends/tui/`) currently:
 /// }
 /// ```
 /// This generates an operation with entity_name="todoist-sync".
-#[rusty_knowledge_macros::operations_trait(provider_name = "...")] // Macro accepts provider_name arg
+#[holon_macros::operations_trait(provider_name = "...")] // Macro accepts provider_name arg
 #[async_trait]
 pub trait SyncableProvider: Send + Sync {
     /// Sync data from the external system
@@ -115,7 +115,7 @@ pub trait SyncableProvider: Send + Sync {
 
 #### 2. OperationDispatcher Manages SyncableProviders
 
-**File**: `crates/rusty-knowledge/src/api/operation_dispatcher.rs`
+**File**: `crates/holon/src/api/operation_dispatcher.rs`
 
 ```rust
 pub struct OperationDispatcher {
@@ -182,7 +182,7 @@ impl OperationDispatcher {
 }
 ```
 
-**File**: `crates/rusty-knowledge/src/api/render_engine.rs`
+**File**: `crates/holon/src/api/render_engine.rs`
 
 ```rust
 impl RenderEngine {
@@ -208,7 +208,7 @@ impl RenderEngine {
 
 #### 3. QueryableCache Uses TursoBackend and Implements ChangeNotifications
 
-**File**: `crates/rusty-knowledge/src/core/queryable_cache.rs`
+**File**: `crates/holon/src/core/queryable_cache.rs`
 
 ```rust
 use crate::storage::turso::TursoBackend;
@@ -324,9 +324,9 @@ let backend = engine.get_backend().await; // New method needed
 
 // Initialize Todoist (only instantiation is Todoist-specific)
 let todoist_integration = if let Ok(api_key) = std::env::var("TODOIST_API_KEY") {
-    use rusty_knowledge_todoist::{TodoistClient, TodoistSyncProvider, TodoistSyncProviderBuilder};
-    use rusty_knowledge_todoist::datasource::TodoistTaskDataSource;
-    use rusty_knowledge::core::queryable_cache::QueryableCache;
+    use holon_todoist::{TodoistClient, TodoistSyncProvider, TodoistSyncProviderBuilder};
+    use holon_todoist::datasource::TodoistTaskDataSource;
+    use holon::core::queryable_cache::QueryableCache;
     
     // Create Todoist-specific components
     let client = TodoistClient::new(&api_key);

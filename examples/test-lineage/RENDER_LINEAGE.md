@@ -164,7 +164,7 @@ blocks.completed (source)
 ## Running
 
 ```bash
-cd /Users/martin/Workspaces/pkm/rusty-knowledge/examples/test-lineage
+cd /Users/martin/Workspaces/pkm/holon/examples/test-lineage
 cargo run > output.txt
 ```
 

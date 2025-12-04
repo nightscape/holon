@@ -196,7 +196,7 @@ crates/plugins/todoist-adapter/
 
 **lib.rs** (entry point):
 ```rust
-use rusty_knowledge::{ExternalSystem, Command, Value};
+use holon::{ExternalSystem, Command, Value};
 use async_trait::async_trait;
 
 mod client;
@@ -263,7 +263,7 @@ pub extern "C" fn create_plugin() -> *mut dyn ExternalSystem {
 // Static registration (iOS)
 #[cfg(target_os = "ios")]
 inventory::submit! {
-    rusty_knowledge::PluginFactory {
+    holon::PluginFactory {
         system_id: "todoist",
         create: || Box::new(TodoistAdapter::new()),
     }
@@ -274,15 +274,15 @@ inventory::submit! {
 
 ## User Configuration
 
-**~/.rusty-knowledge/config.toml**:
+**~/.holon/config.toml**:
 ```toml
 [plugins]
 enabled = ["todoist", "jira"]  # Which plugins to enable
 
 # Desktop: paths to .so/.dylib/.dll files
 [plugins.paths]
-todoist = "~/.rusty-knowledge/plugins/libtodoist_adapter.so"
-jira = "~/.rusty-knowledge/plugins/libjira_adapter.so"
+todoist = "~/.holon/plugins/libtodoist_adapter.so"
+jira = "~/.holon/plugins/libjira_adapter.so"
 
 # Plugin-specific configuration
 [plugins.todoist]
@@ -319,8 +319,8 @@ cargo build --release --lib
 
 **Install plugins:**
 ```bash
-mkdir -p ~/.rusty-knowledge/plugins
-cp target/release/libtodoist_adapter.so ~/.rusty-knowledge/plugins/
+mkdir -p ~/.holon/plugins
+cp target/release/libtodoist_adapter.so ~/.holon/plugins/
 ```
 
 ### iOS (Static Plugins)
@@ -336,15 +336,15 @@ cargo build --release --target aarch64-apple-ios \
 ```toml
 [features]
 default = []
-plugin-todoist = ["rusty-knowledge-todoist"]
-plugin-jira = ["rusty-knowledge-jira"]
-plugin-linear = ["rusty-knowledge-linear"]
+plugin-todoist = ["holon-todoist"]
+plugin-jira = ["holon-jira"]
+plugin-linear = ["holon-linear"]
 
 # Only include plugin deps when feature is enabled
 [dependencies]
-rusty-knowledge-todoist = { path = "crates/plugins/todoist-adapter", optional = true }
-rusty-knowledge-jira = { path = "crates/plugins/jira-adapter", optional = true }
-rusty-knowledge-linear = { path = "crates/plugins/linear-adapter", optional = true }
+holon-todoist = { path = "crates/plugins/todoist-adapter", optional = true }
+holon-jira = { path = "crates/plugins/jira-adapter", optional = true }
+holon-linear = { path = "crates/plugins/linear-adapter", optional = true }
 ```
 
 ### Android
@@ -437,7 +437,7 @@ pub async fn sync_pending_commands(
 
 Plugins installed in standard location:
 ```
-~/.rusty-knowledge/plugins/
+~/.holon/plugins/
 ├── libtodoist_adapter.so
 ├── libjira_adapter.so
 └── liblinear_adapter.dylib
@@ -478,7 +478,7 @@ User toggles plugins on/off in settings (no reinstall needed).
 
 ⚠️ **Risk**: Loading arbitrary `.so` files is dangerous
 ✅ **Mitigation**:
-- Only load from trusted directory (`~/.rusty-knowledge/plugins/`)
+- Only load from trusted directory (`~/.holon/plugins/`)
 - Verify plugin signatures (future work)
 - Sandboxing via OS permissions (plugins can't access user files directly)
 
@@ -486,7 +486,7 @@ User toggles plugins on/off in settings (no reinstall needed).
 
 Plugins need API keys/tokens. Storage options:
 
-1. **Config file** (current): Plain text in `~/.rusty-knowledge/config.toml`
+1. **Config file** (current): Plain text in `~/.holon/config.toml`
 2. **OS keychain** (future): macOS Keychain, Windows Credential Manager, Linux Secret Service
 3. **Environment variables**: `TODOIST_API_KEY`
 

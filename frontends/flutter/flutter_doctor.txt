@@ -1,0 +1,59 @@
+[✓] Flutter (Channel stable, 3.35.7, on macOS 26.2 25C5037j darwin-arm64, locale en-US) [289ms]
+    • Flutter version 3.35.7 on channel stable at /opt/homebrew/Caskroom/flutter/3.29.2/flutter
+    • Upstream repository https://github.com/flutter/flutter.git
+    • Framework revision adc9010625 (4 weeks ago), 2025-10-21 14:16:03 -0400
+    • Engine revision 035316565a
+    • Dart version 3.9.2
+    • DevTools version 2.48.0
+    • Feature flags: enable-web, enable-linux-desktop, enable-macos-desktop, enable-windows-desktop, enable-android, enable-ios, cli-animations, enable-lldb-debugging
+
+[!] Android toolchain - develop for Android devices (Android SDK version 36.0.0) [1,320ms]
+    • Android SDK at /Users/martin/Library/Android/sdk
+    • Emulator version 36.1.9.0 (build_id 13823996) (CL:N/A)
+    • Platform android-36, build-tools 36.0.0
+    • Java binary at: /Applications/Android Studio.app/Contents/jbr/Contents/Home/bin/java
+      This is the JDK bundled with the latest Android Studio installation on this machine.
+      To manually set the JDK path, use: `flutter config --jdk-dir="path/to/jdk"`.
+    • Java version OpenJDK Runtime Environment (build 21.0.6+-13391695-b895.109)
+    ! Some Android licenses not accepted. To resolve this, run: flutter doctor --android-licenses
+
+[!] Xcode - develop for iOS and macOS (Xcode 26.1.1) [371ms]
+    • Xcode at /Applications/Xcode.app/Contents/Developer
+    • Build 17B100
+    ✗ CocoaPods not installed.
+        CocoaPods is a package manager for iOS or macOS platform code.
+        Without CocoaPods, plugins will not work on iOS or macOS.
+        For more info, see https://flutter.dev/to/platform-plugins
+      For installation instructions, see https://guides.cocoapods.org/using/getting-started.html#installation
+
+[✓] Chrome - develop for the web [23ms]
+    • Chrome at /Applications/Google Chrome.app/Contents/MacOS/Google Chrome
+
+[✓] Android Studio (version 2025.1) [22ms]
+    • Android Studio at /Applications/Android Studio.app/Contents
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+    • Java version openjdk version "21.0.6" 2025-01-21
+
+[✓] IntelliJ IDEA Ultimate Edition (version 2025.2.1) [20ms]
+    • IntelliJ at /Applications/IntelliJ IDEA.app
+    • Flutter plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/9212-flutter
+    • Dart plugin can be installed from:
+      🔨 https://plugins.jetbrains.com/plugin/6351-dart
+
+[✓] VS Code (version 1.105.1) [5ms]
+    • VS Code at /Applications/Visual Studio Code.app/Contents
+    • Flutter extension version 3.122.0
+
+[✓] Connected device (3 available) [5.8s]
+    • sdk gphone64 arm64 (mobile) • emulator-5554 • android-arm64  • Android 16 (API 36) (emulator)
+    • macOS (desktop)             • macos         • darwin-arm64   • macOS 26.2 25C5037j darwin-arm64
+    • Chrome (web)                • chrome        • web-javascript • Google Chrome 139.0.7258.139
+
+[✓] Network resources [243ms]
+    • All expected network resources are available.
+
+! Doctor found issues in 2 categories.

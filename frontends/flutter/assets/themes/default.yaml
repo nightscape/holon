@@ -1,0 +1,39 @@
+# Default theme family (Light and Dark)
+themes:
+  light:
+    name: "Light"
+    isDark: false
+    colors:
+      primary: "#3B82F6"
+      primaryDark: "#2563EB"
+      primaryLight: "#60A5FA"
+      textPrimary: "#1F2937"
+      textSecondary: "#6B7280"
+      textTertiary: "#9CA3AF"
+      background: "#FFFFFF"
+      backgroundSecondary: "#F9FAFB"
+      sidebarBackground: "#F3F4F6"
+      border: "#E5E7EB"
+      borderFocus: "#3B82F6"
+      success: "#10B981"
+      error: "#EF4444"
+      warning: "#F59E0B"
+
+  dark:
+    name: "Dark"
+    isDark: true
+    colors:
+      primary: "#60A5FA"
+      primaryDark: "#3B82F6"
+      primaryLight: "#93C5FD"
+      textPrimary: "#F9FAFB"
+      textSecondary: "#E5E7EB"
+      textTertiary: "#D1D5DB"
+      background: "#111827"
+      backgroundSecondary: "#1F2937"
+      sidebarBackground: "#374151"
+      border: "#4B5563"
+      borderFocus: "#60A5FA"
+      success: "#34D399"
+      error: "#F87171"
+      warning: "#FBBF24"

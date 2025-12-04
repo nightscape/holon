@@ -1,0 +1,62 @@
+{
+  "dart_code_of_type": {},
+  "enum_pool": {},
+  "existing_handler": null,
+  "extra_dart_output_code": {
+    "body": "",
+    "header": {
+      "file_top": "",
+      "import": "",
+      "part": ""
+    }
+  },
+  "extra_rust_output_code": "",
+  "extra_types_all": [],
+  "funcs_all": [],
+  "skips": [
+    {
+      "name": "crate::api/UnusedStruct",
+      "reason": "IgnoreBecauseTypeNotUsedByPub"
+    },
+    {
+      "name": "crate::api/UnusedEnum",
+      "reason": "IgnoreBecauseTypeNotUsedByPub"
+    }
+  ],
+  "struct_pool": {
+    "crate::api/UnusedStruct": {
+      "comments": [],
+      "dart_metadata_raw": [],
+      "fields": [
+        {
+          "comments": [],
+          "default": null,
+          "is_final": true,
+          "is_rust_public": false,
+          "name": {
+            "dart_style": null,
+            "rust_style": "a"
+          },
+          "settings": {
+            "is_in_mirrored_enum": false,
+            "skip_auto_accessors": false
+          },
+          "ty": {
+            "data": "String",
+            "safe_ident": "String",
+            "type": "Delegate"
+          }
+        }
+      ],
+      "generate_eq": true,
+      "generate_hash": true,
+      "ignore": false,
+      "is_fields_named": true,
+      "name": "crate::api/UnusedStruct",
+      "needs_json_serializable": false,
+      "ui_state": false,
+      "wrapper_name": null
+    }
+  },
+  "trait_impls": []
+}

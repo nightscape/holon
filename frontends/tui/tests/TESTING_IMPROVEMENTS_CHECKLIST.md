@@ -261,7 +261,7 @@ After implementing MEDIUM PRIORITY:
 - **R3BL Deadline:** `/Users/martin/Workspaces/rust/r3bl-open-core/tui/src/core/test_fixtures/pty_test_fixtures/deadline.rs`
 - **R3BL PTY Macro:** `/Users/martin/Workspaces/rust/r3bl-open-core/tui/src/core/test_fixtures/pty_test_fixtures/generate_pty_test.rs`
 - **R3BL Mock Devices:** `/Users/martin/Workspaces/rust/r3bl-open-core/tui/src/core/test_fixtures/`
-- **Current Implementation:** `/Users/martin/Workspaces/pkm/rusty-knowledge/frontends/tui/tests/`
+- **Current Implementation:** `/Users/martin/Workspaces/pkm/holon/frontends/tui/tests/`
 - **Detailed Analysis:** See `TESTING_PATTERNS_ANALYSIS.md` in this project root
 
 ---

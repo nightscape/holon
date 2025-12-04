@@ -4,15 +4,17 @@
 //! for PBT tests. It converts between the database representation (HashMap<String, Value>)
 //! and the Block API representation.
 
+use anyhow;
 use async_trait::async_trait;
-use rusty_knowledge::api::repository::{CoreOperations, Lifecycle};
-use rusty_knowledge::api::types::{ApiError, Block, BlockMetadata, NewBlock, Traversal, ROOT_PARENT_ID};
-use rusty_knowledge::storage::backend::StorageBackend;
-use rusty_knowledge::storage::types::{StorageEntity, Value};
-use rusty_knowledge::api::backend_engine::BackendEngine;
+use holon::api::backend_engine::BackendEngine;
+use holon::api::repository::{CoreOperations, Lifecycle};
+use holon::api::types::{NewBlock, Traversal};
+use holon::storage::backend::StorageBackend;
+use holon::storage::types::StorageEntity;
+use holon_api::Value;
+use holon_api::{ApiError, Block, BlockMetadata, ROOT_PARENT_ID};
 use std::collections::HashMap;
 use std::sync::Arc;
-use anyhow;
 
 /// TUI-R3BL backend for PBT testing
 ///
@@ -54,11 +56,12 @@ impl TuiR3blPbtBackend {
             })
             .unwrap_or_else(|| ROOT_PARENT_ID.to_string());
 
-        let content = entity
+        let content_str = entity
             .get("content")
             .and_then(|v| v.as_string())
             .map(|s| s.to_string())
             .unwrap_or_default();
+        let content = holon_api::BlockContent::text(&content_str);
 
         // Parse timestamps - handle both string and integer formats
         let created_at = entity
@@ -106,6 +109,7 @@ impl TuiR3blPbtBackend {
             id,
             parent_id,
             content,
+            properties: std::collections::HashMap::new(),
             children,
             metadata: BlockMetadata {
                 created_at,
@@ -136,7 +140,10 @@ impl TuiR3blPbtBackend {
         let sql = if parent_id == ROOT_PARENT_ID {
             "SELECT * FROM blocks WHERE parent_id IS NULL ORDER BY sort_key".to_string()
         } else {
-            format!("SELECT * FROM blocks WHERE parent_id = '{}' ORDER BY sort_key", parent_id)
+            format!(
+                "SELECT * FROM blocks WHERE parent_id = '{}' ORDER BY sort_key",
+                parent_id
+            )
         };
 
         let mut children = engine
@@ -148,20 +155,18 @@ impl TuiR3blPbtBackend {
 
         // Sort by sort_key if present (already sorted by SQL, but ensure)
         children.sort_by(|a, b| {
-            let a_sort = a
-                .get("sort_key")
-                .and_then(|v| v.as_string())
-                .unwrap_or("");
-            let b_sort = b
-                .get("sort_key")
-                .and_then(|v| v.as_string())
-                .unwrap_or("");
+            let a_sort = a.get("sort_key").and_then(|v| v.as_string()).unwrap_or("");
+            let b_sort = b.get("sort_key").and_then(|v| v.as_string()).unwrap_or("");
             a_sort.cmp(b_sort)
         });
 
         Ok(children
             .iter()
-            .filter_map(|e| e.get("id").and_then(|v| v.as_string()).map(|s| s.to_string()))
+            .filter_map(|e| {
+                e.get("id")
+                    .and_then(|v| v.as_string())
+                    .map(|s| s.to_string())
+            })
             .collect())
     }
 
@@ -170,7 +175,8 @@ impl TuiR3blPbtBackend {
         let engine = &*self.engine;
 
         // Check if blocks table exists by trying to query it
-        let check_sql = "SELECT name FROM sqlite_master WHERE type='table' AND name='blocks'".to_string();
+        let check_sql =
+            "SELECT name FROM sqlite_master WHERE type='table' AND name='blocks'".to_string();
         let result = engine.execute_query(check_sql, HashMap::new()).await;
 
         if result.is_err() || result.unwrap().is_empty() {
@@ -188,7 +194,8 @@ impl TuiR3blPbtBackend {
                     created_at TEXT NOT NULL DEFAULT (datetime('now')),
                     updated_at TEXT NOT NULL DEFAULT (datetime('now'))
                 )
-            "#.to_string();
+            "#
+            .to_string();
 
             engine
                 .execute_query(create_table_sql, HashMap::new())
@@ -207,7 +214,10 @@ impl TuiR3blPbtBackend {
             if !root_exists {
                 let mut root_entity = StorageEntity::new();
                 root_entity.insert("id".to_string(), Value::String(ROOT_PARENT_ID.to_string()));
-                root_entity.insert("parent_id".to_string(), Value::String("__no_parent__".to_string()));
+                root_entity.insert(
+                    "parent_id".to_string(),
+                    Value::String("__no_parent__".to_string()),
+                );
                 root_entity.insert("content".to_string(), Value::String(String::new()));
                 root_entity.insert("depth".to_string(), Value::Integer(0));
                 root_entity.insert("sort_key".to_string(), Value::String("a0".to_string()));
@@ -221,9 +231,8 @@ impl TuiR3blPbtBackend {
                     .with_backend_write(|backend: &mut _| -> anyhow::Result<()> {
                         // Use block_in_place to execute async operation in sync context
                         tokio::task::block_in_place(|| {
-                            tokio::runtime::Handle::current().block_on(
-                                backend.insert("blocks", root_entity_clone)
-                            )
+                            tokio::runtime::Handle::current()
+                                .block_on(backend.insert("blocks", root_entity_clone))
                         })
                         .map_err(|e| anyhow::anyhow!("{}", e))
                     })
@@ -233,10 +242,10 @@ impl TuiR3blPbtBackend {
                     })?;
 
                 // Create initial child block (matching MemoryBackend behavior)
-                use rusty_knowledge::storage::fractional_index::gen_key_between;
+                use holon::storage::fractional_index::gen_key_between;
                 let first_child_id = "local://0".to_string();
-                let first_child_sort_key = gen_key_between(None, None)
-                    .map_err(|e| ApiError::InternalError {
+                let first_child_sort_key =
+                    gen_key_between(None, None).map_err(|e| ApiError::InternalError {
                         message: format!("Failed to generate sort_key for initial child: {}", e),
                     })?;
 
@@ -245,18 +254,19 @@ impl TuiR3blPbtBackend {
                 first_child_entity.insert("parent_id".to_string(), Value::Null); // NULL = root parent
                 first_child_entity.insert("content".to_string(), Value::String(String::new()));
                 first_child_entity.insert("depth".to_string(), Value::Integer(0));
-                first_child_entity.insert("sort_key".to_string(), Value::String(first_child_sort_key));
+                first_child_entity
+                    .insert("sort_key".to_string(), Value::String(first_child_sort_key));
                 first_child_entity.insert("collapsed".to_string(), Value::Integer(0));
                 first_child_entity.insert("completed".to_string(), Value::Integer(0));
-                first_child_entity.insert("block_type".to_string(), Value::String("text".to_string()));
+                first_child_entity
+                    .insert("block_type".to_string(), Value::String("text".to_string()));
 
                 let first_child_entity_clone = first_child_entity.clone();
                 engine
                     .with_backend_write(|backend: &mut _| -> anyhow::Result<()> {
                         tokio::task::block_in_place(|| {
-                            tokio::runtime::Handle::current().block_on(
-                                backend.insert("blocks", first_child_entity_clone)
-                            )
+                            tokio::runtime::Handle::current()
+                                .block_on(backend.insert("blocks", first_child_entity_clone))
                         })
                         .map_err(|e| anyhow::anyhow!("{}", e))
                     })
@@ -374,7 +384,14 @@ impl CoreOperations for TuiR3blPbtBackend {
             // Recursively traverse children
             if current_level < traversal.max_level {
                 for child_id in &children {
-                    traverse(child_id, current_level + 1, traversal, block_map, children_map, result);
+                    traverse(
+                        child_id,
+                        current_level + 1,
+                        traversal,
+                        block_map,
+                        children_map,
+                        result,
+                    );
                 }
             }
         }
@@ -399,21 +416,21 @@ impl CoreOperations for TuiR3blPbtBackend {
     async fn create_block(
         &self,
         parent_id: String,
-        content: String,
+        content: holon_api::BlockContent,
         id: Option<String>,
     ) -> Result<Block, ApiError> {
         self.ensure_schema().await?;
 
         // Generate ID if not provided
-        let block_id = id.unwrap_or_else(|| {
-            format!("local://{}", uuid::Uuid::new_v4())
-        });
+        let block_id = id.unwrap_or_else(|| format!("local://{}", uuid::Uuid::new_v4()));
 
         // Verify parent exists (unless it's root)
         if parent_id != ROOT_PARENT_ID {
             let engine = &*self.engine;
             let sql = format!("SELECT id FROM blocks WHERE id = '{}'", parent_id);
-            let results = engine.execute_query(sql, HashMap::new()).await
+            let results = engine
+                .execute_query(sql, HashMap::new())
+                .await
                 .map_err(|e| ApiError::InternalError {
                     message: format!("Failed to check parent: {}", e),
                 })?;
@@ -423,7 +440,7 @@ impl CoreOperations for TuiR3blPbtBackend {
         }
 
         // Generate sort_key using fractional indexing
-        use rusty_knowledge::storage::fractional_index::gen_key_between;
+        use holon::storage::fractional_index::gen_key_between;
         let sort_key = {
             let children = self.get_children_for_block(&parent_id).await?;
             if children.is_empty() {
@@ -433,8 +450,13 @@ impl CoreOperations for TuiR3blPbtBackend {
             } else {
                 // Get the last child's sort_key
                 let engine = &*self.engine;
-                let sql = format!("SELECT sort_key FROM blocks WHERE id = '{}'", children[children.len() - 1]);
-                let results = engine.execute_query(sql, HashMap::new()).await
+                let sql = format!(
+                    "SELECT sort_key FROM blocks WHERE id = '{}'",
+                    children[children.len() - 1]
+                );
+                let results = engine
+                    .execute_query(sql, HashMap::new())
+                    .await
                     .map_err(|e| ApiError::InternalError {
                         message: format!("Failed to get last child: {}", e),
                     })?;
@@ -449,8 +471,10 @@ impl CoreOperations for TuiR3blPbtBackend {
                     })
                     .unwrap_or_default();
 
-                gen_key_between(Some(&last_sort_key), None).map_err(|e| ApiError::InternalError {
-                    message: format!("Failed to generate sort_key: {}", e),
+                gen_key_between(Some(&last_sort_key), None).map_err(|e| {
+                    ApiError::InternalError {
+                        message: format!("Failed to generate sort_key: {}", e),
+                    }
                 })?
             }
         };
@@ -466,7 +490,10 @@ impl CoreOperations for TuiR3blPbtBackend {
             entity.insert("parent_id".to_string(), Value::String(parent_id.clone()));
         }
 
-        entity.insert("content".to_string(), Value::String(content.clone()));
+        entity.insert(
+            "content".to_string(),
+            Value::String(content.to_plain_text().to_string()),
+        );
         entity.insert("sort_key".to_string(), Value::String(sort_key));
         entity.insert("depth".to_string(), Value::Integer(0)); // Will be calculated if needed
         entity.insert("collapsed".to_string(), Value::Integer(0));
@@ -486,9 +513,8 @@ impl CoreOperations for TuiR3blPbtBackend {
         engine
             .with_backend_write(|backend: &mut _| -> anyhow::Result<()> {
                 tokio::task::block_in_place(|| {
-                    tokio::runtime::Handle::current().block_on(
-                        backend.insert("blocks", entity_clone)
-                    )
+                    tokio::runtime::Handle::current()
+                        .block_on(backend.insert("blocks", entity_clone))
                 })
                 .map_err(|e| anyhow::anyhow!("{}", e))
             })
@@ -502,6 +528,7 @@ impl CoreOperations for TuiR3blPbtBackend {
             id: block_id,
             parent_id,
             content,
+            properties: std::collections::HashMap::new(),
             children: vec![],
             metadata: BlockMetadata {
                 created_at: now,
@@ -510,14 +537,20 @@ impl CoreOperations for TuiR3blPbtBackend {
         })
     }
 
-    async fn update_block(&self, id: &str, content: String) -> Result<(), ApiError> {
+    async fn update_block(
+        &self,
+        id: &str,
+        content: holon_api::BlockContent,
+    ) -> Result<(), ApiError> {
         self.ensure_schema().await?;
 
         let engine = &*self.engine;
 
         // Get existing block
         let sql = format!("SELECT * FROM blocks WHERE id = '{}'", id);
-        let results = engine.execute_query(sql, HashMap::new()).await
+        let results = engine
+            .execute_query(sql, HashMap::new())
+            .await
             .map_err(|e| ApiError::InternalError {
                 message: format!("Failed to get block: {}", e),
             })?;
@@ -528,7 +561,10 @@ impl CoreOperations for TuiR3blPbtBackend {
             .ok_or_else(|| ApiError::BlockNotFound { id: id.to_string() })?;
 
         // Update content and timestamp
-        entity.insert("content".to_string(), Value::String(content));
+        entity.insert(
+            "content".to_string(),
+            Value::String(content.to_plain_text().to_string()),
+        );
         let now = std::time::SystemTime::now()
             .duration_since(std::time::UNIX_EPOCH)
             .unwrap()
@@ -540,9 +576,11 @@ impl CoreOperations for TuiR3blPbtBackend {
                 let entity_clone = entity.clone();
                 let id_clone = id.to_string();
                 tokio::task::block_in_place(|| {
-                    tokio::runtime::Handle::current().block_on(
-                        backend.update("blocks", &id_clone, entity_clone)
-                    )
+                    tokio::runtime::Handle::current().block_on(backend.update(
+                        "blocks",
+                        &id_clone,
+                        entity_clone,
+                    ))
                 })
                 .map_err(|e| anyhow::anyhow!("{}", e))
             })
@@ -568,7 +606,9 @@ impl CoreOperations for TuiR3blPbtBackend {
 
         // Check if block exists
         let sql = format!("SELECT id FROM blocks WHERE id = '{}'", id);
-        let results = engine.execute_query(sql, HashMap::new()).await
+        let results = engine
+            .execute_query(sql, HashMap::new())
+            .await
             .map_err(|e| ApiError::InternalError {
                 message: format!("Failed to check block: {}", e),
             })?;
@@ -582,9 +622,7 @@ impl CoreOperations for TuiR3blPbtBackend {
         engine
             .with_backend_write(|backend: &mut _| -> anyhow::Result<()> {
                 tokio::task::block_in_place(|| {
-                    tokio::runtime::Handle::current().block_on(
-                        backend.delete("blocks", &id_clone)
-                    )
+                    tokio::runtime::Handle::current().block_on(backend.delete("blocks", &id_clone))
                 })
                 .map_err(|e| anyhow::anyhow!("{}", e))
             })
@@ -615,7 +653,9 @@ impl CoreOperations for TuiR3blPbtBackend {
 
         // Get existing block
         let sql = format!("SELECT * FROM blocks WHERE id = '{}'", id);
-        let results = engine.execute_query(sql, HashMap::new()).await
+        let results = engine
+            .execute_query(sql, HashMap::new())
+            .await
             .map_err(|e| ApiError::InternalError {
                 message: format!("Failed to get block: {}", e),
             })?;
@@ -628,7 +668,9 @@ impl CoreOperations for TuiR3blPbtBackend {
         // Verify new parent exists (unless it's root)
         if new_parent != ROOT_PARENT_ID {
             let check_sql = format!("SELECT id FROM blocks WHERE id = '{}'", new_parent);
-            let check_results = engine.execute_query(check_sql, HashMap::new()).await
+            let check_results = engine
+                .execute_query(check_sql, HashMap::new())
+                .await
                 .map_err(|e| ApiError::InternalError {
                     message: format!("Failed to check new parent: {}", e),
                 })?;
@@ -638,7 +680,7 @@ impl CoreOperations for TuiR3blPbtBackend {
         }
 
         // Generate new sort_key
-        use rusty_knowledge::storage::fractional_index::gen_key_between;
+        use holon::storage::fractional_index::gen_key_between;
         let sort_key = {
             let children = self.get_children_for_block(&new_parent).await?;
             if children.is_empty() {
@@ -646,8 +688,13 @@ impl CoreOperations for TuiR3blPbtBackend {
                     message: format!("Failed to generate sort_key: {}", e),
                 })?
             } else {
-                let sql = format!("SELECT sort_key FROM blocks WHERE id = '{}'", children[children.len() - 1]);
-                let results = engine.execute_query(sql, HashMap::new()).await
+                let sql = format!(
+                    "SELECT sort_key FROM blocks WHERE id = '{}'",
+                    children[children.len() - 1]
+                );
+                let results = engine
+                    .execute_query(sql, HashMap::new())
+                    .await
                     .map_err(|e| ApiError::InternalError {
                         message: format!("Failed to get last child: {}", e),
                     })?;
@@ -662,8 +709,10 @@ impl CoreOperations for TuiR3blPbtBackend {
                     })
                     .unwrap_or_default();
 
-                gen_key_between(Some(&last_sort_key), None).map_err(|e| ApiError::InternalError {
-                    message: format!("Failed to generate sort_key: {}", e),
+                gen_key_between(Some(&last_sort_key), None).map_err(|e| {
+                    ApiError::InternalError {
+                        message: format!("Failed to generate sort_key: {}", e),
+                    }
                 })?
             }
         };
@@ -687,9 +736,11 @@ impl CoreOperations for TuiR3blPbtBackend {
                 let entity_clone = entity.clone();
                 let id_clone = id.to_string();
                 tokio::task::block_in_place(|| {
-                    tokio::runtime::Handle::current().block_on(
-                        backend.update("blocks", &id_clone, entity_clone)
-                    )
+                    tokio::runtime::Handle::current().block_on(backend.update(
+                        "blocks",
+                        &id_clone,
+                        entity_clone,
+                    ))
                 })
                 .map_err(|e| anyhow::anyhow!("{}", e))
             })

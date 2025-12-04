@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:rusty_knowledge/render/render_interpreter.dart';
-import 'package:rusty_knowledge/src/rust/third_party/query_render/types.dart';
+import 'package:holon/render/render_interpreter.dart';
+import 'package:holon/src/rust/third_party/query_render/types.dart';
 
 void main() {
   group('RenderInterpreter', () {
@@ -23,9 +23,7 @@ void main() {
 
     group('Literal Rendering', () {
       testWidgets('renders string literal', (tester) async {
-        final expr = RenderExpr.literal(
-          value: Value.string('Test String'),
-        );
+        final expr = RenderExpr.literal(value: Value.string('Test String'));
 
         await tester.pumpWidget(
           MaterialApp(home: interpreter.build(expr, context)),
@@ -35,9 +33,7 @@ void main() {
       });
 
       testWidgets('renders integer literal', (tester) async {
-        final expr = RenderExpr.literal(
-          value: Value.number(Number.int(42)),
-        );
+        final expr = RenderExpr.literal(value: Value.number(Number.int(42)));
 
         await tester.pumpWidget(
           MaterialApp(home: interpreter.build(expr, context)),
@@ -59,9 +55,7 @@ void main() {
       });
 
       testWidgets('renders boolean literal', (tester) async {
-        final expr = RenderExpr.literal(
-          value: Value.bool(true),
-        );
+        final expr = RenderExpr.literal(value: Value.bool(true));
 
         await tester.pumpWidget(
           MaterialApp(home: interpreter.build(expr, context)),
@@ -71,9 +65,7 @@ void main() {
       });
 
       testWidgets('renders null literal', (tester) async {
-        final expr = RenderExpr.literal(
-          value: Value.null_(),
-        );
+        final expr = RenderExpr.literal(value: Value.null_());
 
         await tester.pumpWidget(
           MaterialApp(home: interpreter.build(expr, context)),
@@ -136,10 +128,7 @@ void main() {
 
       testWidgets('evaluates logical: completed and visible', (tester) async {
         final contextWithVisible = RenderContext(
-          rowData: {
-            ...context.rowData,
-            'visible': true,
-          },
+          rowData: {...context.rowData, 'visible': true},
         );
 
         final expr = RenderExpr.binaryOp(
@@ -196,12 +185,7 @@ void main() {
       testWidgets('renders text with column reference', (tester) async {
         final expr = RenderExpr.functionCall(
           name: 'text',
-          args: [
-            Arg(
-              name: null,
-              value: RenderExpr.columnRef(name: 'content'),
-            ),
-          ],
+          args: [Arg(name: null, value: RenderExpr.columnRef(name: 'content'))],
         );
 
         await tester.pumpWidget(
@@ -281,7 +265,10 @@ void main() {
 
         // Find the Padding widget
         final padding = tester.widget<Padding>(find.byType(Padding));
-        expect(padding.padding, equals(const EdgeInsets.only(left: 48.0))); // 2 * 24
+        expect(
+          padding.padding,
+          equals(const EdgeInsets.only(left: 48.0)),
+        ); // 2 * 24
       });
     });
 
@@ -352,10 +339,7 @@ void main() {
     group('Function Call: collapse_button()', () {
       testWidgets('renders collapsed button', (tester) async {
         final collapsedContext = RenderContext(
-          rowData: {
-            ...context.rowData,
-            'is_collapsed': true,
-          },
+          rowData: {...context.rowData, 'is_collapsed': true},
         );
 
         final expr = RenderExpr.functionCall(
@@ -460,7 +444,10 @@ void main() {
           MaterialApp(home: interpreter.build(expr, context)),
         );
 
-        expect(find.textContaining('Unknown function: unknown_function'), findsOneWidget);
+        expect(
+          find.textContaining('Unknown function: unknown_function'),
+          findsOneWidget,
+        );
       });
     });
 
@@ -521,9 +508,11 @@ void main() {
         );
 
         // Check for block-level Padding (with indentation)
-        final paddingWidgets = tester.widgetList<Padding>(find.byType(Padding)).toList();
+        final paddingWidgets = tester
+            .widgetList<Padding>(find.byType(Padding))
+            .toList();
         final blockPadding = paddingWidgets.where(
-          (p) => p.padding == const EdgeInsets.only(left: 48.0)
+          (p) => p.padding == const EdgeInsets.only(left: 48.0),
         );
         expect(blockPadding, hasLength(1));
 
@@ -544,7 +533,10 @@ void main() {
       });
 
       test('getTypedColumn returns typed value', () {
-        expect(context.getTypedColumn<String>('content'), equals('Hello World'));
+        expect(
+          context.getTypedColumn<String>('content'),
+          equals('Hello World'),
+        );
         expect(context.getTypedColumn<int>('depth'), equals(2));
       });
 

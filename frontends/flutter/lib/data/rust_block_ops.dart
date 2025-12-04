@@ -93,7 +93,7 @@ class RustBlockOps implements BlockOps<RustBlock> {
     // Cache all blocks
     for (final block in blocks) {
       final blockId = repo.blockGetId(block: block);
-      _cache[blockId] = block as RustBlock;
+      _cache[blockId] = block;
 
       // Identify the root block (has NO_PARENT_ID as parent)
       final parentId = repo.blockGetParentId(block: block);
@@ -128,7 +128,7 @@ class RustBlockOps implements BlockOps<RustBlock> {
         _backend
             .getBlock(id: id)
             .then((block) {
-              _cache[id] = block as RustBlock;
+              _cache[id] = block;
               _emitChange();
             })
             .catchError((e) {
@@ -145,7 +145,7 @@ class RustBlockOps implements BlockOps<RustBlock> {
         _backend
             .getBlock(id: id)
             .then((block) {
-              _cache[id] = block as RustBlock;
+              _cache[id] = block;
               _emitChange();
             })
             .catchError((e) {
@@ -173,7 +173,7 @@ class RustBlockOps implements BlockOps<RustBlock> {
         _backend
             .getBlock(id: id)
             .then((block) {
-              _cache[id] = block as RustBlock;
+              _cache[id] = block;
               _emitChange();
             })
             .catchError((e) {
@@ -489,7 +489,7 @@ class RustBlockOps implements BlockOps<RustBlock> {
     );
 
     // Cache the new block (cast to RustBlock)
-    final rustBlock = newBlock as RustBlock;
+    final rustBlock = newBlock;
     final newBlockId = repo.blockGetId(block: rustBlock);
     _cache[newBlockId] = rustBlock;
 
@@ -605,7 +605,7 @@ class RustBlockOps implements BlockOps<RustBlock> {
       final blockId = repo.blockGetId(block: block);
       _localEditIds.add(blockId);
       // Cast to RustBlock for cache
-      final rustBlock = block as RustBlock;
+      final rustBlock = block;
       _cache[blockId] = rustBlock;
 
       Future.delayed(const Duration(seconds: 2), () {

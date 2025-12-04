@@ -1,4 +1,4 @@
-.PHONY: help codegen clean run-macos run-ios run-android build-macos build-ios build-android test watch
+.PHONY: help codegen clean run-macos run-ios run-android build-macos build-ios build-android test watch coverage coverage-process-rust coverage-process-flutter
 
 # Default target
 help:
@@ -16,11 +16,16 @@ help:
 	@echo "  test         - Run tests"
 	@echo "  watch        - Watch for changes and regenerate code"
 	@echo "  pods         - Install CocoaPods dependencies"
+	@echo ""
+	@echo "Coverage targets (for dead code elimination):"
+	@echo "  coverage              - Run app with Rust and Flutter coverage"
+	@echo "  coverage-process-rust  - Process Rust coverage data"
+	@echo "  coverage-process-flutter - Process Flutter coverage data"
 
 # Generate Rust bridge code
 codegen:
 	@echo "Generating Flutter Rust Bridge code..."
-	flutter_rust_bridge_codegen generate
+	@./run_frb_codegen.sh generate
 
 # Clean build artifacts
 clean:
@@ -66,9 +71,24 @@ test: codegen
 # Watch mode for development
 watch:
 	@echo "Watching for changes (press Ctrl+C to stop)..."
-	flutter_rust_bridge_codegen generate --watch
+	@./run_frb_codegen.sh generate --watch
 
 # Install CocoaPods dependencies
 pods:
 	@echo "Installing CocoaPods dependencies..."
 	cd macos && pod install
+
+# Run with Rust and Flutter coverage
+coverage:
+	@echo "Running with Rust and Flutter coverage..."
+	@cd ../.. && ./scripts/run-with-coverage.sh -d macos
+
+# Process Rust coverage data
+coverage-process-rust:
+	@echo "Processing Rust coverage data..."
+	@cd ../.. && ./scripts/process-rust-coverage.sh html
+
+# Process Flutter coverage data
+coverage-process-flutter:
+	@echo "Processing Flutter coverage data..."
+	@cd ../.. && ./scripts/process-flutter-coverage.sh

@@ -5,14 +5,14 @@ This document identifies places in the codebase where objects are constructed ma
 ## Summary
 
 The codebase uses `ferrous-di` for dependency injection, with services registered in:
-- `crates/rusty-knowledge/src/di/mod.rs` - Core services (BackendEngine, TursoBackend, OperationDispatcher)
-- `crates/rusty-knowledge-todoist/src/di.rs` - Todoist services
+- `crates/holon/src/di/mod.rs` - Core services (BackendEngine, TursoBackend, OperationDispatcher)
+- `crates/holon-todoist/src/di.rs` - Todoist services
 
 However, there are several places where manual construction still occurs.
 
 ## Critical Issues (Should Use DI)
 
-### 1. FFI Bridge (`crates/rusty-knowledge/src/api/ffi_bridge.rs`)
+### 1. FFI Bridge (`crates/holon/src/api/ffi_bridge.rs`)
 
 **Location**: `init_render_engine()` function
 
@@ -35,7 +35,7 @@ pub async fn init_render_engine(db_path: String) -> Result<Arc<BackendEngine>> {
 
 ---
 
-### 2. BackendEngine Constructors (`crates/rusty-knowledge/src/api/backend_engine.rs`)
+### 2. BackendEngine Constructors (`crates/holon/src/api/backend_engine.rs`)
 
 **Location**: `BackendEngine::new()` and `BackendEngine::new_in_memory()`
 
@@ -61,8 +61,8 @@ pub async fn new(db_path: PathBuf) -> Result<Self> {
 ### 3. Tests Using `BackendEngine::new_in_memory()`
 
 **Locations**:
-- `crates/rusty-knowledge/src/api/backend_engine.rs` (multiple test functions)
-- `crates/rusty-knowledge/src/api/ffi_bridge.rs` (test functions)
+- `crates/holon/src/api/backend_engine.rs` (multiple test functions)
+- `crates/holon/src/api/ffi_bridge.rs` (test functions)
 - `frontends/tui/src/tui_pbt_state_machine.rs` (PBT test setup)
 - `frontends/tui/tests/navigation_test.rs` (unsaved)
 
@@ -118,7 +118,7 @@ let engine = runtime
 
 ### 6. OperationDispatcher Manual Creation
 
-**Location**: `crates/rusty-knowledge/src/api/backend_engine.rs` lines 35, 51, 806, 863
+**Location**: `crates/holon/src/api/backend_engine.rs` lines 35, 51, 806, 863
 
 **Issue**: `OperationDispatcher::new()` is called manually in several places:
 - In `BackendEngine::new()` and `new_in_memory()` constructors
@@ -147,9 +147,9 @@ let engine = runtime
 ### 8. QueryableCache Manual Construction
 
 **Locations**: Multiple files including:
-- `crates/rusty-knowledge/src/core/queryable_cache.rs` (test)
-- `crates/rusty-knowledge/src/examples/task_queries.rs`
-- `crates/rusty-knowledge-todoist/src/stream_integration_test.rs`
+- `crates/holon/src/core/queryable_cache.rs` (test)
+- `crates/holon/src/examples/task_queries.rs`
+- `crates/holon-todoist/src/stream_integration_test.rs`
 - Documentation files (MVPs.md, STREAM_INTEGRATION_GUIDE.md)
 
 **Issue**: `QueryableCache` instances are created manually using `new()`, `new_with_backend()`, or `with_database()`.
@@ -195,9 +195,9 @@ let engine = runtime
 
 ## Files to Review
 
-- `crates/rusty-knowledge/src/api/ffi_bridge.rs` - FFI entry point
-- `crates/rusty-knowledge/src/api/backend_engine.rs` - Core engine constructors
+- `crates/holon/src/api/ffi_bridge.rs` - FFI entry point
+- `crates/holon/src/api/backend_engine.rs` - Core engine constructors
 - `frontends/tui/src/tui_pbt_state_machine.rs` - PBT setup
 - `frontends/tui/tests/navigation_test.rs` - Test setup
-- `crates/rusty-knowledge/src/api/backend_engine.rs` (tests) - Multiple test functions
+- `crates/holon/src/api/backend_engine.rs` (tests) - Multiple test functions
 

@@ -1,13 +1,32 @@
 [workspace]
 members = [
-    "crates/rusty-knowledge",
-    "crates/rusty-knowledge-todoist",
+    "crates/holon",
+    "crates/holon-todoist",
+    "crates/holon-api",
+    "crates/holon-core",
+    "crates/holon-orgmode",
+    "crates/holon-filesystem",
     "crates/query-render",
-    "crates/rusty-knowledge-macros",
-    "crates/rusty-knowledge-macros-test",
+    "crates/holon-macros",
+    "crates/holon-macros-test",
     "frontends/tui",
 ]
 exclude = [
     "frontends/flutter/rust",
 ]
 resolver = "2"
+
+# Coverage profile for runtime code coverage collection
+# This profile enables LLVM source-based coverage instrumentation
+# Usage: cargo build --profile coverage
+[profile.coverage]
+inherits = "dev"
+debug = true
+# Enable LLVM source-based code coverage instrumentation
+# This adds -Cinstrument-coverage flag automatically
+[profile.coverage.package."*"]
+# Coverage instrumentation is enabled via RUSTFLAGS environment variable
+# See scripts/run-with-coverage.sh for usage
+
+#[patch.crates-io]
+#sqlparser = { version = "0.33", default-features = false, features = [] }

@@ -1,0 +1,19 @@
+# Typos configuration
+# https://github.com/crate-ci/typos
+
+[files]
+extend-exclude = [
+    "target/",
+    "Cargo.lock",
+    "*.lock",
+    "external/",
+    "frontends/flutter/lib/src/rust/",  # Generated FRB code
+    "frontends/flutter/external/",
+]
+
+[default.extend-words]
+# Add false positive corrections here
+# Example: thi = "thi"
+
+[default.extend-identifiers]
+# Add identifier false positives here

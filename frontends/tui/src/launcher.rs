@@ -1,32 +1,27 @@
-use super::{app_main::AppMain, state::State, config::KeyBindingConfig};
-use r3bl_tui::{CommonResult, InputEvent, TerminalWindow, KeyPress, Key, KeyState, ok};
-use std::sync::Arc;
+use super::{app_main::AppMain, config::KeyBindingConfig, state::State};
+use ferrous_di::ServiceCollectionModuleExt;
+use r3bl_tui::{ok, CommonResult, InputEvent, Key, KeyPress, KeyState, TerminalWindow};
 use std::collections::HashMap;
 use std::path::PathBuf;
-use rusty_knowledge::api::backend_engine::BackendEngine;
-use rusty_knowledge::di;
-use ferrous_di::{ServiceCollection, ServiceCollectionModuleExt, Resolver};
+use std::sync::Arc;
 
 pub async fn run_app(db_path: PathBuf, keybindings_path: Option<PathBuf>) -> CommonResult<()> {
     let app = AppMain::new_boxed();
 
-    let mut services = ServiceCollection::new();
-
+    // Use shared DI setup function
     let todoist_api_key = std::env::var("TODOIST_API_KEY").ok();
-    if let Some(api_key) = &todoist_api_key {
-        services.add_singleton(rusty_knowledge_todoist::di::TodoistConfig::new(Some(api_key.clone())));
-    }
-
-    // Register Todoist module BEFORE core services (so providers are registered before OperationModule collects them)
-    services.add_module_mut(rusty_knowledge_todoist::di::TodoistModule)
-        .map_err(|e| miette::miette!("Failed to register TodoistModule: {}", e))?;
-
-    di::register_core_services(&mut services, db_path.clone())
-        .map_err(|e| miette::miette!("Failed to register core services: {}", e))?;
-
-    let provider = services.build();
-    let engine = Resolver::get_required::<BackendEngine>(&provider);
-
+    let engine = holon::di::create_backend_engine(db_path.clone(), |services| {
+        // Register Todoist module if API key is present
+        if let Some(api_key) = &todoist_api_key {
+            services.add_singleton(holon_todoist::di::TodoistConfig::new(Some(api_key.clone())));
+            services
+                .add_module_mut(holon_todoist::di::TodoistModule)
+                .map_err(|e| anyhow::anyhow!("Failed to register TodoistModule: {}", e))?;
+        }
+        Ok(())
+    })
+    .await
+    .map_err(|e| miette::miette!("Failed to create backend engine: {}", e))?;
 
     // TODO: Make queries user-configurable
     let prql_query = if todoist_api_key.is_some() {
@@ -68,7 +63,8 @@ render (list hierarchical_sort:[parent_id, sort_key] item_template:(row (checkbo
     let params = HashMap::new();
 
     // Query and set up CDC streaming
-    let (render_spec, initial_data, cdc_stream) = engine.query_and_watch(prql_query, params)
+    let (render_spec, initial_data, cdc_stream) = engine
+        .query_and_watch(prql_query, params)
         .await
         .map_err(|e| miette::miette!("Failed to query blocks: {}", e))?;
 
@@ -80,7 +76,11 @@ render (list hierarchical_sort:[parent_id, sort_key] item_template:(row (checkbo
                 Arc::new(config)
             }
             Err(e) => {
-                eprintln!("Warning: Failed to load keybindings from {}: {}", path.display(), e);
+                eprintln!(
+                    "Warning: Failed to load keybindings from {}: {}",
+                    path.display(),
+                    e
+                );
                 eprintln!("Using empty keybindings configuration");
                 Arc::new(KeyBindingConfig::empty())
             }
@@ -99,14 +99,18 @@ render (list hierarchical_sort:[parent_id, sort_key] item_template:(row (checkbo
     // Spawn background task to forward CDC stream to channel and set pending flag
     let pending_flag = initial_state.has_pending_cdc_changes.clone();
     tokio::spawn(async move {
+        use holon::storage::turso::RowChange;
         use tokio_stream::StreamExt;
 
         let mut stream = cdc_stream;
 
-        while let Some(change) = stream.next().await {
-            if tx.send(change).is_err() {
-                // Receiver dropped, exit task
-                break;
+        while let Some(batch_with_metadata) = stream.next().await {
+            // Unwrap the batch and send individual RowChange items
+            for row_change in batch_with_metadata.inner.items {
+                if tx.send(row_change).is_err() {
+                    // Receiver dropped, exit task
+                    return;
+                }
             }
             // Set flag to indicate there are pending changes
             if let Ok(mut flag) = pending_flag.lock() {
@@ -137,7 +141,11 @@ render (list hierarchical_sort:[parent_id, sort_key] item_template:(row (checkbo
                 if has_changes {
                     // Send signal to trigger render
                     use r3bl_tui::TerminalWindowMainThreadSignal;
-                    if sender.send(TerminalWindowMainThreadSignal::Render(None)).await.is_err() {
+                    if sender
+                        .send(TerminalWindowMainThreadSignal::Render(None))
+                        .await
+                        .is_err()
+                    {
                         // Main thread dropped, exit
                         break;
                     }

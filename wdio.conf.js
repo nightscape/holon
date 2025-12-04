@@ -7,7 +7,7 @@ export const config = {
   capabilities: [{
     maxInstances: 1,
     'tauri:options': {
-      application: './src-tauri/target/debug/rusty-knowledge-tauri'
+      application: './src-tauri/target/debug/holon-tauri'
     }
   }],
 

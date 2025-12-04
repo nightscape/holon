@@ -1,0 +1,51 @@
+# Holon theme family - warm, professional, alive
+# Based on VISION_UI.md design philosophy
+
+themes:
+  holonLight:
+    name: "Holon Light"
+    isDark: false
+    colors:
+      # Primary colors - Deep teal for interactions
+      primary: "#2A7D7D"
+      primaryDark: "#1E5C5C"
+      primaryLight: "#3A9E9E"
+      # Text colors - Warm charcoal tones
+      textPrimary: "#2D2D2A"
+      textSecondary: "#6B6B65"
+      textTertiary: "#9A9A92"
+      # Background colors - Warm whites and creams
+      background: "#FAFAF8"
+      backgroundSecondary: "#F5F4F0"
+      sidebarBackground: "#F0EFE9"
+      # Border colors
+      border: "#E5E4DE"
+      borderFocus: "#2A7D7D"
+      # Semantic colors - Muted, not alarming
+      success: "#7D9D7D"    # Sage green
+      error: "#C97064"      # Muted rose
+      warning: "#D4A373"    # Warm amber
+
+  holonDark:
+    name: "Holon Dark"
+    isDark: true
+    colors:
+      # Primary colors - Light teal for interactions
+      primary: "#5DBDBD"
+      primaryDark: "#4A9999"
+      primaryLight: "#7DD4D4"
+      # Text colors - Warm off-whites
+      textPrimary: "#E8E6E1"
+      textSecondary: "#9D9D95"
+      textTertiary: "#7A7A72"
+      # Background colors - Warm darks
+      background: "#1A1A18"
+      backgroundSecondary: "#252522"
+      sidebarBackground: "#2A2A27"
+      # Border colors
+      border: "#3A3A36"
+      borderFocus: "#5DBDBD"
+      # Semantic colors - Same across themes for consistency
+      success: "#7D9D7D"    # Sage green
+      error: "#C97064"      # Muted rose
+      warning: "#D4A373"    # Warm amber

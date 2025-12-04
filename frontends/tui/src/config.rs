@@ -1,8 +1,8 @@
-use serde::Deserialize;
-use std::path::Path;
-use std::fs;
 use anyhow::Result;
-use r3bl_tui::{Key, SpecialKey, KeyState, ModifierKeysMask};
+use r3bl_tui::{Key, KeyState, ModifierKeysMask, SpecialKey};
+use serde::Deserialize;
+use std::fs;
+use std::path::Path;
 
 /// Configuration for key bindings
 #[derive(Debug, Clone, Deserialize)]
@@ -24,8 +24,8 @@ pub struct KeyBinding {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(untagged)]
 pub enum KeySpec {
-    Character(String),  // Single character like "x"
-    Special(String),    // Special key like "Up", "Down", "Tab", etc.
+    Character(String), // Single character like "x"
+    Special(String),   // Special key like "Up", "Down", "Tab", etc.
 }
 
 /// Modifier key specification
@@ -49,18 +49,20 @@ pub enum BindingContext {
 #[derive(Debug, Clone, Deserialize)]
 #[serde(untagged)]
 pub enum Action {
-    Operation(String),  // Operation name like "indent", "outdent"
-    Special(String),    // Special action like "toggle_completion", "start_editing", "save_and_exit"
+    Operation(String), // Operation name like "indent", "outdent"
+    Special(String),   // Special action like "toggle_completion", "start_editing", "save_and_exit"
 }
 
 impl KeyBindingConfig {
     /// Load key bindings from a YAML file
     pub fn load_from_file(path: &Path) -> Result<Self> {
-        let content = fs::read_to_string(path)
-            .map_err(|e| anyhow::anyhow!("Failed to read keybindings file {}: {}", path.display(), e))?;
+        let content = fs::read_to_string(path).map_err(|e| {
+            anyhow::anyhow!("Failed to read keybindings file {}: {}", path.display(), e)
+        })?;
 
-        let config: KeyBindingConfig = serde_yaml::from_str(&content)
-            .map_err(|e| anyhow::anyhow!("Failed to parse keybindings YAML {}: {}", path.display(), e))?;
+        let config: KeyBindingConfig = serde_yaml::from_str(&content).map_err(|e| {
+            anyhow::anyhow!("Failed to parse keybindings YAML {}: {}", path.display(), e)
+        })?;
 
         Ok(config)
     }
@@ -82,7 +84,11 @@ impl KeyBindingConfig {
             let key_matches = match (&binding.key, key) {
                 (KeySpec::Character(ref spec_char), Key::Character(actual_char)) => {
                     // Handle single character strings
-                    spec_char.chars().next().map(|c| c == *actual_char).unwrap_or(false)
+                    spec_char
+                        .chars()
+                        .next()
+                        .map(|c| c == *actual_char)
+                        .unwrap_or(false)
                 }
                 (KeySpec::Special(ref spec_name), Key::SpecialKey(actual_special)) => {
                     Self::special_key_matches(spec_name, actual_special)
@@ -95,21 +101,19 @@ impl KeyBindingConfig {
             }
 
             // Check modifiers match
-            let modifiers_match = binding.modifiers.iter().all(|mod_spec| {
-                match mod_spec {
-                    ModifierSpec::Ctrl => modifiers.ctrl_key_state == KeyState::Pressed,
-                    ModifierSpec::Shift => modifiers.shift_key_state == KeyState::Pressed,
-                    ModifierSpec::Alt => modifiers.alt_key_state == KeyState::Pressed,
-                }
+            let modifiers_match = binding.modifiers.iter().all(|mod_spec| match mod_spec {
+                ModifierSpec::Ctrl => modifiers.ctrl_key_state == KeyState::Pressed,
+                ModifierSpec::Shift => modifiers.shift_key_state == KeyState::Pressed,
+                ModifierSpec::Alt => modifiers.alt_key_state == KeyState::Pressed,
             }) && {
                 // Ensure no extra modifiers are pressed that aren't in the binding
                 let required_ctrl = binding.modifiers.contains(&ModifierSpec::Ctrl);
                 let required_shift = binding.modifiers.contains(&ModifierSpec::Shift);
                 let required_alt = binding.modifiers.contains(&ModifierSpec::Alt);
 
-                (modifiers.ctrl_key_state == KeyState::Pressed) == required_ctrl &&
-                (modifiers.shift_key_state == KeyState::Pressed) == required_shift &&
-                (modifiers.alt_key_state == KeyState::Pressed) == required_alt
+                (modifiers.ctrl_key_state == KeyState::Pressed) == required_ctrl
+                    && (modifiers.shift_key_state == KeyState::Pressed) == required_shift
+                    && (modifiers.alt_key_state == KeyState::Pressed) == required_alt
             };
 
             if modifiers_match {
@@ -147,4 +151,3 @@ impl KeyBindingConfig {
         }
     }
 }
-

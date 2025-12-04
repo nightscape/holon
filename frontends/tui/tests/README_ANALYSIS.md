@@ -2,7 +2,7 @@
 
 ## Overview
 
-This analysis compares testing patterns between R3BL open-core and rusty-knowledge TUI projects. R3BL has a sophisticated, production-grade testing infrastructure that rusty-knowledge can selectively adopt for improved reliability and maintainability.
+This analysis compares testing patterns between R3BL open-core and holon TUI projects. R3BL has a sophisticated, production-grade testing infrastructure that holon can selectively adopt for improved reliability and maintainability.
 
 **Analysis Date:** 2025-11-07
 **Status:** Complete
@@ -91,13 +91,13 @@ This analysis compares testing patterns between R3BL open-core and rusty-knowled
 - Hybrid approach: unit + mock + integration tests
 - 18+ VT-100 conformance tests
 
-### Rusty-Knowledge Strengths
+### holon Strengths
 - PageObject pattern for readable tests
 - Simple, direct PTY implementation
 - PtySession wrapper for convenience
 - Lower cognitive overhead (no macros)
 
-### Critical Gaps in Rusty-Knowledge
+### Critical Gaps in holon
 1. **Hanging Tests** - No timeout enforcement [HIGH RISK]
 2. **Custom ANSI Stripping** - 30 LOC fragile implementation [MEDIUM RISK]
 3. **Input Timing** - Keys sent instantly, no delays [MEDIUM RISK]
@@ -160,8 +160,8 @@ Located in `/Users/martin/Workspaces/rust/r3bl-open-core/`
 - **Mock Devices:** `tui/src/core/test_fixtures/input_device_fixtures/` and `output_device_fixtures/`
 - **Integration Tests:** `tui/src/core/ansi/terminal_raw_mode/integration_tests/`
 
-### Rusty-Knowledge Current Implementation
-Located in `/Users/martin/Workspaces/pkm/rusty-knowledge/`
+### holon Current Implementation
+Located in `/Users/martin/Workspaces/pkm/holon/`
 
 **Current test structure:**
 - `frontends/tui/tests/navigation_test.rs` - PTY-based navigation test
@@ -199,7 +199,7 @@ Located in `/Users/martin/Workspaces/pkm/rusty-knowledge/`
 ## Common Questions
 
 **Q: Should we adopt all of R3BL's testing infrastructure?**
-A: No. R3BL's 927 LOC of fixtures is comprehensive but heavy. Adopt 2-3 critical patterns (Deadline, ANSI handling, key timing) while keeping rusty-knowledge's simpler approach.
+A: No. R3BL's 927 LOC of fixtures is comprehensive but heavy. Adopt 2-3 critical patterns (Deadline, ANSI handling, key timing) while keeping holon's simpler approach.
 
 **Q: How long will improvements take?**
 A: HIGH PRIORITY items take ~1 hour for significant impact. MEDIUM PRIORITY items (building test pyramid) take 4-6 hours. LOW PRIORITY polish takes 2-4+ hours.
@@ -220,7 +220,7 @@ A: 20+ unit tests : 5-10 mock tests : 1-2 PTY tests (roughly 3:2:1 ratio). Curre
 **Analysis by:** Claude Code (Anthropic)
 **Date:** 2025-11-07
 **R3BL Reference:** `/Users/martin/Workspaces/rust/r3bl-open-core`
-**Project Reference:** `/Users/martin/Workspaces/pkm/rusty-knowledge`
+**Project Reference:** `/Users/martin/Workspaces/pkm/holon`
 
 ---
 

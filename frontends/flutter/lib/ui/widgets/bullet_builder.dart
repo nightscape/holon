@@ -2,7 +2,11 @@
 library;
 
 import 'package:flutter/material.dart';
+import 'package:mix/mix.dart';
+import 'package:hooks_riverpod/hooks_riverpod.dart';
 import '../../data/rust_block_ops.dart' show RustBlock;
+import '../../styles/app_styles.dart';
+import '../../providers/settings_provider.dart';
 
 /// Build the bullet widget for a block (LogSeq-style).
 ///
@@ -22,42 +26,48 @@ Widget buildBullet(
   bool isCollapsed,
   VoidCallback? onToggle,
 ) {
-  final theme = Theme.of(context);
+  return Consumer(
+    builder: (context, ref, child) {
+      final colors = ref.watch(appColorsProvider);
 
-  return GestureDetector(
-    onTap: hasChildren ? onToggle : null,
-    behavior: HitTestBehavior.opaque,
-    child: SizedBox(
-      width: 20,
-      height: 20,
-      child: hasChildren
-          ? _buildExpandableIcon(theme, isCollapsed)
-          : _buildSimpleBullet(theme),
-    ),
+      return GestureDetector(
+        onTap: hasChildren ? onToggle : null,
+        behavior: HitTestBehavior.opaque,
+        child: SizedBox(
+          width: 20,
+          height: 20,
+          child: hasChildren
+              ? _buildExpandableIcon(colors, isCollapsed)
+              : _buildSimpleBullet(colors),
+        ),
+      );
+    },
   );
 }
 
 /// Build the expandable/collapsible icon for blocks with children.
-Widget _buildExpandableIcon(ThemeData theme, bool isCollapsed) {
+Widget _buildExpandableIcon(AppColors colors, bool isCollapsed) {
   return Icon(
     isCollapsed ? Icons.chevron_right : Icons.expand_more,
     size: 20,
-    color: theme.iconTheme.color ?? Colors.grey,
+    color: colors.textSecondary,
   );
 }
 
 /// Build a simple bullet point for blocks without children (LogSeq-style).
-Widget _buildSimpleBullet(ThemeData theme) {
-  return Container(
-    width: 8,
-    height: 8,
-    margin: const EdgeInsets.all(6),
-    decoration: BoxDecoration(
-      shape: BoxShape.circle,
-      border: Border.all(
-        color: theme.primaryColor.withValues(alpha: 0.6),
-        width: 2,
-      ),
-    ),
+Widget _buildSimpleBullet(AppColors colors) {
+  return Box(
+    style: BoxStyler()
+        .constraints(BoxConstraintsMix(minWidth: 8, minHeight: 8))
+        .margin(EdgeInsetsGeometryMix.all(6))
+        .decoration(DecorationMix.shape(BoxShape.circle))
+        .border(
+          BoxBorderMix.all(
+            BorderSideMix(
+              color: colors.primary.withValues(alpha: 0.6),
+              width: 2,
+            ),
+          ),
+        ),
   );
 }

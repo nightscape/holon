@@ -2,22 +2,22 @@ mod app_main;
 mod components;
 mod config;
 mod launcher;
-mod state;
 mod render_interpreter;
+mod state;
 mod stylesheet;
 mod ui_element;
 
 use launcher::run_app;
-use r3bl_tui::{CommonResult, log::try_initialize_logging_global};
-use std::path::PathBuf;
+use r3bl_tui::{log::try_initialize_logging_global, CommonResult};
 use std::fs::OpenOptions;
-use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt};
+use std::path::PathBuf;
+use tracing_subscriber::{fmt, layer::SubscriberExt, util::SubscriberInitExt, EnvFilter};
 
 #[tokio::main]
 async fn main() -> CommonResult<()> {
     // Disable r3bl logging to prevent breaking TUI display
     try_initialize_logging_global(tracing_core::LevelFilter::OFF).ok();
-    
+
     // Set up file-based logging for application logs (Todoist sync, etc.)
     // Logs go to ~/.config/tui/tui.log or ./tui.log
     let log_file_path = if let Some(home) = std::env::var_os("HOME") {
@@ -30,24 +30,35 @@ async fn main() -> CommonResult<()> {
     } else {
         PathBuf::from("tui.log")
     };
-    
+
     let log_file = OpenOptions::new()
         .create(true)
         .append(true)
         .open(&log_file_path)
         .unwrap_or_else(|_| {
             // Fallback to stderr if file can't be opened
-            eprintln!("Warning: Could not open log file {:?}, logging to stderr", log_file_path);
+            eprintln!(
+                "Warning: Could not open log file {:?}, logging to stderr",
+                log_file_path
+            );
             std::fs::File::create("tui.log").unwrap()
         });
-    
+
     // Initialize tracing subscriber that writes to file
     // Default to INFO level, can be overridden with RUST_LOG env var
+    // Suppress Turso's verbose TRACE/DEBUG logs by default to prevent log spam
+    // Users can override by setting RUST_LOG=turso_core=debug if needed
+    let filter = EnvFilter::try_from_default_env()
+        .unwrap_or_else(|_| EnvFilter::new("info"))
+        // Add Turso filters after env filter so they can be overridden if needed
+        .add_directive("turso_core=warn".parse().unwrap())
+        .add_directive("turso_core::storage=warn".parse().unwrap())
+        .add_directive("turso_core::vdbe=warn".parse().unwrap());
+
     tracing_subscriber::registry()
+        .with(filter)
         .with(
-            fmt::layer()
-                .with_writer(log_file)
-                .with_ansi(false) // Disable ANSI colors for file output
+            fmt::layer().with_writer(log_file).with_ansi(false), // Disable ANSI colors for file output
         )
         .init();
 

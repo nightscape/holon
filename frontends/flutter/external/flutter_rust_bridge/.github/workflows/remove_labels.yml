@@ -1,0 +1,15 @@
+name: Remove labels
+
+on: [issue_comment]
+
+jobs:
+  remove_labels:
+    if: github.repository_owner == 'fzyzcjy'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions-ecosystem/action-remove-labels@v1
+        if: ${{ github.event.actor.login != 'fzyzcjy' }}
+        with:
+          labels: |
+            await response

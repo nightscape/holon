@@ -1,0 +1,20 @@
+# Tomorrow Night theme family
+themes:
+  tomorrowNight:
+    name: "Tomorrow Night"
+    isDark: true
+    colors:
+      primary: "#81A2BE"
+      primaryDark: "#5F819D"
+      primaryLight: "#B5CEE7"
+      textPrimary: "#C5C8C6"
+      textSecondary: "#E0E0E0"
+      textTertiary: "#969896"
+      background: "#1D1F21"
+      backgroundSecondary: "#282A2E"
+      sidebarBackground: "#282A2E"
+      border: "#373B41"
+      borderFocus: "#81A2BE"
+      success: "#B5BD68"
+      error: "#CC6666"
+      warning: "#F0C674"

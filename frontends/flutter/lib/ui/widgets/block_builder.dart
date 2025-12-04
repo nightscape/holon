@@ -12,7 +12,11 @@ import '../../data/rust_block_ops.dart' show RustBlock;
 /// - [isEditing]: Whether the block is currently being edited
 ///
 /// Returns a widget that displays the block's content.
-Widget buildBlockContent(BuildContext context, RustBlock block, bool isEditing) {
+Widget buildBlockContent(
+  BuildContext context,
+  RustBlock block,
+  bool isEditing,
+) {
   // NOTE: With opaque types, we cannot access block.content directly
   // The outliner-flutter library handles content access via BlockOps
   // This builder just needs to return null to use the default renderer

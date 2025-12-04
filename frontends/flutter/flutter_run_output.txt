@@ -1,0 +1,2297 @@
+Launching lib/main.dart on sdk gphone64 arm64 in debug mode...
+Running Gradle task 'assembleDebug'...
+Picked up _JAVA_OPTIONS: -Dapple.awt.UIElement=true
+Resolving dependencies...
+Downloading packages...
++ adaptive_number 1.0.0
++ args 2.4.2 (2.7.0 available)
++ async 2.13.0
++ build_tool 1.0.0 from path /Users/martin/Workspaces/pkm/holon/frontends/flutter/rust_builder/cargokit/gradle/../build_tool
++ collection 1.18.0 (1.19.1 available)
++ convert 3.1.1 (3.1.2 available)
++ crypto 3.0.3 (3.0.7 available)
++ ed25519_edwards 0.3.1
++ fixnum 1.1.1
++ github 9.17.0 (9.25.0 available)
++ hex 0.2.0
++ http 1.1.0 (1.6.0 available)
++ http_parser 4.0.2 (4.1.2 available)
++ json_annotation 4.9.0
++ logging 1.2.0 (1.3.0 available)
++ meta 1.17.0
++ path 1.8.0 (1.9.1 available)
++ petitparser 5.4.0 (7.0.1 available)
++ source_span 1.10.0 (1.10.1 available)
++ string_scanner 1.4.1
++ term_glyph 1.2.2
++ toml 0.14.0 (0.17.0 available)
++ typed_data 1.4.0
++ version 3.0.0 (3.0.2 available)
++ yaml 3.1.2 (3.1.3 available)
+Changed 25 dependencies!
+14 packages have newer versions incompatible with dependency constraints.
+Try `dart pub outdated` for more information.
+Compiling bin/build_tool_runner.dart to kernel file bin/build_tool_runner.dill.
+INFO: Precompiled binaries are disabled
+INFO: Building rust_lib_holon for aarch64-linux-android
+SEVERE: ================================================================================
+SEVERE: Cargokit BuildTool failed with error:
+SEVERE: --------------------------------------------------------------------------------
+SEVERE: External Command: rustup "run" "stable" "cargo" "build" "--manifest-path" "/Users/martin/Workspaces/pkm/holon/frontends/flutter/rust/Cargo.toml" "-p" "rust_lib_holon" "--target" "aarch64-linux-android" "--target-dir" "/Users/martin/Workspaces/pkm/holon/frontends/flutter/build/rust_lib_holon/build"
+SEVERE: Returned Exit Code: 101
+SEVERE: --------------------------------------------------------------------------------
+SEVERE: STDOUT:
+SEVERE: --------------------------------------------------------------------------------
+SEVERE: STDERR:
+SEVERE: Compiling proc-macro2 v1.0.103
+SEVERE:    Compiling unicode-ident v1.0.12
+SEVERE:    Compiling quote v1.0.41
+SEVERE:    Compiling libc v0.2.177
+SEVERE:    Compiling cfg-if v1.0.0
+SEVERE:    Compiling find-msvc-tools v0.1.4
+SEVERE:    Compiling shlex v1.3.0
+SEVERE:    Compiling serde_core v1.0.228
+SEVERE:    Compiling serde v1.0.228
+SEVERE:    Compiling autocfg v1.1.0
+SEVERE:    Compiling memchr v2.6.4
+SEVERE:    Compiling log v0.4.28
+SEVERE:    Compiling portable-atomic v1.11.1
+SEVERE:    Compiling pin-project-lite v0.2.16
+SEVERE:    Compiling critical-section v1.2.0
+SEVERE:    Compiling bytes v1.10.1
+SEVERE:    Compiling heck v0.5.0
+SEVERE:    Compiling parking_lot_core v0.9.12
+SEVERE:    Compiling getrandom v0.3.4
+SEVERE:    Compiling scopeguard v1.2.0
+SEVERE:    Compiling lock_api v0.4.14
+SEVERE:    Compiling typenum v1.17.0
+SEVERE:    Compiling version_check v0.9.4
+SEVERE:    Compiling bitflags v2.10.0
+SEVERE:    Compiling futures-core v0.3.31
+SEVERE:    Compiling slab v0.4.9
+SEVERE:    Compiling zeroize v1.8.2
+SEVERE:    Compiling stable_deref_trait v1.2.1
+SEVERE:    Compiling futures-io v0.3.31
+SEVERE:    Compiling futures-sink v0.3.31
+SEVERE:    Compiling futures-task v0.3.31
+SEVERE:    Compiling futures-channel v0.3.31
+SEVERE:    Compiling pin-utils v0.1.0
+SEVERE:    Compiling itoa v1.0.15
+SEVERE:    Compiling strsim v0.11.1
+SEVERE:    Compiling generic-array v0.14.7
+SEVERE:    Compiling thiserror v2.0.17
+SEVERE:    Compiling subtle v2.6.1
+SEVERE:    Compiling byteorder v1.5.0
+SEVERE:    Compiling cfg_aliases v0.2.1
+SEVERE:    Compiling anyhow v1.0.100
+SEVERE:    Compiling icu_normalizer_data v2.0.0
+SEVERE:    Compiling rustversion v1.0.22
+SEVERE:    Compiling icu_properties_data v2.0.1
+SEVERE:    Compiling zerocopy v0.8.27
+SEVERE:    Compiling equivalent v1.0.2
+SEVERE:    Compiling object v0.32.1
+SEVERE:    Compiling gimli v0.28.1
+SEVERE:    Compiling allocator-api2 v0.2.21
+SEVERE:    Compiling adler v1.0.2
+SEVERE:    Compiling miniz_oxide v0.7.1
+SEVERE:    Compiling addr2line v0.21.0
+SEVERE:    Compiling syn v2.0.108
+SEVERE:    Compiling rustc-demangle v0.1.23
+SEVERE:    Compiling pkg-config v0.3.32
+SEVERE:    Compiling foldhash v0.2.0
+SEVERE:    Compiling vcpkg v0.2.15
+SEVERE:    Compiling hashbrown v0.16.0
+SEVERE:    Compiling ident_case v1.0.1
+SEVERE:    Compiling fnv v1.0.7
+SEVERE:    Compiling num-traits v0.2.19
+SEVERE:    Compiling serde_json v1.0.145
+SEVERE:    Compiling paste v1.0.15
+SEVERE:    Compiling fastrand v2.3.0
+SEVERE:    Compiling jobserver v0.1.34
+SEVERE:    Compiling getrandom v0.2.16
+SEVERE:    Compiling mio v1.1.0
+SEVERE:    Compiling cc v1.2.43
+SEVERE:    Compiling signal-hook-registry v1.4.6
+SEVERE:    Compiling socket2 v0.6.1
+SEVERE:    Compiling once_cell v1.21.3
+SEVERE:    Compiling rand_core v0.6.4
+SEVERE:    Compiling tracing-core v0.1.34
+SEVERE:    Compiling ryu v1.0.20
+SEVERE:    Compiling regex-syntax v0.8.8
+SEVERE:    Compiling rustix v1.1.2
+SEVERE:    Compiling rand_core v0.9.3
+SEVERE:    Compiling errno v0.3.14
+SEVERE:    Compiling http v1.3.1
+SEVERE:    Compiling aho-corasick v1.1.2
+SEVERE:    Compiling synstructure v0.13.2
+SEVERE:    Compiling backtrace v0.3.69
+SEVERE:    Compiling darling_core v0.20.11
+SEVERE:    Compiling hybrid-array v0.4.5
+SEVERE:    Compiling ring v0.17.14
+SEVERE:    Compiling semver v1.0.27
+SEVERE:    Compiling regex-automata v0.4.13
+SEVERE:    Compiling rustc_version v0.4.1
+SEVERE:    Compiling indexmap v2.12.0
+SEVERE:    Compiling litemap v0.8.0
+SEVERE:    Compiling thiserror v1.0.69
+SEVERE:    Compiling writeable v0.6.1
+SEVERE:    Compiling lazy_static v1.5.0
+SEVERE:    Compiling serde_derive v1.0.228
+SEVERE:    Compiling zerofrom-derive v0.1.6
+SEVERE:    Compiling yoke-derive v0.8.0
+SEVERE:    Compiling tokio-macros v2.6.0
+SEVERE:    Compiling zerovec-derive v0.11.1
+SEVERE:    Compiling displaydoc v0.2.5
+SEVERE:    Compiling tracing-attributes v0.1.30
+SEVERE:    Compiling futures-macro v0.3.31
+SEVERE:    Compiling thiserror-impl v2.0.17
+SEVERE:    Compiling ppv-lite86 v0.2.21
+SEVERE:    Compiling darling_macro v0.20.11
+SEVERE:    Compiling zerofrom v0.1.6
+SEVERE:    Compiling rand_chacha v0.9.0
+SEVERE:    Compiling darling v0.20.11
+SEVERE:    Compiling futures-util v0.3.31
+SEVERE:    Compiling clap_derive v4.5.49
+SEVERE:    Compiling rand v0.9.2
+SEVERE:    Compiling crypto-common v0.1.6
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:61:20
+SEVERE:    |
+SEVERE: 61 |     pub(super) use linux_raw_sys::io_uring::*;
+SEVERE:    |                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:670:9
+SEVERE:     |
+SEVERE: 670 |     use linux_raw_sys::general::__kernel_clockid_t as clockid_t;
+SEVERE:     |         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0432]: unresolved import `crate::io::ReadWriteFlags`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:49:9
+SEVERE:    |
+SEVERE: 49 | pub use crate::io::ReadWriteFlags;
+SEVERE:    |         ^^^^^^^^^^^^^^^^^^^^^^^^^ no `ReadWriteFlags` in `io`
+SEVERE:    |
+SEVERE: note: found an item that was configured out
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io/read_write.rs:14:29
+SEVERE:    |
+SEVERE: 13 | #[cfg(all(linux_kernel, not(target_os = "android")))]
+SEVERE:    |                            ----------------------- the item is gated here
+SEVERE: 14 | pub use backend::io::types::ReadWriteFlags;
+SEVERE:    |                             ^^^^^^^^^^^^^^
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:  --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/setns.rs:9:5
+SEVERE:   |
+SEVERE: 9 | use linux_raw_sys::general::{
+SEVERE:   |     ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   |
+SEVERE:   = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:  --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/kernel_sigset.rs:9:5
+SEVERE:   |
+SEVERE: 9 | use linux_raw_sys::general::{kernel_sigset_t, _NSIG};
+SEVERE:   |     ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   |
+SEVERE:   = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0432]: unresolved import `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:38:5
+SEVERE:    |
+SEVERE: 38 | use linux_raw_sys::net;
+SEVERE:    |     ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE:    Compiling thiserror-impl v1.0.69
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:32:25
+SEVERE:    |
+SEVERE: 32 |         const SIZE_U8 = linux_raw_sys::general::FUTEX2_SIZE_U8;
+SEVERE:    |                         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:34:26
+SEVERE:    |
+SEVERE: 34 |         const SIZE_U16 = linux_raw_sys::general::FUTEX2_SIZE_U16;
+SEVERE:    |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:36:26
+SEVERE:    |
+SEVERE: 36 |         const SIZE_U32 = linux_raw_sys::general::FUTEX2_SIZE_U32;
+SEVERE:    |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:38:26
+SEVERE:    |
+SEVERE: 38 |         const SIZE_U64 = linux_raw_sys::general::FUTEX2_SIZE_U64;
+SEVERE:    |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:40:27
+SEVERE:    |
+SEVERE: 40 |         const SIZE_MASK = linux_raw_sys::general::FUTEX2_SIZE_MASK;
+SEVERE:    |                           ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:43:22
+SEVERE:    |
+SEVERE: 43 |         const NUMA = linux_raw_sys::general::FUTEX2_NUMA;
+SEVERE:    |                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:46:25
+SEVERE:    |
+SEVERE: 46 |         const PRIVATE = linux_raw_sys::general::FUTEX2_PRIVATE;
+SEVERE:    |                         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:88:26
+SEVERE:    |
+SEVERE: 88 | pub const WAITERS: u32 = linux_raw_sys::general::FUTEX_WAITERS;
+SEVERE:    |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE:    Compiling tracing v0.1.41
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/futex.rs:91:29
+SEVERE:    |
+SEVERE: 91 | pub const OWNER_DIED: u32 = linux_raw_sys::general::FUTEX_OWNER_DIED;
+SEVERE:    |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:353:18
+SEVERE:     |
+SEVERE: 353 |     header: &mut linux_raw_sys::general::__user_cap_header_struct,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:354:29
+SEVERE:     |
+SEVERE: 354 |     data: &mut [MaybeUninit<linux_raw_sys::general::__user_cap_data_struct>],
+SEVERE:     |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:358:24
+SEVERE:     |
+SEVERE: 358 |             hdrp: *mut linux_raw_sys::general::__user_cap_header_struct,
+SEVERE:     |                        ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:359:24
+SEVERE:     |
+SEVERE: 359 |             data: *mut linux_raw_sys::general::__user_cap_data_struct
+SEVERE:     |                        ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:367:25
+SEVERE:     |
+SEVERE: 367 |                 .cast::<linux_raw_sys::general::__user_cap_data_struct>(),
+SEVERE:     |                         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:375:18
+SEVERE:     |
+SEVERE: 375 |     header: &mut linux_raw_sys::general::__user_cap_header_struct,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:376:13
+SEVERE:     |
+SEVERE: 376 |     data: &[linux_raw_sys::general::__user_cap_data_struct],
+SEVERE:     |             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:380:24
+SEVERE:     |
+SEVERE: 380 |             hdrp: *mut linux_raw_sys::general::__user_cap_header_struct,
+SEVERE:     |                        ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/backend/libc/thread/syscalls.rs:381:26
+SEVERE:     |
+SEVERE: 381 |             data: *const linux_raw_sys::general::__user_cap_data_struct
+SEVERE:     |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:359:28
+SEVERE:     |
+SEVERE: 359 |     RegisterBuffers = sys::io_uring_register_op::IORING_REGISTER_BUFFERS as _,
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:362:30
+SEVERE:     |
+SEVERE: 362 |     UnregisterBuffers = sys::io_uring_register_op::IORING_UNREGISTER_BUFFERS as _,
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:365:26
+SEVERE:     |
+SEVERE: 365 |     RegisterFiles = sys::io_uring_register_op::IORING_REGISTER_FILES as _,
+SEVERE:     |                          ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:368:28
+SEVERE:     |
+SEVERE: 368 |     UnregisterFiles = sys::io_uring_register_op::IORING_UNREGISTER_FILES as _,
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:371:28
+SEVERE:     |
+SEVERE: 371 |     RegisterEventfd = sys::io_uring_register_op::IORING_REGISTER_EVENTFD as _,
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:374:30
+SEVERE:     |
+SEVERE: 374 |     UnregisterEventfd = sys::io_uring_register_op::IORING_UNREGISTER_EVENTFD as _,
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:377:32
+SEVERE:     |
+SEVERE: 377 |     RegisterFilesUpdate = sys::io_uring_register_op::IORING_REGISTER_FILES_UPDATE as _,
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:380:33
+SEVERE:     |
+SEVERE: 380 |     RegisterEventfdAsync = sys::io_uring_register_op::IORING_REGISTER_EVENTFD_ASYNC as _,
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:383:26
+SEVERE:     |
+SEVERE: 383 |     RegisterProbe = sys::io_uring_register_op::IORING_REGISTER_PROBE as _,
+SEVERE:     |                          ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:386:32
+SEVERE:     |
+SEVERE: 386 |     RegisterPersonality = sys::io_uring_register_op::IORING_REGISTER_PERSONALITY as _,
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:389:34
+SEVERE:     |
+SEVERE: 389 |     UnregisterPersonality = sys::io_uring_register_op::IORING_UNREGISTER_PERSONALITY as _,
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:392:33
+SEVERE:     |
+SEVERE: 392 |     RegisterRestrictions = sys::io_uring_register_op::IORING_REGISTER_RESTRICTIONS as _,
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:395:32
+SEVERE:     |
+SEVERE: 395 |     RegisterEnableRings = sys::io_uring_register_op::IORING_REGISTER_ENABLE_RINGS as _,
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:398:29
+SEVERE:     |
+SEVERE: 398 |     RegisterBuffers2 = sys::io_uring_register_op::IORING_REGISTER_BUFFERS2 as _,
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:401:34
+SEVERE:     |
+SEVERE: 401 |     RegisterBuffersUpdate = sys::io_uring_register_op::IORING_REGISTER_BUFFERS_UPDATE as _,
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:404:27
+SEVERE:     |
+SEVERE: 404 |     RegisterFiles2 = sys::io_uring_register_op::IORING_REGISTER_FILES2 as _,
+SEVERE:     |                           ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:407:33
+SEVERE:     |
+SEVERE: 407 |     RegisterFilesUpdate2 = sys::io_uring_register_op::IORING_REGISTER_FILES_UPDATE2 as _,
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:410:28
+SEVERE:     |
+SEVERE: 410 |     RegisterIowqAff = sys::io_uring_register_op::IORING_REGISTER_IOWQ_AFF as _,
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:413:30
+SEVERE:     |
+SEVERE: 413 |     UnregisterIowqAff = sys::io_uring_register_op::IORING_UNREGISTER_IOWQ_AFF as _,
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:416:35
+SEVERE:     |
+SEVERE: 416 |     RegisterIowqMaxWorkers = sys::io_uring_register_op::IORING_REGISTER_IOWQ_MAX_WORKERS as _,
+SEVERE:     |                                   ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:419:28
+SEVERE:     |
+SEVERE: 419 |     RegisterRingFds = sys::io_uring_register_op::IORING_REGISTER_RING_FDS as _,
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:422:30
+SEVERE:     |
+SEVERE: 422 |     UnregisterRingFds = sys::io_uring_register_op::IORING_UNREGISTER_RING_FDS as _,
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:425:29
+SEVERE:     |
+SEVERE: 425 |     RegisterPbufRing = sys::io_uring_register_op::IORING_REGISTER_PBUF_RING as _,
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:428:31
+SEVERE:     |
+SEVERE: 428 |     UnregisterPbufRing = sys::io_uring_register_op::IORING_UNREGISTER_PBUF_RING as _,
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:431:31
+SEVERE:     |
+SEVERE: 431 |     RegisterSyncCancel = sys::io_uring_register_op::IORING_REGISTER_SYNC_CANCEL as _,
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:434:35
+SEVERE:     |
+SEVERE: 434 |     RegisterFileAllocRange = sys::io_uring_register_op::IORING_REGISTER_FILE_ALLOC_RANGE as _,
+SEVERE:     |                                   ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:437:31
+SEVERE:     |
+SEVERE: 437 |     RegisterPbufStatus = sys::io_uring_register_op::IORING_REGISTER_PBUF_STATUS as _,
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:440:25
+SEVERE:     |
+SEVERE: 440 |     RegisterNapi = sys::io_uring_register_op::IORING_REGISTER_NAPI as _,
+SEVERE:     |                         ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:443:27
+SEVERE:     |
+SEVERE: 443 |     UnregisterNapi = sys::io_uring_register_op::IORING_UNREGISTER_NAPI as _,
+SEVERE:     |                           ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:446:26
+SEVERE:     |
+SEVERE: 446 |     RegisterClock = sys::io_uring_register_op::IORING_REGISTER_CLOCK as _,
+SEVERE:     |                          ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:449:33
+SEVERE:     |
+SEVERE: 449 |     RegisterCloneBuffers = sys::io_uring_register_op::IORING_REGISTER_CLONE_BUFFERS as _,
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:452:32
+SEVERE:     |
+SEVERE: 452 |     RegisterSendMsgRing = sys::io_uring_register_op::IORING_REGISTER_SEND_MSG_RING as _,
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:455:32
+SEVERE:     |
+SEVERE: 455 |     RegisterResizeRings = sys::io_uring_register_op::IORING_REGISTER_RESIZE_RINGS as _,
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:464:42
+SEVERE:     |
+SEVERE: 464 |         const USE_REGISTERED_RING = sys::io_uring_register_op::IORING_REGISTER_USE_REGISTERED_RING as u32;
+SEVERE:     |                                          ^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:477:16
+SEVERE:     |
+SEVERE: 477 |     Nop = sys::io_uring_op::IORING_OP_NOP as _,
+SEVERE:     |                ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:480:19
+SEVERE:     |
+SEVERE: 480 |     Accept = sys::io_uring_op::IORING_OP_ACCEPT as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:483:24
+SEVERE:     |
+SEVERE: 483 |     AsyncCancel = sys::io_uring_op::IORING_OP_ASYNC_CANCEL as _,
+SEVERE:     |                        ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:486:18
+SEVERE:     |
+SEVERE: 486 |     Close = sys::io_uring_op::IORING_OP_CLOSE as _,
+SEVERE:     |                  ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:489:20
+SEVERE:     |
+SEVERE: 489 |     Connect = sys::io_uring_op::IORING_OP_CONNECT as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:492:21
+SEVERE:     |
+SEVERE: 492 |     EpollCtl = sys::io_uring_op::IORING_OP_EPOLL_CTL as _,
+SEVERE:     |                     ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:495:20
+SEVERE:     |
+SEVERE: 495 |     Fadvise = sys::io_uring_op::IORING_OP_FADVISE as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:498:22
+SEVERE:     |
+SEVERE: 498 |     Fallocate = sys::io_uring_op::IORING_OP_FALLOCATE as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:501:24
+SEVERE:     |
+SEVERE: 501 |     FilesUpdate = sys::io_uring_op::IORING_OP_FILES_UPDATE as _,
+SEVERE:     |                        ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:504:18
+SEVERE:     |
+SEVERE: 504 |     Fsync = sys::io_uring_op::IORING_OP_FSYNC as _,
+SEVERE:     |                  ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:507:19
+SEVERE:     |
+SEVERE: 507 |     Linkat = sys::io_uring_op::IORING_OP_LINKAT as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:510:24
+SEVERE:     |
+SEVERE: 510 |     LinkTimeout = sys::io_uring_op::IORING_OP_LINK_TIMEOUT as _,
+SEVERE:     |                        ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:513:20
+SEVERE:     |
+SEVERE: 513 |     Madvise = sys::io_uring_op::IORING_OP_MADVISE as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:516:20
+SEVERE:     |
+SEVERE: 516 |     Mkdirat = sys::io_uring_op::IORING_OP_MKDIRAT as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:519:19
+SEVERE:     |
+SEVERE: 519 |     Openat = sys::io_uring_op::IORING_OP_OPENAT as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:522:20
+SEVERE:     |
+SEVERE: 522 |     Openat2 = sys::io_uring_op::IORING_OP_OPENAT2 as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:525:20
+SEVERE:     |
+SEVERE: 525 |     PollAdd = sys::io_uring_op::IORING_OP_POLL_ADD as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:528:23
+SEVERE:     |
+SEVERE: 528 |     PollRemove = sys::io_uring_op::IORING_OP_POLL_REMOVE as _,
+SEVERE:     |                       ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:531:27
+SEVERE:     |
+SEVERE: 531 |     ProvideBuffers = sys::io_uring_op::IORING_OP_PROVIDE_BUFFERS as _,
+SEVERE:     |                           ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:534:17
+SEVERE:     |
+SEVERE: 534 |     Read = sys::io_uring_op::IORING_OP_READ as _,
+SEVERE:     |                 ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:537:18
+SEVERE:     |
+SEVERE: 537 |     Readv = sys::io_uring_op::IORING_OP_READV as _,
+SEVERE:     |                  ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:540:22
+SEVERE:     |
+SEVERE: 540 |     ReadFixed = sys::io_uring_op::IORING_OP_READ_FIXED as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:543:17
+SEVERE:     |
+SEVERE: 543 |     Recv = sys::io_uring_op::IORING_OP_RECV as _,
+SEVERE:     |                 ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:546:20
+SEVERE:     |
+SEVERE: 546 |     Recvmsg = sys::io_uring_op::IORING_OP_RECVMSG as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:549:26
+SEVERE:     |
+SEVERE: 549 |     RemoveBuffers = sys::io_uring_op::IORING_OP_REMOVE_BUFFERS as _,
+SEVERE:     |                          ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:552:21
+SEVERE:     |
+SEVERE: 552 |     Renameat = sys::io_uring_op::IORING_OP_RENAMEAT as _,
+SEVERE:     |                     ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:555:17
+SEVERE:     |
+SEVERE: 555 |     Send = sys::io_uring_op::IORING_OP_SEND as _,
+SEVERE:     |                 ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:558:20
+SEVERE:     |
+SEVERE: 558 |     Sendmsg = sys::io_uring_op::IORING_OP_SENDMSG as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:561:21
+SEVERE:     |
+SEVERE: 561 |     Shutdown = sys::io_uring_op::IORING_OP_SHUTDOWN as _,
+SEVERE:     |                     ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:564:19
+SEVERE:     |
+SEVERE: 564 |     Splice = sys::io_uring_op::IORING_OP_SPLICE as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:567:18
+SEVERE:     |
+SEVERE: 567 |     Statx = sys::io_uring_op::IORING_OP_STATX as _,
+SEVERE:     |                  ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:570:22
+SEVERE:     |
+SEVERE: 570 |     Symlinkat = sys::io_uring_op::IORING_OP_SYMLINKAT as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:573:26
+SEVERE:     |
+SEVERE: 573 |     SyncFileRange = sys::io_uring_op::IORING_OP_SYNC_FILE_RANGE as _,
+SEVERE:     |                          ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:576:16
+SEVERE:     |
+SEVERE: 576 |     Tee = sys::io_uring_op::IORING_OP_TEE as _,
+SEVERE:     |                ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:579:20
+SEVERE:     |
+SEVERE: 579 |     Timeout = sys::io_uring_op::IORING_OP_TIMEOUT as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:582:26
+SEVERE:     |
+SEVERE: 582 |     TimeoutRemove = sys::io_uring_op::IORING_OP_TIMEOUT_REMOVE as _,
+SEVERE:     |                          ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:585:21
+SEVERE:     |
+SEVERE: 585 |     Unlinkat = sys::io_uring_op::IORING_OP_UNLINKAT as _,
+SEVERE:     |                     ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:588:18
+SEVERE:     |
+SEVERE: 588 |     Write = sys::io_uring_op::IORING_OP_WRITE as _,
+SEVERE:     |                  ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:591:19
+SEVERE:     |
+SEVERE: 591 |     Writev = sys::io_uring_op::IORING_OP_WRITEV as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:594:23
+SEVERE:     |
+SEVERE: 594 |     WriteFixed = sys::io_uring_op::IORING_OP_WRITE_FIXED as _,
+SEVERE:     |                       ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:597:20
+SEVERE:     |
+SEVERE: 597 |     MsgRing = sys::io_uring_op::IORING_OP_MSG_RING as _,
+SEVERE:     |                    ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:600:22
+SEVERE:     |
+SEVERE: 600 |     Fsetxattr = sys::io_uring_op::IORING_OP_FSETXATTR as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:603:21
+SEVERE:     |
+SEVERE: 603 |     Setxattr = sys::io_uring_op::IORING_OP_SETXATTR as _,
+SEVERE:     |                     ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:606:22
+SEVERE:     |
+SEVERE: 606 |     Fgetxattr = sys::io_uring_op::IORING_OP_FGETXATTR as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:609:21
+SEVERE:     |
+SEVERE: 609 |     Getxattr = sys::io_uring_op::IORING_OP_GETXATTR as _,
+SEVERE:     |                     ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:612:19
+SEVERE:     |
+SEVERE: 612 |     Socket = sys::io_uring_op::IORING_OP_SOCKET as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:615:21
+SEVERE:     |
+SEVERE: 615 |     UringCmd = sys::io_uring_op::IORING_OP_URING_CMD as _,
+SEVERE:     |                     ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:618:19
+SEVERE:     |
+SEVERE: 618 |     SendZc = sys::io_uring_op::IORING_OP_SEND_ZC as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:621:22
+SEVERE:     |
+SEVERE: 621 |     SendmsgZc = sys::io_uring_op::IORING_OP_SENDMSG_ZC as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:624:26
+SEVERE:     |
+SEVERE: 624 |     ReadMultishot = sys::io_uring_op::IORING_OP_READ_MULTISHOT as _,
+SEVERE:     |                          ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:627:19
+SEVERE:     |
+SEVERE: 627 |     Waitid = sys::io_uring_op::IORING_OP_WAITID as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:630:22
+SEVERE:     |
+SEVERE: 630 |     FutexWait = sys::io_uring_op::IORING_OP_FUTEX_WAIT as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:633:22
+SEVERE:     |
+SEVERE: 633 |     FutexWake = sys::io_uring_op::IORING_OP_FUTEX_WAKE as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:636:23
+SEVERE:     |
+SEVERE: 636 |     FutexWaitv = sys::io_uring_op::IORING_OP_FUTEX_WAITV as _,
+SEVERE:     |                       ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:639:27
+SEVERE:     |
+SEVERE: 639 |     FixedFdInstall = sys::io_uring_op::IORING_OP_FIXED_FD_INSTALL as _,
+SEVERE:     |                           ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:642:22
+SEVERE:     |
+SEVERE: 642 |     Ftruncate = sys::io_uring_op::IORING_OP_FTRUNCATE as _,
+SEVERE:     |                      ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:645:17
+SEVERE:     |
+SEVERE: 645 |     Bind = sys::io_uring_op::IORING_OP_BIND as _,
+SEVERE:     |                 ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:648:19
+SEVERE:     |
+SEVERE: 648 |     Listen = sys::io_uring_op::IORING_OP_LISTEN as _,
+SEVERE:     |                   ^^^^^^^^^^^ could not find `io_uring_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:664:23
+SEVERE:     |
+SEVERE: 664 |     RegisterOp = sys::io_uring_register_restriction_op::IORING_RESTRICTION_REGISTER_OP as _,
+SEVERE:     |                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:668:14
+SEVERE:     |
+SEVERE: 668 |         sys::io_uring_register_restriction_op::IORING_RESTRICTION_SQE_FLAGS_ALLOWED as _,
+SEVERE:     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:672:14
+SEVERE:     |
+SEVERE: 672 |         sys::io_uring_register_restriction_op::IORING_RESTRICTION_SQE_FLAGS_REQUIRED as _,
+SEVERE:     |              ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:675:18
+SEVERE:     |
+SEVERE: 675 |     SqeOp = sys::io_uring_register_restriction_op::IORING_RESTRICTION_SQE_OP as _,
+SEVERE:     |                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_register_restriction_op` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_msg_ring_flags` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:692:17
+SEVERE:     |
+SEVERE: 692 |     Data = sys::io_uring_msg_ring_flags::IORING_MSG_DATA as _,
+SEVERE:     |                 ^^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_msg_ring_flags` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_msg_ring_flags` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:695:19
+SEVERE:     |
+SEVERE: 695 |     SendFd = sys::io_uring_msg_ring_flags::IORING_MSG_SEND_FD as _,
+SEVERE:     |                   ^^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_msg_ring_flags` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:765:33
+SEVERE:     |
+SEVERE: 765 |         const ASYNC = 1 << sys::io_uring_sqe_flags_bit::IOSQE_ASYNC_BIT as u8;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:768:41
+SEVERE:     |
+SEVERE: 768 |         const BUFFER_SELECT = 1 << sys::io_uring_sqe_flags_bit::IOSQE_BUFFER_SELECT_BIT as u8;
+SEVERE:     |                                         ^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:771:38
+SEVERE:     |
+SEVERE: 771 |         const FIXED_FILE = 1 << sys::io_uring_sqe_flags_bit::IOSQE_FIXED_FILE_BIT as u8;
+SEVERE:     |                                      ^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:774:36
+SEVERE:     |
+SEVERE: 774 |         const IO_DRAIN = 1 << sys::io_uring_sqe_flags_bit::IOSQE_IO_DRAIN_BIT as u8;
+SEVERE:     |                                    ^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:777:39
+SEVERE:     |
+SEVERE: 777 |         const IO_HARDLINK = 1 << sys::io_uring_sqe_flags_bit::IOSQE_IO_HARDLINK_BIT as u8;
+SEVERE:     |                                       ^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:780:35
+SEVERE:     |
+SEVERE: 780 |         const IO_LINK = 1 << sys::io_uring_sqe_flags_bit::IOSQE_IO_LINK_BIT as u8;
+SEVERE:     |                                   ^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:783:44
+SEVERE:     |
+SEVERE: 783 |         const CQE_SKIP_SUCCESS = 1 << sys::io_uring_sqe_flags_bit::IOSQE_CQE_SKIP_SUCCESS_BIT as u8;
+SEVERE:     |                                            ^^^^^^^^^^^^^^^^^^^^^^ could not find `io_uring_sqe_flags_bit` in `sys`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:28:28
+SEVERE:    |
+SEVERE: 28 |         const CHOWN = 1 << linux_raw_sys::general::CAP_CHOWN;
+SEVERE:    |                            ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:30:35
+SEVERE:    |
+SEVERE: 30 |         const DAC_OVERRIDE = 1 << linux_raw_sys::general::CAP_DAC_OVERRIDE;
+SEVERE:    |                                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:32:38
+SEVERE:    |
+SEVERE: 32 |         const DAC_READ_SEARCH = 1 << linux_raw_sys::general::CAP_DAC_READ_SEARCH;
+SEVERE:    |                                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:34:29
+SEVERE:    |
+SEVERE: 34 |         const FOWNER = 1 << linux_raw_sys::general::CAP_FOWNER;
+SEVERE:    |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:36:29
+SEVERE:    |
+SEVERE: 36 |         const FSETID = 1 << linux_raw_sys::general::CAP_FSETID;
+SEVERE:    |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:38:27
+SEVERE:    |
+SEVERE: 38 |         const KILL = 1 << linux_raw_sys::general::CAP_KILL;
+SEVERE:    |                           ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:40:29
+SEVERE:    |
+SEVERE: 40 |         const SETGID = 1 << linux_raw_sys::general::CAP_SETGID;
+SEVERE:    |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:42:29
+SEVERE:    |
+SEVERE: 42 |         const SETUID = 1 << linux_raw_sys::general::CAP_SETUID;
+SEVERE:    |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:44:30
+SEVERE:    |
+SEVERE: 44 |         const SETPCAP = 1 << linux_raw_sys::general::CAP_SETPCAP;
+SEVERE:    |                              ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:46:38
+SEVERE:    |
+SEVERE: 46 |         const LINUX_IMMUTABLE = 1 << linux_raw_sys::general::CAP_LINUX_IMMUTABLE;
+SEVERE:    |                                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:48:39
+SEVERE:    |
+SEVERE: 48 |         const NET_BIND_SERVICE = 1 << linux_raw_sys::general::CAP_NET_BIND_SERVICE;
+SEVERE:    |                                       ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:50:36
+SEVERE:    |
+SEVERE: 50 |         const NET_BROADCAST = 1 << linux_raw_sys::general::CAP_NET_BROADCAST;
+SEVERE:    |                                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:52:32
+SEVERE:    |
+SEVERE: 52 |         const NET_ADMIN = 1 << linux_raw_sys::general::CAP_NET_ADMIN;
+SEVERE:    |                                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:54:30
+SEVERE:    |
+SEVERE: 54 |         const NET_RAW = 1 << linux_raw_sys::general::CAP_NET_RAW;
+SEVERE:    |                              ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:56:31
+SEVERE:    |
+SEVERE: 56 |         const IPC_LOCK = 1 << linux_raw_sys::general::CAP_IPC_LOCK;
+SEVERE:    |                               ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:58:32
+SEVERE:    |
+SEVERE: 58 |         const IPC_OWNER = 1 << linux_raw_sys::general::CAP_IPC_OWNER;
+SEVERE:    |                                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:60:33
+SEVERE:    |
+SEVERE: 60 |         const SYS_MODULE = 1 << linux_raw_sys::general::CAP_SYS_MODULE;
+SEVERE:    |                                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:62:32
+SEVERE:    |
+SEVERE: 62 |         const SYS_RAWIO = 1 << linux_raw_sys::general::CAP_SYS_RAWIO;
+SEVERE:    |                                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:64:33
+SEVERE:    |
+SEVERE: 64 |         const SYS_CHROOT = 1 << linux_raw_sys::general::CAP_SYS_CHROOT;
+SEVERE:    |                                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:66:33
+SEVERE:    |
+SEVERE: 66 |         const SYS_PTRACE = 1 << linux_raw_sys::general::CAP_SYS_PTRACE;
+SEVERE:    |                                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:68:32
+SEVERE:    |
+SEVERE: 68 |         const SYS_PACCT = 1 << linux_raw_sys::general::CAP_SYS_PACCT;
+SEVERE:    |                                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:70:32
+SEVERE:    |
+SEVERE: 70 |         const SYS_ADMIN = 1 << linux_raw_sys::general::CAP_SYS_ADMIN;
+SEVERE:    |                                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:72:31
+SEVERE:    |
+SEVERE: 72 |         const SYS_BOOT = 1 << linux_raw_sys::general::CAP_SYS_BOOT;
+SEVERE:    |                               ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:74:31
+SEVERE:    |
+SEVERE: 74 |         const SYS_NICE = 1 << linux_raw_sys::general::CAP_SYS_NICE;
+SEVERE:    |                               ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:76:35
+SEVERE:    |
+SEVERE: 76 |         const SYS_RESOURCE = 1 << linux_raw_sys::general::CAP_SYS_RESOURCE;
+SEVERE:    |                                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:78:31
+SEVERE:    |
+SEVERE: 78 |         const SYS_TIME = 1 << linux_raw_sys::general::CAP_SYS_TIME;
+SEVERE:    |                               ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:80:37
+SEVERE:    |
+SEVERE: 80 |         const SYS_TTY_CONFIG = 1 << linux_raw_sys::general::CAP_SYS_TTY_CONFIG;
+SEVERE:    |                                     ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:82:28
+SEVERE:    |
+SEVERE: 82 |         const MKNOD = 1 << linux_raw_sys::general::CAP_MKNOD;
+SEVERE:    |                            ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:84:28
+SEVERE:    |
+SEVERE: 84 |         const LEASE = 1 << linux_raw_sys::general::CAP_LEASE;
+SEVERE:    |                            ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:86:34
+SEVERE:    |
+SEVERE: 86 |         const AUDIT_WRITE = 1 << linux_raw_sys::general::CAP_AUDIT_WRITE;
+SEVERE:    |                                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:88:36
+SEVERE:    |
+SEVERE: 88 |         const AUDIT_CONTROL = 1 << linux_raw_sys::general::CAP_AUDIT_CONTROL;
+SEVERE:    |                                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:90:30
+SEVERE:    |
+SEVERE: 90 |         const SETFCAP = 1 << linux_raw_sys::general::CAP_SETFCAP;
+SEVERE:    |                              ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:92:35
+SEVERE:    |
+SEVERE: 92 |         const MAC_OVERRIDE = 1 << linux_raw_sys::general::CAP_MAC_OVERRIDE;
+SEVERE:    |                                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:94:32
+SEVERE:    |
+SEVERE: 94 |         const MAC_ADMIN = 1 << linux_raw_sys::general::CAP_MAC_ADMIN;
+SEVERE:    |                                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:96:29
+SEVERE:    |
+SEVERE: 96 |         const SYSLOG = 1 << linux_raw_sys::general::CAP_SYSLOG;
+SEVERE:    |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:   --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:98:33
+SEVERE:    |
+SEVERE: 98 |         const WAKE_ALARM = 1 << linux_raw_sys::general::CAP_WAKE_ALARM;
+SEVERE:    |                                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    |
+SEVERE:    = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:100:36
+SEVERE:     |
+SEVERE: 100 |         const BLOCK_SUSPEND = 1 << linux_raw_sys::general::CAP_BLOCK_SUSPEND;
+SEVERE:     |                                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:102:33
+SEVERE:     |
+SEVERE: 102 |         const AUDIT_READ = 1 << linux_raw_sys::general::CAP_AUDIT_READ;
+SEVERE:     |                                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:104:30
+SEVERE:     |
+SEVERE: 104 |         const PERFMON = 1 << linux_raw_sys::general::CAP_PERFMON;
+SEVERE:     |                              ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:106:26
+SEVERE:     |
+SEVERE: 106 |         const BPF = 1 << linux_raw_sys::general::CAP_BPF;
+SEVERE:     |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:108:41
+SEVERE:     |
+SEVERE: 108 |         const CHECKPOINT_RESTORE = 1 << linux_raw_sys::general::CAP_CHECKPOINT_RESTORE;
+SEVERE:     |                                         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:143:35
+SEVERE:     |
+SEVERE: 143 |     let mut data = [MaybeUninit::<linux_raw_sys::general::__user_cap_data_struct>::uninit(); 2];
+SEVERE:     |                                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:146:26
+SEVERE:     |
+SEVERE: 146 |         let mut header = linux_raw_sys::general::__user_cap_header_struct {
+SEVERE:     |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:147:22
+SEVERE:     |
+SEVERE: 147 |             version: linux_raw_sys::general::_LINUX_CAPABILITY_VERSION_3,
+SEVERE:     |                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:171:22
+SEVERE:     |
+SEVERE: 171 |     let mut header = linux_raw_sys::general::__user_cap_header_struct {
+SEVERE:     |                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:172:18
+SEVERE:     |
+SEVERE: 172 |         version: linux_raw_sys::general::_LINUX_CAPABILITY_VERSION_3,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:176:9
+SEVERE:     |
+SEVERE: 176 |         linux_raw_sys::general::__user_cap_data_struct {
+SEVERE:     |         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/libcap.rs:181:9
+SEVERE:     |
+SEVERE: 181 |         linux_raw_sys::general::__user_cap_data_struct {
+SEVERE:     |         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:192:23
+SEVERE:     |
+SEVERE: 192 |     ChangeOwnership = linux_raw_sys::general::CAP_CHOWN,
+SEVERE:     |                       ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:196:19
+SEVERE:     |
+SEVERE: 196 |     DACOverride = linux_raw_sys::general::CAP_DAC_OVERRIDE,
+SEVERE:     |                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:200:21
+SEVERE:     |
+SEVERE: 200 |     DACReadSearch = linux_raw_sys::general::CAP_DAC_READ_SEARCH,
+SEVERE:     |                     ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:205:17
+SEVERE:     |
+SEVERE: 205 |     FileOwner = linux_raw_sys::general::CAP_FOWNER,
+SEVERE:     |                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:212:17
+SEVERE:     |
+SEVERE: 212 |     FileSetID = linux_raw_sys::general::CAP_FSETID,
+SEVERE:     |                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:216:12
+SEVERE:     |
+SEVERE: 216 |     Kill = linux_raw_sys::general::CAP_KILL,
+SEVERE:     |            ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:219:18
+SEVERE:     |
+SEVERE: 219 |     SetGroupID = linux_raw_sys::general::CAP_SETGID,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:222:17
+SEVERE:     |
+SEVERE: 222 |     SetUserID = linux_raw_sys::general::CAP_SETUID,
+SEVERE:     |                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:231:32
+SEVERE:     |
+SEVERE: 231 |     SetPermittedCapabilities = linux_raw_sys::general::CAP_SETPCAP,
+SEVERE:     |                                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:233:22
+SEVERE:     |
+SEVERE: 233 |     LinuxImmutable = linux_raw_sys::general::CAP_LINUX_IMMUTABLE,
+SEVERE:     |                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:236:22
+SEVERE:     |
+SEVERE: 236 |     NetBindService = linux_raw_sys::general::CAP_NET_BIND_SERVICE,
+SEVERE:     |                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:238:20
+SEVERE:     |
+SEVERE: 238 |     NetBroadcast = linux_raw_sys::general::CAP_NET_BROADCAST,
+SEVERE:     |                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:248:16
+SEVERE:     |
+SEVERE: 248 |     NetAdmin = linux_raw_sys::general::CAP_NET_ADMIN,
+SEVERE:     |                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:252:14
+SEVERE:     |
+SEVERE: 252 |     NetRaw = linux_raw_sys::general::CAP_NET_RAW,
+SEVERE:     |              ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:255:15
+SEVERE:     |
+SEVERE: 255 |     IPCLock = linux_raw_sys::general::CAP_IPC_LOCK,
+SEVERE:     |               ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:257:16
+SEVERE:     |
+SEVERE: 257 |     IPCOwner = linux_raw_sys::general::CAP_IPC_OWNER,
+SEVERE:     |                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:259:20
+SEVERE:     |
+SEVERE: 259 |     SystemModule = linux_raw_sys::general::CAP_SYS_MODULE,
+SEVERE:     |                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:262:19
+SEVERE:     |
+SEVERE: 262 |     SystemRawIO = linux_raw_sys::general::CAP_SYS_RAWIO,
+SEVERE:     |                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:264:24
+SEVERE:     |
+SEVERE: 264 |     SystemChangeRoot = linux_raw_sys::general::CAP_SYS_CHROOT,
+SEVERE:     |                        ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:266:26
+SEVERE:     |
+SEVERE: 266 |     SystemProcessTrace = linux_raw_sys::general::CAP_SYS_PTRACE,
+SEVERE:     |                          ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:268:31
+SEVERE:     |
+SEVERE: 268 |     SystemProcessAccounting = linux_raw_sys::general::CAP_SYS_PACCT,
+SEVERE:     |                               ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:295:19
+SEVERE:     |
+SEVERE: 295 |     SystemAdmin = linux_raw_sys::general::CAP_SYS_ADMIN,
+SEVERE:     |                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:297:18
+SEVERE:     |
+SEVERE: 297 |     SystemBoot = linux_raw_sys::general::CAP_SYS_BOOT,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:304:18
+SEVERE:     |
+SEVERE: 304 |     SystemNice = linux_raw_sys::general::CAP_SYS_NICE,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:313:22
+SEVERE:     |
+SEVERE: 313 |     SystemResource = linux_raw_sys::general::CAP_SYS_RESOURCE,
+SEVERE:     |                      ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:316:18
+SEVERE:     |
+SEVERE: 316 |     SystemTime = linux_raw_sys::general::CAP_SYS_TIME,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:318:23
+SEVERE:     |
+SEVERE: 318 |     SystemTTYConfig = linux_raw_sys::general::CAP_SYS_TTY_CONFIG,
+SEVERE:     |                       ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:320:16
+SEVERE:     |
+SEVERE: 320 |     MakeNode = linux_raw_sys::general::CAP_MKNOD,
+SEVERE:     |                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:322:13
+SEVERE:     |
+SEVERE: 322 |     Lease = linux_raw_sys::general::CAP_LEASE,
+SEVERE:     |             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:324:18
+SEVERE:     |
+SEVERE: 324 |     AuditWrite = linux_raw_sys::general::CAP_AUDIT_WRITE,
+SEVERE:     |                  ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:326:20
+SEVERE:     |
+SEVERE: 326 |     AuditControl = linux_raw_sys::general::CAP_AUDIT_CONTROL,
+SEVERE:     |                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:329:27
+SEVERE:     |
+SEVERE: 329 |     SetFileCapabilities = linux_raw_sys::general::CAP_SETFCAP,
+SEVERE:     |                           ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:334:19
+SEVERE:     |
+SEVERE: 334 |     MACOverride = linux_raw_sys::general::CAP_MAC_OVERRIDE,
+SEVERE:     |                   ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:340:16
+SEVERE:     |
+SEVERE: 340 |     MACAdmin = linux_raw_sys::general::CAP_MAC_ADMIN,
+SEVERE:     |                ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:342:17
+SEVERE:     |
+SEVERE: 342 |     SystemLog = linux_raw_sys::general::CAP_SYSLOG,
+SEVERE:     |                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:344:17
+SEVERE:     |
+SEVERE: 344 |     WakeAlarm = linux_raw_sys::general::CAP_WAKE_ALARM,
+SEVERE:     |                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:346:20
+SEVERE:     |
+SEVERE: 346 |     BlockSuspend = linux_raw_sys::general::CAP_BLOCK_SUSPEND,
+SEVERE:     |                    ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:348:17
+SEVERE:     |
+SEVERE: 348 |     AuditRead = linux_raw_sys::general::CAP_AUDIT_READ,
+SEVERE:     |                 ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:351:29
+SEVERE:     |
+SEVERE: 351 |     PerformanceMonitoring = linux_raw_sys::general::CAP_PERFMON,
+SEVERE:     |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:384:29
+SEVERE:     |
+SEVERE: 384 |     BerkeleyPacketFilters = linux_raw_sys::general::CAP_BPF,
+SEVERE:     |                             ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0433]: failed to resolve: use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/thread/prctl.rs:387:25
+SEVERE:     |
+SEVERE: 387 |     CheckpointRestore = linux_raw_sys::general::CAP_CHECKPOINT_RESTORE,
+SEVERE:     |                         ^^^^^^^^^^^^^ use of unresolved module or unlinked crate `linux_raw_sys`
+SEVERE:     |
+SEVERE:     = help: if you wanted to use a crate named `linux_raw_sys`, use `cargo add linux_raw_sys` to add it to your `Cargo.toml`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ENTER_GETEVENTS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:327:32
+SEVERE:     |
+SEVERE: 327 |         const GETEVENTS = sys::IORING_ENTER_GETEVENTS;
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ENTER_SQ_WAKEUP` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:330:32
+SEVERE:     |
+SEVERE: 330 |         const SQ_WAKEUP = sys::IORING_ENTER_SQ_WAKEUP;
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ENTER_SQ_WAIT` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:333:30
+SEVERE:     |
+SEVERE: 333 |         const SQ_WAIT = sys::IORING_ENTER_SQ_WAIT;
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ENTER_EXT_ARG` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:336:30
+SEVERE:     |
+SEVERE: 336 |         const EXT_ARG = sys::IORING_ENTER_EXT_ARG;
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ENTER_REGISTERED_RING` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:339:38
+SEVERE:     |
+SEVERE: 339 |         const REGISTERED_RING = sys::IORING_ENTER_REGISTERED_RING;
+SEVERE:     |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ENTER_ABS_TIMER` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:342:32
+SEVERE:     |
+SEVERE: 342 |         const ABS_TIMER = sys::IORING_ENTER_ABS_TIMER;
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ENTER_EXT_ARG_REG` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:345:34
+SEVERE:     |
+SEVERE: 345 |         const EXT_ARG_REG = sys::IORING_ENTER_EXT_ARG_REG;
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_ATTACH_WQ` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:704:32
+SEVERE:     |
+SEVERE: 704 |         const ATTACH_WQ = sys::IORING_SETUP_ATTACH_WQ;
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_CLAMP` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:707:28
+SEVERE:     |
+SEVERE: 707 |         const CLAMP = sys::IORING_SETUP_CLAMP;
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_CQSIZE` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:710:29
+SEVERE:     |
+SEVERE: 710 |         const CQSIZE = sys::IORING_SETUP_CQSIZE;
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_IOPOLL` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:713:29
+SEVERE:     |
+SEVERE: 713 |         const IOPOLL = sys::IORING_SETUP_IOPOLL;
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_R_DISABLED` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:716:33
+SEVERE:     |
+SEVERE: 716 |         const R_DISABLED = sys::IORING_SETUP_R_DISABLED;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_SQPOLL` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:719:29
+SEVERE:     |
+SEVERE: 719 |         const SQPOLL = sys::IORING_SETUP_SQPOLL;
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_SQ_AFF` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:722:29
+SEVERE:     |
+SEVERE: 722 |         const SQ_AFF = sys::IORING_SETUP_SQ_AFF;
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_SQE128` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:725:29
+SEVERE:     |
+SEVERE: 725 |         const SQE128 = sys::IORING_SETUP_SQE128;
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_CQE32` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:728:28
+SEVERE:     |
+SEVERE: 728 |         const CQE32 = sys::IORING_SETUP_CQE32;
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_SUBMIT_ALL` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:731:33
+SEVERE:     |
+SEVERE: 731 |         const SUBMIT_ALL = sys::IORING_SETUP_SUBMIT_ALL;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_COOP_TASKRUN` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:734:35
+SEVERE:     |
+SEVERE: 734 |         const COOP_TASKRUN = sys::IORING_SETUP_COOP_TASKRUN;
+SEVERE:     |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_TASKRUN_FLAG` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:737:35
+SEVERE:     |
+SEVERE: 737 |         const TASKRUN_FLAG = sys::IORING_SETUP_TASKRUN_FLAG;
+SEVERE:     |                                   ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_SINGLE_ISSUER` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:740:36
+SEVERE:     |
+SEVERE: 740 |         const SINGLE_ISSUER = sys::IORING_SETUP_SINGLE_ISSUER;
+SEVERE:     |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_DEFER_TASKRUN` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:743:36
+SEVERE:     |
+SEVERE: 743 |         const DEFER_TASKRUN = sys::IORING_SETUP_DEFER_TASKRUN;
+SEVERE:     |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_NO_MMAP` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:746:30
+SEVERE:     |
+SEVERE: 746 |         const NO_MMAP = sys::IORING_SETUP_NO_MMAP;
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_REGISTERED_FD_ONLY` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:749:41
+SEVERE:     |
+SEVERE: 749 |         const REGISTERED_FD_ONLY = sys::IORING_SETUP_REGISTERED_FD_ONLY;
+SEVERE:     |                                         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SETUP_NO_SQARRAY` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:752:33
+SEVERE:     |
+SEVERE: 752 |         const NO_SQARRAY = sys::IORING_SETUP_NO_SQARRAY;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_CQE_F_BUFFER` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:796:38
+SEVERE:     |
+SEVERE: 796 |         const BUFFER = bitcast!(sys::IORING_CQE_F_BUFFER);
+SEVERE:     |                                      ^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_CQE_F_MORE` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:799:36
+SEVERE:     |
+SEVERE: 799 |         const MORE = bitcast!(sys::IORING_CQE_F_MORE);
+SEVERE:     |                                    ^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_CQE_F_SOCK_NONEMPTY` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:802:45
+SEVERE:     |
+SEVERE: 802 |         const SOCK_NONEMPTY = bitcast!(sys::IORING_CQE_F_SOCK_NONEMPTY);
+SEVERE:     |                                             ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_CQE_F_NOTIF` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:805:37
+SEVERE:     |
+SEVERE: 805 |         const NOTIF = bitcast!(sys::IORING_CQE_F_NOTIF);
+SEVERE:     |                                     ^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FSYNC_DATASYNC` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:818:31
+SEVERE:     |
+SEVERE: 818 |         const DATASYNC = sys::IORING_FSYNC_DATASYNC;
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_TIMEOUT_ABS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:832:26
+SEVERE:     |
+SEVERE: 832 |         const ABS = sys::IORING_TIMEOUT_ABS;
+SEVERE:     |                          ^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_TIMEOUT_UPDATE` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:835:29
+SEVERE:     |
+SEVERE: 835 |         const UPDATE = sys::IORING_TIMEOUT_UPDATE;
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_TIMEOUT_BOOTTIME` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:838:31
+SEVERE:     |
+SEVERE: 838 |         const BOOTTIME = sys::IORING_TIMEOUT_BOOTTIME;
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_TIMEOUT_ETIME_SUCCESS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:841:36
+SEVERE:     |
+SEVERE: 841 |         const ETIME_SUCCESS = sys::IORING_TIMEOUT_ETIME_SUCCESS;
+SEVERE:     |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_TIMEOUT_REALTIME` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:844:31
+SEVERE:     |
+SEVERE: 844 |         const REALTIME = sys::IORING_TIMEOUT_REALTIME;
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_TIMEOUT_CLOCK_MASK` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:847:33
+SEVERE:     |
+SEVERE: 847 |         const CLOCK_MASK = sys::IORING_TIMEOUT_CLOCK_MASK;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_TIMEOUT_UPDATE_MASK` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:850:34
+SEVERE:     |
+SEVERE: 850 |         const UPDATE_MASK = sys::IORING_TIMEOUT_UPDATE_MASK;
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_LINK_TIMEOUT_UPDATE` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:853:42
+SEVERE:     |
+SEVERE: 853 |         const LINK_TIMEOUT_UPDATE = sys::IORING_LINK_TIMEOUT_UPDATE;
+SEVERE:     |                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `SPLICE_F_FD_IN_FIXED` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:866:34
+SEVERE:     |
+SEVERE: 866 |         const FD_IN_FIXED = sys::SPLICE_F_FD_IN_FIXED;
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_MSG_RING_CQE_SKIP` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:879:31
+SEVERE:     |
+SEVERE: 879 |         const CQE_SKIP = sys::IORING_MSG_RING_CQE_SKIP;
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_MSG_RING_FLAGS_PASS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:882:33
+SEVERE:     |
+SEVERE: 882 |         const FLAGS_PASS = sys::IORING_MSG_RING_FLAGS_PASS;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_URING_CMD_FIXED` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:895:28
+SEVERE:     |
+SEVERE: 895 |         const FIXED = sys::IORING_URING_CMD_FIXED;
+SEVERE:     |                            ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_URING_CMD_MASK` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:898:27
+SEVERE:     |
+SEVERE: 898 |         const MASK = sys::IORING_URING_CMD_MASK;
+SEVERE:     |                           ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ASYNC_CANCEL_ALL` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:911:26
+SEVERE:     |
+SEVERE: 911 |         const ALL = sys::IORING_ASYNC_CANCEL_ALL;
+SEVERE:     |                          ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ASYNC_CANCEL_FD` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:914:25
+SEVERE:     |
+SEVERE: 914 |         const FD = sys::IORING_ASYNC_CANCEL_FD;
+SEVERE:     |                         ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE:    Compiling crypto-common v0.2.0-rc.4
+SEVERE: error[E0425]: cannot find value `IORING_ASYNC_CANCEL_ANY` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:917:26
+SEVERE:     |
+SEVERE: 917 |         const ANY = sys::IORING_ASYNC_CANCEL_ANY;
+SEVERE:     |                          ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ASYNC_CANCEL_FD_FIXED` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:920:31
+SEVERE:     |
+SEVERE: 920 |         const FD_FIXED = sys::IORING_ASYNC_CANCEL_FD_FIXED;
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FIXED_FD_NO_CLOEXEC` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:933:33
+SEVERE:     |
+SEVERE: 933 |         const NO_CLOEXEC = sys::IORING_FIXED_FD_NO_CLOEXEC;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_CQE_SKIP` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:946:31
+SEVERE:     |
+SEVERE: 946 |         const CQE_SKIP = sys::IORING_FEAT_CQE_SKIP;
+SEVERE:     |                               ^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_CUR_PERSONALITY` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:949:38
+SEVERE:     |
+SEVERE: 949 |         const CUR_PERSONALITY = sys::IORING_FEAT_CUR_PERSONALITY;
+SEVERE:     |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_EXT_ARG` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:952:30
+SEVERE:     |
+SEVERE: 952 |         const EXT_ARG = sys::IORING_FEAT_EXT_ARG;
+SEVERE:     |                              ^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_FAST_POLL` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:955:32
+SEVERE:     |
+SEVERE: 955 |         const FAST_POLL = sys::IORING_FEAT_FAST_POLL;
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_NATIVE_WORKERS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:958:37
+SEVERE:     |
+SEVERE: 958 |         const NATIVE_WORKERS = sys::IORING_FEAT_NATIVE_WORKERS;
+SEVERE:     |                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_NODROP` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:961:29
+SEVERE:     |
+SEVERE: 961 |         const NODROP = sys::IORING_FEAT_NODROP;
+SEVERE:     |                             ^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_POLL_32BITS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:964:34
+SEVERE:     |
+SEVERE: 964 |         const POLL_32BITS = sys::IORING_FEAT_POLL_32BITS;
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_RSRC_TAGS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:967:32
+SEVERE:     |
+SEVERE: 967 |         const RSRC_TAGS = sys::IORING_FEAT_RSRC_TAGS;
+SEVERE:     |                                ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_RW_CUR_POS` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:970:33
+SEVERE:     |
+SEVERE: 970 |         const RW_CUR_POS = sys::IORING_FEAT_RW_CUR_POS;
+SEVERE:     |                                 ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_SINGLE_MMAP` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:973:34
+SEVERE:     |
+SEVERE: 973 |         const SINGLE_MMAP = sys::IORING_FEAT_SINGLE_MMAP;
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_SQPOLL_NONFIXED` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:976:38
+SEVERE:     |
+SEVERE: 976 |         const SQPOLL_NONFIXED = sys::IORING_FEAT_SQPOLL_NONFIXED;
+SEVERE:     |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_SUBMIT_STABLE` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:979:36
+SEVERE:     |
+SEVERE: 979 |         const SUBMIT_STABLE = sys::IORING_FEAT_SUBMIT_STABLE;
+SEVERE:     |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_LINKED_FILE` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:982:34
+SEVERE:     |
+SEVERE: 982 |         const LINKED_FILE = sys::IORING_FEAT_LINKED_FILE;
+SEVERE:     |                                  ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_REG_REG_RING` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:985:35
+SEVERE:     |
+SEVERE: 985 |         const REG_REG_RING = sys::IORING_FEAT_REG_REG_RING;
+SEVERE:     |                                   ^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FEAT_RECVSEND_BUNDLE` in module `sys`
+SEVERE:    --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:988:38
+SEVERE:     |
+SEVERE: 988 |         const RECVSEND_BUNDLE = sys::IORING_FEAT_RECVSEND_BUNDLE;
+SEVERE:     |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IO_URING_OP_SUPPORTED` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1001:32
+SEVERE:      |
+SEVERE: 1001 |         const SUPPORTED = sys::IO_URING_OP_SUPPORTED as _;
+SEVERE:      |                                ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_RSRC_REGISTER_SPARSE` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1014:38
+SEVERE:      |
+SEVERE: 1014 |         const REGISTER_SPARSE = sys::IORING_RSRC_REGISTER_SPARSE as _;
+SEVERE:      |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SQ_NEED_WAKEUP` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1027:34
+SEVERE:      |
+SEVERE: 1027 |         const NEED_WAKEUP = sys::IORING_SQ_NEED_WAKEUP;
+SEVERE:      |                                  ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SQ_CQ_OVERFLOW` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1030:34
+SEVERE:      |
+SEVERE: 1030 |         const CQ_OVERFLOW = sys::IORING_SQ_CQ_OVERFLOW;
+SEVERE:      |                                  ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SQ_TASKRUN` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1033:30
+SEVERE:      |
+SEVERE: 1033 |         const TASKRUN = sys::IORING_SQ_TASKRUN;
+SEVERE:      |                              ^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_CQ_EVENTFD_DISABLED` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1046:39
+SEVERE:      |
+SEVERE: 1046 |         const EVENTFD_DISABLED = sys::IORING_CQ_EVENTFD_DISABLED;
+SEVERE:      |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_POLL_ADD_MULTI` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1059:32
+SEVERE:      |
+SEVERE: 1059 |         const ADD_MULTI = sys::IORING_POLL_ADD_MULTI;
+SEVERE:      |                                ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_POLL_UPDATE_EVENTS` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1062:36
+SEVERE:      |
+SEVERE: 1062 |         const UPDATE_EVENTS = sys::IORING_POLL_UPDATE_EVENTS;
+SEVERE:      |                                    ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_POLL_UPDATE_USER_DATA` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1065:39
+SEVERE:      |
+SEVERE: 1065 |         const UPDATE_USER_DATA = sys::IORING_POLL_UPDATE_USER_DATA;
+SEVERE:      |                                       ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_POLL_ADD_LEVEL` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1068:32
+SEVERE:      |
+SEVERE: 1068 |         const ADD_LEVEL = sys::IORING_POLL_ADD_LEVEL;
+SEVERE:      |                                ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_RECVSEND_POLL_FIRST` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1083:33
+SEVERE:      |
+SEVERE: 1083 |         const POLL_FIRST = sys::IORING_RECVSEND_POLL_FIRST as _;
+SEVERE:      |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_RECVSEND_FIXED_BUF` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1088:32
+SEVERE:      |
+SEVERE: 1088 |         const FIXED_BUF = sys::IORING_RECVSEND_FIXED_BUF as _;
+SEVERE:      |                                ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_SEND_ZC_REPORT_USAGE` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1091:38
+SEVERE:      |
+SEVERE: 1091 |         const ZC_REPORT_USAGE = sys::IORING_SEND_ZC_REPORT_USAGE as _;
+SEVERE:      |                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_RECVSEND_BUNDLE` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1096:29
+SEVERE:      |
+SEVERE: 1096 |         const BUNDLE = sys::IORING_RECVSEND_BUNDLE as _;
+SEVERE:      |                             ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_RECVSEND_POLL_FIRST` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1111:33
+SEVERE:      |
+SEVERE: 1111 |         const POLL_FIRST = sys::IORING_RECVSEND_POLL_FIRST as _;
+SEVERE:      |                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_RECV_MULTISHOT` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1114:32
+SEVERE:      |
+SEVERE: 1114 |         const MULTISHOT = sys::IORING_RECV_MULTISHOT as _;
+SEVERE:      |                                ^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE:    Compiling ar_archive_writer v0.2.0
+SEVERE: error[E0425]: cannot find value `IORING_RECVSEND_FIXED_BUF` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1119:32
+SEVERE:      |
+SEVERE: 1119 |         const FIXED_BUF = sys::IORING_RECVSEND_FIXED_BUF as _;
+SEVERE:      |                                ^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_RECVSEND_BUNDLE` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1124:29
+SEVERE:      |
+SEVERE: 1124 |         const BUNDLE = sys::IORING_RECVSEND_BUNDLE as _;
+SEVERE:      |                             ^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_ACCEPT_MULTISHOT` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1137:32
+SEVERE:      |
+SEVERE: 1137 |         const MULTISHOT = sys::IORING_ACCEPT_MULTISHOT as _;
+SEVERE:      |                                ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_CQE_BUFFER_SHIFT` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1170:47
+SEVERE:      |
+SEVERE: 1170 | pub const IORING_CQE_BUFFER_SHIFT: u32 = sys::IORING_CQE_BUFFER_SHIFT as _;
+SEVERE:      |                                               ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_FILE_INDEX_ALLOC` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1172:47
+SEVERE:      |
+SEVERE: 1172 | pub const IORING_FILE_INDEX_ALLOC: i32 = sys::IORING_FILE_INDEX_ALLOC as _;
+SEVERE:      |                                               ^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_OFF_SQ_RING` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1176:42
+SEVERE:      |
+SEVERE: 1176 | pub const IORING_OFF_SQ_RING: u64 = sys::IORING_OFF_SQ_RING as _;
+SEVERE:      |                                          ^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_OFF_CQ_RING` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1178:42
+SEVERE:      |
+SEVERE: 1178 | pub const IORING_OFF_CQ_RING: u64 = sys::IORING_OFF_CQ_RING as _;
+SEVERE:      |                                          ^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_OFF_SQES` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1180:39
+SEVERE:      |
+SEVERE: 1180 | pub const IORING_OFF_SQES: u64 = sys::IORING_OFF_SQES as _;
+SEVERE:      |                                       ^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_REGISTER_FILES_SKIP` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1187:53
+SEVERE:      |
+SEVERE: 1187 |     unsafe { BorrowedFd::<'static>::borrow_raw(sys::IORING_REGISTER_FILES_SKIP as RawFd) };
+SEVERE:      |                                                     ^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0425]: cannot find value `IORING_NOTIF_USAGE_ZC_COPIED` in module `sys`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1190:52
+SEVERE:      |
+SEVERE: 1190 | pub const IORING_NOTIF_USAGE_ZC_COPIED: i32 = sys::IORING_NOTIF_USAGE_ZC_COPIED as _;
+SEVERE:      |                                                    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^ not found in `sys`
+SEVERE:
+SEVERE: error[E0412]: cannot find type `ReadWriteFlags` in module `crate::io`
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io_uring/mod.rs:1504:30
+SEVERE:      |
+SEVERE: 1504 |     pub rw_flags: crate::io::ReadWriteFlags,
+SEVERE:      |                              ^^^^^^^^^^^^^^ not found in `crate::io`
+SEVERE:      |
+SEVERE: note: found an item that was configured out
+SEVERE:     --> /Users/martin/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/rustix-1.1.2/src/io/read_write.rs:14:29
+SEVERE:      |
+SEVERE:   13 | #[cfg(all(linux_kernel, not(target_os = "android")))]
+SEVERE:      |                            ----------------------- the item is gated here
+SEVERE:   14 | pub use backend::io::types::ReadWriteFlags;
+SEVERE:      |                             ^^^^^^^^^^^^^^
+SEVERE:
+SEVERE:    Compiling percent-encoding v2.3.2
+SEVERE:    Compiling ipnet v2.11.0
+SEVERE:    Compiling yoke v0.8.0
+SEVERE:    Compiling regex v1.12.2
+SEVERE:    Compiling psm v0.1.28
+SEVERE:    Compiling enum-as-inner v0.6.1
+SEVERE:    Compiling cpufeatures v0.2.17
+SEVERE:    Compiling atomic-waker v1.1.2
+SEVERE:    Compiling either v1.15.0
+SEVERE:    Compiling rustls-pki-types v1.12.0
+SEVERE:    Compiling untrusted v0.9.0
+SEVERE:    Compiling derive_builder_core v0.20.2
+SEVERE:    Compiling block-buffer v0.11.0-rc.5
+SEVERE: Some errors have detailed explanations: E0412, E0425, E0432, E0433.
+SEVERE: For more information about an error, try `rustc --explain E0412`.
+SEVERE: error: could not compile `rustix` (lib) due to 307 previous errors
+SEVERE: warning: build failed, waiting for other jobs to finish...
+SEVERE: --------------------------------------------------------------------------------
+SEVERE: #0      runCommand (package:build_tool/src/util.dart:121:5)
+SEVERE: #1      RustBuilder.build (package:build_tool/src/builder.dart:142:5)
+SEVERE: <asynchronous suspension>
+SEVERE: #2      ArtifactProvider.getArtifacts (package:build_tool/src/artifacts_provider.dart:71:25)
+SEVERE: <asynchronous suspension>
+SEVERE: #3      BuildGradle.build (package:build_tool/src/build_gradle.dart:35:23)
+SEVERE: <asynchronous suspension>
+SEVERE: #4      BuildGradleCommand.runBuildCommand (package:build_tool/src/build_tool.dart:65:5)
+SEVERE: <asynchronous suspension>
+SEVERE: #5      BuildCommand.run (package:build_tool/src/build_tool.dart:37:5)
+SEVERE: <asynchronous suspension>
+SEVERE: #6      CommandRunner.runCommand (package:args/command_runner.dart:212:13)
+SEVERE: <asynchronous suspension>
+SEVERE: #7      runMain (package:build_tool/src/build_tool.dart:251:5)
+SEVERE: <asynchronous suspension>
+SEVERE: --------------------------------------------------------------------------------
+SEVERE: BuildTool arguments: [build-gradle]
+SEVERE: ================================================================================
+
+FAILURE: Build failed with an exception.
+
+* Where:
+Script '/Users/martin/Workspaces/pkm/holon/frontends/flutter/rust_builder/cargokit/gradle/plugin.gradle' line: 68
+
+* What went wrong:
+Execution failed for task ':rust_lib_holon:cargokitCargoBuildRust_lib_holonDebug'.
+> Process 'command '/Users/martin/Workspaces/pkm/holon/frontends/flutter/rust_builder/cargokit/gradle/../run_build_tool.sh'' finished with non-zero exit value 1
+
+* Try:
+> Run with --stacktrace option to get the stack trace.
+> Run with --info or --debug option to get more log output.
+> Run with --scan to get full insights.
+> Get more help at https://help.gradle.org.
+
+BUILD FAILED in 21s
+Running Gradle task 'assembleDebug'...                             22.0s
+Error: Gradle task assembleDebug failed with exit code 1

@@ -200,7 +200,7 @@ await cleanupTest(testId: testId);
 
 ### 1. Adapt the Existing PBT Tests
 
-The existing property-based tests in `crates/rusty-knowledge/src/api/loro_backend_pbt.rs` can be adapted to use this bridge:
+The existing property-based tests in `crates/holon/src/api/loro_backend_pbt.rs` can be adapted to use this bridge:
 
 ```rust
 // Instead of directly calling LoroBackend operations:

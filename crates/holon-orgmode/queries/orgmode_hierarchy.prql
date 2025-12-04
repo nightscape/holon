@@ -1,0 +1,33 @@
+# OrgMode Hierarchy Query
+# Combines directories, files, and headlines into a unified tree view
+
+from directories
+derive {
+    content = name,
+    entity_name = "directories",
+    sort_key = name
+}
+derive { ui = (render (row (draggable (pie_menu (icon 'folder') fields:this.*) on:'drag') (spacer 10) (text this.content))) }
+select { id, parent_id, entity_name, sort_key, ui }
+append (
+    from org_files
+    derive {
+        content = title ?? name,
+        entity_name = "org_files",
+        sort_key = name
+    }
+    derive { ui = (render (row (draggable (pie_menu (icon 'orgmode') fields:this.*) on:'drag') (spacer 10) (text this.content))) }
+    select { id, parent_id, entity_name, sort_key, ui }
+)
+append (
+    from org_headlines
+    derive {
+        content = title,
+        entity_name = "org_headlines",
+        sort_key = s"substr('000000000000' || {byte_start}, length('000000000000' || {byte_start}) - 11)",
+        completed = (todo_keyword == "DONE" || todo_keyword == "CANCELLED" || todo_keyword == "CLOSED")
+    }
+    derive { ui = (render (row (draggable (pie_menu (bullet) fields:this.*) on:'drag') (spacer 10) (checkbox checked:this.completed) (editable_text content:this.content) (badge content:this.priority color:"cyan"))) }
+    select { id, parent_id, entity_name, sort_key, ui }
+)
+render (tree parent_id:parent_id sortkey:sort_key item_template:this.ui)

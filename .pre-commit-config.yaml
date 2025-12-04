@@ -1,0 +1,52 @@
+# Prek / pre-commit configuration for Rust workspace
+# Install: prek install (or pre-commit install)
+# Run manually: prek run --all-files
+
+minimum_prek_version: '0.2.0'
+
+repos:
+  # General file cleanliness
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # Typo checking
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.40.0
+    hooks:
+      - id: typos
+        exclude: |
+          (?x)^(
+            target/.*|
+            Cargo\.lock|
+            frontends/flutter/.*  # Flutter has its own config
+          )$
+
+  # Rust formatting and linting
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: fmt
+        args: ['--', '--check']
+        exclude: |
+          (?x)^(
+            external/.*|
+            frontends/flutter/external/.*|
+            frontends/flutter/rust/.*  # Flutter has its own config
+          )$
+      - id: clippy
+        args: ['--', '-D', 'warnings']
+        exclude: |
+          (?x)^(
+            external/.*|
+            frontends/flutter/external/.*|
+            frontends/flutter/rust/.*
+          )$

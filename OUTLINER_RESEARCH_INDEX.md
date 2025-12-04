@@ -92,7 +92,7 @@ Contains:
 All research documents are in your Rusty Knowledge workspace:
 
 ```
-/Users/martin/Workspaces/pkm/rusty-knowledge/
+/Users/martin/Workspaces/pkm/holon/
 ├── OUTLINER_RESEARCH_INDEX.md (this file)
 ├── OUTLINER_INTEGRATION_SUMMARY.txt (executive summary)
 ├── OUTLINER_FLUTTER_QUICK_START.md (practical guide)

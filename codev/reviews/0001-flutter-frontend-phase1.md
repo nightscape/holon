@@ -10,7 +10,7 @@
 ## Executive Summary
 
 Phase 1 successfully established the foundational architecture for Flutter frontend integration:
-- ✅ Created comprehensive API module within `crates/rusty-knowledge/src/api/`
+- ✅ Created comprehensive API module within `crates/holon/src/api/`
 - ✅ Flutter project structure with FRB integration
 - ✅ CI pipeline covering Rust, Flutter, and Android builds
 - ✅ 8 passing unit tests for API types
@@ -22,7 +22,7 @@ Phase 1 successfully established the foundational architecture for Flutter front
 
 ## What Was Completed
 
-### 1. API Module (`crates/rusty-knowledge/src/api/`)
+### 1. API Module (`crates/holon/src/api/`)
 
 **Files Created:**
 - `types.rs` (164 lines) - Core data types with comprehensive documentation
@@ -88,7 +88,7 @@ Phase 1 successfully established the foundational architecture for Flutter front
 ### 🔴 CRITICAL ISSUES (Must Fix Before Commit)
 
 #### 1. Trait Not Object-Safe
-**Location**: `crates/rusty-knowledge/src/api/repository.rs:86`
+**Location**: `crates/holon/src/api/repository.rs:86`
 
 **Problem**: `dispose(self)` makes `DocumentRepository` not object-safe
 
@@ -106,7 +106,7 @@ async fn dispose(&self) -> Result<(), ApiError>;
 **Priority**: ⚠️ **CRITICAL** - Fix immediately
 
 #### 2. Doctest Compilation Failures
-**Location**: `crates/rusty-knowledge/src/api/types.rs:61`
+**Location**: `crates/holon/src/api/types.rs:61`
 
 **Problem**: Example code references undefined functions
 
@@ -115,7 +115,7 @@ async fn dispose(&self) -> Result<(), ApiError>;
 /// # Example
 ///
 /// ```rust,no_run
-/// use rusty_knowledge::api::DocumentRepository;
+/// use holon::api::DocumentRepository;
 ///
 /// async fn demo(repo: &impl DocumentRepository) -> anyhow::Result<()> {
 ///     let initial = repo.get_initial_state().await?;
@@ -130,7 +130,7 @@ async fn dispose(&self) -> Result<(), ApiError>;
 ### 🟠 HIGH PRIORITY (Fix Before Phase 2)
 
 #### 3. StreamSink Integration Decision Required
-**Location**: `crates/rusty-knowledge/src/api/repository.rs:275`
+**Location**: `crates/holon/src/api/repository.rs:275`
 
 **Gemini's Recommendation**:
 ```rust
@@ -214,7 +214,7 @@ pub struct SubscriptionHandle {
 ```
 
 #### 7. Test Assertion Completeness
-**Location**: `crates/rusty-knowledge/src/api/tests.rs:133`
+**Location**: `crates/holon/src/api/tests.rs:133`
 
 **Add PartialEq and assert equality**:
 ```rust
@@ -239,7 +239,7 @@ assert_eq!(change, deserialized);
 
 ### Rust Tests
 ```bash
-$ cargo test --package rusty-knowledge --lib api::tests
+$ cargo test --package holon --lib api::tests
 running 8 tests
 test api::tests::test_block_metadata_default ... ok
 test api::tests::test_change_origin_copy ... ok
@@ -256,7 +256,7 @@ test result: ok. 8 passed; 0 failed; 0 ignored
 ### Flutter Analysis
 ```bash
 $ flutter analyze
-Analyzing rusty_knowledge...
+Analyzing holon...
 No issues found! (ran in 3.9s)
 ```
 
@@ -271,7 +271,7 @@ Done!
 ## Architectural Decisions
 
 ### Decision 1: Integrated API Module (Not Separate Crate)
-**Rationale**: Simplified architecture compared to original plan (`crates/rusty-knowledge-api`)
+**Rationale**: Simplified architecture compared to original plan (`crates/holon-api`)
 **Impact**: Easier build, same interface boundaries
 **Status**: ✅ Implemented, documented in spec v0.5
 
@@ -358,7 +358,7 @@ Key Features:
 
 Multi-agent reviewed by GPT-5-Pro and Gemini-2.5-Pro.
 
-BREAKING CHANGE: Adds new api module to rusty-knowledge crate
+BREAKING CHANGE: Adds new api module to holon crate
 ```
 
 ---

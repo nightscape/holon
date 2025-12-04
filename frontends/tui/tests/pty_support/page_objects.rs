@@ -1,8 +1,7 @@
 /// PageObject pattern for TUI testing
 ///
 /// Provides high-level abstractions over terminal interactions.
-
-use super::{PtySession, PtyError, Key};
+use super::{Key, PtyError, PtySession};
 use std::time::Duration;
 
 /// Parse terminal output into structured screen representation
@@ -14,10 +13,7 @@ pub struct Screen {
 impl Screen {
     /// Parse output into screen lines, stripping ANSI codes
     pub fn parse(output: &str) -> Self {
-        let lines: Vec<String> = output
-            .lines()
-            .map(|line| strip_ansi_codes(line))
-            .collect();
+        let lines: Vec<String> = output.lines().map(|line| strip_ansi_codes(line)).collect();
 
         Self { lines }
     }
@@ -157,7 +153,9 @@ impl MainPage {
     pub fn status_contains(&mut self, text: &str) -> bool {
         let screen = self.get_screen();
         // Status is typically on the last line
-        screen.lines.last()
+        screen
+            .lines
+            .last()
             .map(|line| line.contains(text))
             .unwrap_or(false)
     }
@@ -173,7 +171,10 @@ impl MainPage {
         if screen.contains(text) {
             Ok(())
         } else {
-            Err(PtyError::NotFound(format!("Screen does not contain '{}'", text)))
+            Err(PtyError::NotFound(format!(
+                "Screen does not contain '{}'",
+                text
+            )))
         }
     }
 
@@ -184,7 +185,10 @@ impl MainPage {
             if line.contains(text) {
                 Ok(())
             } else {
-                Err(PtyError::NotFound(format!("Line {} does not contain '{}': {}", line_index, text, line)))
+                Err(PtyError::NotFound(format!(
+                    "Line {} does not contain '{}': {}",
+                    line_index, text, line
+                )))
             }
         } else {
             Err(PtyError::NotFound(format!("Line {} not found", line_index)))

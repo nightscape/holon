@@ -6,8 +6,11 @@ use flutter_rust_bridge::frb;
 /// This module implements the `StateMachineTest` trait for Flutter UI,
 /// allowing proptest to generate random transitions and verify correctness
 /// against the MemoryBackend reference implementation.
-use rusty_knowledge::api::pbt_infrastructure::*;
-use rusty_knowledge::api::repository::CoreOperations;
+#[cfg(not(target_arch = "wasm32"))]
+use holon::api::pbt_infrastructure::*;
+#[cfg(not(target_arch = "wasm32"))]
+use holon::api::repository::CoreOperations;
+use holon::api::types::Traversal;
 use std::collections::HashMap;
 
 /// Flutter backend test state for property-based testing
@@ -18,6 +21,7 @@ pub struct FlutterBlockTreeTest {
     pub id_map: HashMap<String, String>,
 }
 
+#[cfg(not(target_arch = "wasm32"))]
 impl StateMachineTest for FlutterBlockTreeTest {
     type SystemUnderTest = Self;
     type Reference = ReferenceState;
@@ -47,11 +51,9 @@ impl StateMachineTest for FlutterBlockTreeTest {
         // Update ID map for newly created blocks
         if !created_blocks.is_empty() {
             let ref_blocks = tokio::task::block_in_place(|| {
-                ref_state.handle.block_on(
-                    ref_state
-                        .backend
-                        .get_all_blocks(rusty_knowledge::api::Traversal::ALL_BUT_ROOT),
-                )
+                ref_state
+                    .handle
+                    .block_on(ref_state.backend.get_all_blocks(Traversal::ALL_BUT_ROOT))
             })
             .expect("Failed to get reference blocks");
 

@@ -1,11 +1,11 @@
 use crate::types::*;
-use anyhow::{Result, bail, Context};
-use serde_json::Value;
+use anyhow::{bail, Context, Result};
+use holon_api::Value;
 use std::collections::HashMap;
 
 pub fn compile_render_spec(render_call: &Value) -> Result<RenderSpec> {
     let ui_expr = if let Some(obj) = render_call.as_object() {
-        if obj.get("__fn").and_then(|v| v.as_str()) == Some("render") {
+        if obj.get("__fn").and_then(|v| v.as_string_owned()) == Some("render".to_string()) {
             obj.get("arg0")
                 .context("render() requires at least one argument")?
         } else {
@@ -20,38 +20,61 @@ pub fn compile_render_spec(render_call: &Value) -> Result<RenderSpec> {
     Ok(RenderSpec {
         root,
         nested_queries: vec![],
-        operations: HashMap::new(),  // Removed - not used anymore
+        operations: HashMap::new(), // Removed - not used anymore
+        row_templates: vec![],      // Populated by parser for derive { ui = (render ...) } queries
     })
+}
+
+/// Compile a render expression from JSON, handling the render() wrapper if present.
+///
+/// This is used for compiling row templates extracted from derive { ui = (render ...) }.
+pub fn compile_render_expr_from_json(render_call: &Value) -> Result<RenderExpr> {
+    // Unwrap the render() call if present
+    let ui_expr = if let Some(obj) = render_call.as_object() {
+        if obj.get("__fn").and_then(|v| v.as_string_owned()) == Some("render".to_string()) {
+            obj.get("arg0")
+                .context("render() requires at least one argument")?
+        } else {
+            render_call
+        }
+    } else {
+        render_call
+    };
+
+    compile_render_expr(ui_expr)
 }
 
 fn compile_render_expr(value: &Value) -> Result<RenderExpr> {
     match value {
         Value::String(s) => {
             if let Some(col_name) = s.strip_prefix("$col:") {
+                // Strip "this." prefix if present (PRQL syntax for current row)
+                // This normalizes column references so frontends don't need to handle it
+                let normalized_name = col_name.strip_prefix("this.").unwrap_or(col_name);
                 Ok(RenderExpr::ColumnRef {
-                    name: col_name.to_string(),
+                    name: normalized_name.to_string(),
                 })
             } else {
                 Ok(RenderExpr::Literal {
-                    value: Value::String(s.clone()),
+                    value: value.clone(),
                 })
             }
         }
-        Value::Number(n) => Ok(RenderExpr::Literal {
-            value: Value::Number(n.clone()),
-        }),
-        Value::Bool(b) => Ok(RenderExpr::Literal {
-            value: Value::Bool(*b),
-        }),
-        Value::Null => Ok(RenderExpr::Literal {
-            value: Value::Null,
+        Value::Integer(_)
+        | Value::Float(_)
+        | Value::Boolean(_)
+        | Value::Null
+        | Value::DateTime(_)
+        | Value::Json(_)
+        | Value::Reference(_) => Ok(RenderExpr::Literal {
+            value: value.clone(),
         }),
         Value::Array(arr) => {
             let items: Result<Vec<_>> = arr.iter().map(compile_render_expr).collect();
             Ok(RenderExpr::Array { items: items? })
         }
         Value::Object(obj) => {
-            if let Some(func_name) = obj.get("__fn").and_then(|v| v.as_str()) {
+            if let Some(func_name) = obj.get("__fn").and_then(|v| v.as_string_owned()) {
                 let mut args = vec![];
 
                 for i in 0.. {
@@ -76,15 +99,17 @@ fn compile_render_expr(value: &Value) -> Result<RenderExpr> {
                 }
 
                 Ok(RenderExpr::FunctionCall {
-                    name: func_name.to_string(),
+                    name: func_name,
                     args,
-                    operations: vec![],  // Filled in by lineage analysis
+                    operations: vec![], // Filled in by lineage analysis
                 })
-            } else if let Some(op_name) = obj.get("__op").and_then(|v| v.as_str()) {
+            } else if let Some(op_name) = obj.get("__op").and_then(|v| v.as_string_owned()) {
                 let left = obj.get("left").context("Binary operation missing 'left'")?;
-                let right = obj.get("right").context("Binary operation missing 'right'")?;
+                let right = obj
+                    .get("right")
+                    .context("Binary operation missing 'right'")?;
 
-                let op = match op_name {
+                let op = match op_name.as_str() {
                     "Eq" => BinaryOperator::Eq,
                     "Neq" | "Ne" => BinaryOperator::Neq,
                     "Gt" => BinaryOperator::Gt,
@@ -120,6 +145,10 @@ fn compile_render_expr(value: &Value) -> Result<RenderExpr> {
 mod tests {
     use super::*;
 
+    fn json_to_value(v: serde_json::Value) -> Value {
+        Value::from_json_value(v)
+    }
+
     #[test]
     fn test_compile_simple_text() {
         let json = serde_json::json!({
@@ -127,20 +156,24 @@ mod tests {
             "arg0": "Hello"
         });
 
-        let spec = compile_render_spec(&serde_json::json!({
+        let spec = compile_render_spec(&json_to_value(serde_json::json!({
             "__fn": "render",
             "arg0": json
-        }))
+        })))
         .unwrap();
 
         match spec.root {
-            RenderExpr::FunctionCall { name, args, operations } => {
+            RenderExpr::FunctionCall {
+                name,
+                args,
+                operations,
+            } => {
                 assert_eq!(name, "text");
                 assert_eq!(args.len(), 1);
                 assert!(operations.is_empty());
                 match &args[0].value {
                     RenderExpr::Literal { value } => {
-                        assert_eq!(value, "Hello");
+                        assert_eq!(value.as_string(), Some("Hello"));
                     }
                     _ => panic!("Expected literal"),
                 }
@@ -156,10 +189,10 @@ mod tests {
             "content": "$col:title"
         });
 
-        let spec = compile_render_spec(&serde_json::json!({
+        let spec = compile_render_spec(&json_to_value(serde_json::json!({
             "__fn": "render",
             "arg0": json
-        }))
+        })))
         .unwrap();
 
         match spec.root {
@@ -192,10 +225,10 @@ mod tests {
             }
         });
 
-        let spec = compile_render_spec(&serde_json::json!({
+        let spec = compile_render_spec(&json_to_value(serde_json::json!({
             "__fn": "render",
             "arg0": json
-        }))
+        })))
         .unwrap();
 
         match spec.root {
@@ -217,11 +250,11 @@ mod tests {
 
     #[test]
     fn test_compile_binary_op() {
-        let json = serde_json::json!({
+        let json = json_to_value(serde_json::json!({
             "__op": "Mul",
             "left": "$col:depth",
             "right": 24
-        });
+        }));
 
         let expr = compile_render_expr(&json).unwrap();
 
@@ -236,7 +269,7 @@ mod tests {
                 }
                 match *right {
                     RenderExpr::Literal { ref value } => {
-                        assert_eq!(value, &serde_json::json!(24));
+                        assert_eq!(value.as_i64(), Some(24));
                     }
                     _ => panic!("Expected literal"),
                 }
@@ -247,7 +280,7 @@ mod tests {
 
     #[test]
     fn test_compile_array() {
-        let json = serde_json::json!(["A", "B", "C"]);
+        let json = json_to_value(serde_json::json!(["A", "B", "C"]));
 
         let expr = compile_render_expr(&json).unwrap();
 
@@ -261,10 +294,10 @@ mod tests {
 
     #[test]
     fn test_compile_object() {
-        let json = serde_json::json!({
+        let json = json_to_value(serde_json::json!({
             "key1": "value1",
             "key2": 42
-        });
+        }));
 
         let expr = compile_render_expr(&json).unwrap();
 

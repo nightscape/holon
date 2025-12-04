@@ -1,0 +1,39 @@
+# GitHub theme family
+themes:
+  githubLight:
+    name: "GitHub Light"
+    isDark: false
+    colors:
+      primary: "#0969DA"
+      primaryDark: "#0550AE"
+      primaryLight: "#218BFF"
+      textPrimary: "#24292F"
+      textSecondary: "#57606A"
+      textTertiary: "#656D76"
+      background: "#FFFFFF"
+      backgroundSecondary: "#F6F8FA"
+      sidebarBackground: "#F6F8FA"
+      border: "#D0D7DE"
+      borderFocus: "#0969DA"
+      success: "#1A7F37"
+      error: "#CF222E"
+      warning: "#9A6700"
+
+  githubDark:
+    name: "GitHub Dark"
+    isDark: true
+    colors:
+      primary: "#58A6FF"
+      primaryDark: "#388BFD"
+      primaryLight: "#79C0FF"
+      textPrimary: "#C9D1D9"
+      textSecondary: "#B1BAC4"
+      textTertiary: "#8B949E"
+      background: "#0D1117"
+      backgroundSecondary: "#161B22"
+      sidebarBackground: "#161B22"
+      border: "#30363D"
+      borderFocus: "#58A6FF"
+      success: "#3FB950"
+      error: "#F85149"
+      warning: "#D29922"

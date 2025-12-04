@@ -2,14 +2,13 @@
 ///
 /// This test uses PTY pairs to test actual terminal interaction.
 /// Run with: cargo test navigation_test -- --nocapture
-
 mod pty_support;
 
-use pty_support::{PtySession, page_objects::MainPage};
 use portable_pty::{CommandBuilder, NativePtySystem, PtySize, PtySystem};
-use tui_r3bl_frontend::config::KeyBindingConfig;
-use std::time::Duration;
+use pty_support::{page_objects::MainPage, PtySession};
 use std::io::Write;
+use std::time::Duration;
+use tui_r3bl_frontend::config::KeyBindingConfig;
 
 #[test]
 #[ignore] // Ignore by default since it requires terminal support
@@ -50,7 +49,13 @@ fn test_navigation_and_toggle() {
     let mut cmd = CommandBuilder::new(&test_binary);
     cmd.env(PTY_SLAVE_ENV_VAR, "1");
     cmd.env("RUST_BACKTRACE", "1");
-    cmd.args(&["--test-threads", "1", "--nocapture", "--ignored", "test_navigation_and_toggle"]);
+    cmd.args(&[
+        "--test-threads",
+        "1",
+        "--nocapture",
+        "--ignored",
+        "test_navigation_and_toggle",
+    ]);
 
     eprintln!("🚀 Master: Spawning slave process");
     let child = pty_pair
@@ -66,7 +71,8 @@ fn test_navigation_and_toggle() {
     eprintln!("📝 Master: Waiting for app to start");
 
     // Wait for app to be ready
-    main_page.wait_for_ready(Duration::from_secs(5))
+    main_page
+        .wait_for_ready(Duration::from_secs(5))
         .expect("App did not start");
     eprintln!("  ✓ App started");
 
@@ -136,10 +142,7 @@ fn run_tui_app_slave() -> ! {
 
     rt.block_on(async {
         // Try to run the app with a timeout
-        let result = tokio::time::timeout(
-            Duration::from_secs(10),
-            run_simple_tui()
-        ).await;
+        let result = tokio::time::timeout(Duration::from_secs(10), run_simple_tui()).await;
 
         match result {
             Ok(Ok(())) => {
@@ -164,13 +167,13 @@ fn run_tui_app_slave() -> ! {
 
 /// Simple TUI runner for testing
 async fn run_simple_tui() -> Result<(), Box<dyn std::error::Error>> {
-    use tui_r3bl_frontend::{app_main::AppMain, state::State};
+    use holon::api::render_engine::BackendEngine;
+    use holon::storage::fractional_index::gen_key_between;
     use r3bl_tui::TerminalWindow;
+    use std::collections::HashMap;
     use std::sync::Arc;
     use tokio::sync::RwLock;
-    use std::collections::HashMap;
-    use rusty_knowledge::api::render_engine::BackendEngine;
-    use rusty_knowledge::storage::fractional_index::gen_key_between;
+    use tui_r3bl_frontend::{app_main::AppMain, state::State};
 
     let app = AppMain::new_boxed();
 
@@ -193,22 +196,29 @@ async fn run_simple_tui() -> Result<(), Box<dyn std::error::Error>> {
         )
     "#;
 
-    engine.execute_query(create_table_sql.to_string(), HashMap::new()).await?;
+    engine
+        .execute_query(create_table_sql.to_string(), HashMap::new())
+        .await?;
 
     // Insert minimal sample data for testing
     let key1 = gen_key_between(None, None)?;
     let key2 = gen_key_between(Some(&key1), None)?;
     let key3 = gen_key_between(Some(&key2), None)?;
 
-    let sample_data_sql = format!(r#"
+    let sample_data_sql = format!(
+        r#"
         INSERT OR IGNORE INTO blocks (id, parent_id, depth, sort_key, content, block_type, completed)
         VALUES
             ('test-1', NULL, 0, '{}', 'First task', 'text', 0),
             ('test-2', NULL, 0, '{}', 'Second task', 'text', 0),
             ('test-3', NULL, 0, '{}', 'Third task', 'text', 1)
-    "#, key1, key2, key3);
+    "#,
+        key1, key2, key3
+    );
 
-    engine.execute_query(sample_data_sql.to_string(), HashMap::new()).await?;
+    engine
+        .execute_query(sample_data_sql.to_string(), HashMap::new())
+        .await?;
 
     // PRQL query with render spec
     let prql_query = r#"
@@ -226,9 +236,8 @@ select {
 render (list hierarchical_sort:[parent_id, sort_key] item_template:(row (checkbox checked:this.completed) (editable_text content:this.content)))
 "#.to_string();
 
-    let (render_spec, initial_data, cdc_stream) = engine
-        .query_and_watch(prql_query, HashMap::new())
-        .await?;
+    let (render_spec, initial_data, cdc_stream) =
+        engine.query_and_watch(prql_query, HashMap::new()).await?;
 
     let engine = Arc::new(RwLock::new(engine));
 
@@ -251,7 +260,7 @@ render (list hierarchical_sort:[parent_id, sort_key] item_template:(row (checkbo
     let state = State::new(engine, render_spec, initial_data, cdc_receiver, keybindings);
 
     // Run the terminal window with Ctrl+q as exit key
-    use r3bl_tui::{InputEvent, KeyPress, Key, KeyState};
+    use r3bl_tui::{InputEvent, Key, KeyPress, KeyState};
     let exit_keys = &[InputEvent::Keyboard(KeyPress::WithModifiers {
         key: Key::Character('q'),
         mask: r3bl_tui::ModifierKeysMask {

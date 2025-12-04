@@ -2,7 +2,7 @@
 
 **Status:** In Progress (Phases 1-2 Complete)
 **Started:** 2025-10-31
-**Location:** `/Users/martin/Workspaces/pkm/rusty-knowledge/`
+**Location:** `/Users/martin/Workspaces/pkm/holon/`
 
 ---
 
@@ -119,7 +119,7 @@ Dart UI Layer
 
 **Date:** 2025-10-31
 **Files Modified:**
-- `crates/rusty-knowledge/src/api/repository.rs`
+- `crates/holon/src/api/repository.rs`
 
 **Changes:**
 
@@ -149,7 +149,7 @@ All methods have **default implementations** that extract IDs internally.
 - ✅ `cargo test` - 127 tests passed, 0 failed
 - ⚠️ 2 pre-existing stress test failures (unrelated)
 
-**Location:** `crates/rusty-knowledge/src/api/repository.rs:223-291`
+**Location:** `crates/holon/src/api/repository.rs:223-291`
 
 ---
 
@@ -337,7 +337,7 @@ class FreezedBlockOps implements BlockOps<Block> {
 ### 🔄 Phase 4: Create RustBlockOps Adapter
 
 **Status:** Not Started
-**Location:** `/Users/martin/Workspaces/pkm/rusty-knowledge/frontends/flutter/lib/data/`
+**Location:** `/Users/martin/Workspaces/pkm/holon/frontends/flutter/lib/data/`
 **Estimated Effort:** 30 minutes
 
 #### File to Create
@@ -426,7 +426,7 @@ class RustBlockOps implements BlockOps<rust.Block> {
 ### 🔄 Phase 5: Implement BlockState Management
 
 **Status:** Not Started
-**Location:** `/Users/martin/Workspaces/pkm/rusty-knowledge/frontends/flutter/lib/data/`
+**Location:** `/Users/martin/Workspaces/pkm/holon/frontends/flutter/lib/data/`
 **Estimated Effort:** 1 hour
 
 #### Files to Create
@@ -572,7 +572,7 @@ class BlockStateNotifier extends StateNotifier<BlockState?> {
 ### 🔄 Phase 6: Update Main Application
 
 **Status:** Not Started
-**Location:** `/Users/martin/Workspaces/pkm/rusty-knowledge/frontends/flutter/`
+**Location:** `/Users/martin/Workspaces/pkm/holon/frontends/flutter/`
 **Estimated Effort:** 30 minutes
 
 #### 6.1: Update Providers
@@ -757,7 +757,7 @@ Plus:
 - Test flat structure traversal
 - Test widget rendering with generic types
 
-**rusty-knowledge:**
+**holon:**
 - Test `RustBlockOps` field accessors
 - Test `BlockStateNotifier` change handling
 - Test state updates are immutable
@@ -848,15 +848,15 @@ final provider = USE_OPAQUE_BLOCKS
 
 1. **Read this document**: Full context on goals and progress
 2. **Check completed phases**: Phases 1-2 done, 3-7 remaining
-3. **Current location**: `/Users/martin/Workspaces/pkm/rusty-knowledge/frontends/flutter/`
+3. **Current location**: `/Users/martin/Workspaces/pkm/holon/frontends/flutter/`
 4. **Next task**: Phase 3 requires working in `/Users/martin/Workspaces/pkm/outliner-flutter/`
 5. **Reference implementation**: See code templates in each phase section
 
 ### Key Files to Understand
 
 **Rust Backend:**
-- `crates/rusty-knowledge/src/api/repository.rs` - CoreOperations trait
-- `crates/rusty-knowledge/src/api/types.rs` - Block structure
+- `crates/holon/src/api/repository.rs` - CoreOperations trait
+- `crates/holon/src/api/types.rs` - Block structure
 - `frontends/flutter/rust/src/api/repository.rs` - FFI layer
 
 **Dart Frontend:**

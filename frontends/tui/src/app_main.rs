@@ -1,16 +1,16 @@
 use super::components::{BlockListComponent, ComponentId};
+use super::render_interpreter::RenderInterpreter;
 use super::state::{AppSignal, State};
 use super::stylesheet::{self, StyleId};
-use super::render_interpreter::RenderInterpreter;
 use super::ui_element::UIElement;
 use r3bl_tui::{
-    App, BoxedSafeApp, CommonResult, ComponentRegistry, ComponentRegistryMap, EventPropagation,
-    FlexBoxId, GlobalData, HasFocus, InputEvent, Key, KeyPress, LayoutDirection,
-    LayoutManagement, LengthOps, PerformPositioningAndSizing, Pos, RenderOpCommon, RenderOpIR,
-    RenderOpIRVec, RenderPipeline, Size, Surface, SurfaceProps, SurfaceRender, ZOrder, box_end,
-    box_start, col, height, new_style, render_component_in_current_box,
-    render_tui_styled_texts_into, req_size_pc, row, surface, throws, throws_with_return,
-    tui_color, tui_styled_text, tui_styled_texts, SPACER_GLYPH,
+    box_end, box_start, col, height, new_style, render_component_in_current_box,
+    render_tui_styled_texts_into, req_size_pc, row, surface, throws, throws_with_return, tui_color,
+    tui_styled_text, tui_styled_texts, App, BoxedSafeApp, CommonResult, ComponentRegistry,
+    ComponentRegistryMap, EventPropagation, FlexBoxId, GlobalData, HasFocus, InputEvent, Key,
+    KeyPress, LayoutDirection, LayoutManagement, LengthOps, PerformPositioningAndSizing, Pos,
+    RenderOpCommon, RenderOpIR, RenderOpIRVec, RenderPipeline, Size, Surface, SurfaceProps,
+    SurfaceRender, ZOrder, SPACER_GLYPH,
 };
 use std::marker::PhantomData;
 
@@ -51,9 +51,8 @@ impl App for AppMain {
         has_focus: &mut HasFocus,
     ) {
         // Register the block list component
-        let block_list_component = BlockListComponent::new_boxed(
-            FlexBoxId::from(ComponentId::BlockList)
-        );
+        let block_list_component =
+            BlockListComponent::new_boxed(FlexBoxId::from(ComponentId::BlockList));
         ComponentRegistry::put(
             component_registry_map,
             FlexBoxId::from(ComponentId::BlockList),
@@ -77,7 +76,9 @@ impl App for AppMain {
                 let sender_opt = global_data.state.main_thread_sender_channel.lock().unwrap();
                 if sender_opt.is_none() {
                     drop(sender_opt); // Release lock before calling start_cdc_watcher
-                    global_data.state.start_cdc_watcher(global_data.main_thread_channel_sender.clone());
+                    global_data
+                        .state
+                        .start_cdc_watcher(global_data.main_thread_channel_sender.clone());
                 }
             }
 
@@ -90,7 +91,8 @@ impl App for AppMain {
             if let InputEvent::Keyboard(KeyPress::WithModifiers {
                 key: Key::Character('q'),
                 mask,
-            }) = input_event {
+            }) = input_event
+            {
                 if mask.ctrl_key_state == r3bl_tui::KeyState::Pressed {
                     // If we're editing, save the current block before exiting
                     if global_data.state.editing_block_index.is_some() {
@@ -119,18 +121,28 @@ impl App for AppMain {
             if let InputEvent::Keyboard(KeyPress::WithModifiers {
                 key: Key::Character('r'),
                 mask,
-            }) = input_event {
+            }) = input_event
+            {
                 if mask.ctrl_key_state == r3bl_tui::KeyState::Pressed {
                     // Generic sync trigger (works for any SyncableProvider)
                     let engine = global_data.state.engine.clone();
-                    let sender_opt = global_data.state.main_thread_sender_channel.lock().unwrap().clone();
+                    let sender_opt = global_data
+                        .state
+                        .main_thread_sender_channel
+                        .lock()
+                        .unwrap()
+                        .clone();
 
                     tracing::info!("[TUI] Sync triggered by user (Ctrl+r)");
                     tokio::spawn(async move {
-                        tracing::info!("[TUI] Starting sync_all_providers()");
-                        match engine.sync_all_providers().await {
+                        tracing::info!("[TUI] Starting wildcard sync operation");
+                        // Use wildcard operation dispatch: entity_name="*", op_name="sync"
+                        let params = std::collections::HashMap::new();
+                        match engine.execute_operation("*", "sync", params).await {
                             Ok(_) => {
-                                tracing::info!("[TUI] sync_all_providers() completed successfully");
+                                tracing::info!(
+                                    "[TUI] Wildcard sync operation completed successfully"
+                                );
                                 if let Some(sender) = sender_opt {
                                     let _ = sender.send(
                                         r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(
@@ -144,7 +156,7 @@ impl App for AppMain {
                                 }
                             }
                             Err(e) => {
-                                tracing::error!("[TUI] sync_all_providers() failed: {}", e);
+                                tracing::error!("[TUI] Wildcard sync operation failed: {}", e);
                                 if let Some(sender) = sender_opt {
                                     let _ = sender.send(
                                         r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(
@@ -201,23 +213,32 @@ impl App for AppMain {
                     let value = new_value.clone();
 
                     // Get the signal sender to communicate results back to UI
-                    let sender_opt = global_data.state.main_thread_sender_channel.lock().unwrap().clone();
+                    let sender_opt = global_data
+                        .state
+                        .main_thread_sender_channel
+                        .lock()
+                        .unwrap()
+                        .clone();
 
                     // Spawn async task to execute operation
                     tokio::spawn(async move {
                         // Get entity name from table mapping, fallback to table name if not mapped
-                        let entity_name = engine.get_entity_for_table(&table_name).await
+                        let entity_name = engine
+                            .get_entity_for_table(&table_name)
+                            .await
                             .unwrap_or_else(|| table_name.clone());
 
                         // Build parameters for the operation
                         // UpdateField expects: id, field, value (and optionally table)
                         let mut params = std::collections::HashMap::new();
-                        params.insert("id".to_string(), rusty_knowledge::storage::types::Value::String(id_val));
-                        params.insert("field".to_string(), rusty_knowledge::storage::types::Value::String(field_name));
+                        params.insert("id".to_string(), holon_api::Value::String(id_val));
+                        params.insert("field".to_string(), holon_api::Value::String(field_name));
                         params.insert("value".to_string(), value);
 
                         // Execute the operation
-                        let result = engine.execute_operation(&entity_name, &operation_name, params).await;
+                        let result = engine
+                            .execute_operation(&entity_name, &operation_name, params)
+                            .await;
 
                         // Send result back to UI thread via signal
                         if let Some(sender) = sender_opt {
@@ -227,14 +248,26 @@ impl App for AppMain {
                                 error_message: result.err().map(|e| e.to_string()),
                             };
 
-                            if sender.send(r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(signal)).await.is_err() {
-                                tracing::error!("Failed to send operation result signal for '{}'", operation_name);
+                            if sender
+                                .send(r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(
+                                    signal,
+                                ))
+                                .await
+                                .is_err()
+                            {
+                                tracing::error!(
+                                    "Failed to send operation result signal for '{}'",
+                                    operation_name
+                                );
                             }
                         } else {
                             // Fallback: log errors if signal channel is not available
                             match result {
                                 Ok(_) => {
-                                    tracing::info!("Operation {} executed successfully", operation_name);
+                                    tracing::info!(
+                                        "Operation {} executed successfully",
+                                        operation_name
+                                    );
                                 }
                                 Err(e) => {
                                     tracing::error!("Operation {} failed: {}", operation_name, e);
@@ -256,7 +289,8 @@ impl App for AppMain {
                         global_data.state.status_message = format!("{} succeeded", operation_name);
                     } else {
                         let error_msg = error_message.as_deref().unwrap_or("Unknown error");
-                        global_data.state.status_message = format!("{} failed: {}", operation_name, error_msg);
+                        global_data.state.status_message =
+                            format!("{} failed: {}", operation_name, error_msg);
                     }
                 }
                 AppSignal::Noop => {}
@@ -303,13 +337,12 @@ impl App for AppMain {
                 }
 
                 // Render components using SurfaceRender trait
-                ContainerSurfaceRender { _app: self }
-                    .render_in_surface(
-                        &mut it,
-                        global_data,
-                        component_registry_map,
-                        has_focus,
-                    )?;
+                ContainerSurfaceRender { _app: self }.render_in_surface(
+                    &mut it,
+                    global_data,
+                    component_registry_map,
+                    has_focus,
+                )?;
 
                 it.surface_end()?;
 
@@ -317,7 +350,11 @@ impl App for AppMain {
             };
 
             // Render status bar (last row)
-            render_status_bar(&mut surface.render_pipeline, window_size, &global_data.state.status_message);
+            render_status_bar(
+                &mut surface.render_pipeline,
+                window_size,
+                &global_data.state.status_message,
+            );
 
             surface.render_pipeline
         });
@@ -377,7 +414,10 @@ fn render_status_bar(pipeline: &mut RenderPipeline, size: Size, status_msg: &str
     let cursor = Pos::from((col_idx, row_idx));
 
     let mut render_ops = RenderOpIRVec::new();
-    render_ops += RenderOpIR::Common(RenderOpCommon::MoveCursorPositionAbs(Pos::from((col(0), row_idx))));
+    render_ops += RenderOpIR::Common(RenderOpCommon::MoveCursorPositionAbs(Pos::from((
+        col(0),
+        row_idx,
+    ))));
     render_ops += RenderOpCommon::ResetColor;
     render_ops += RenderOpCommon::SetBgColor(color_bg);
     render_ops += RenderOpIR::PaintTextWithAttributes(
@@ -393,9 +433,7 @@ fn render_status_bar(pipeline: &mut RenderPipeline, size: Size, status_msg: &str
 /// Helper function to save the currently editing block when exiting the app
 /// This rebuilds the element tree and saves the block content synchronously
 /// to ensure the save completes before the app exits
-fn save_editing_block_on_exit(
-    global_data: &mut GlobalData<State, AppSignal>,
-) {
+fn save_editing_block_on_exit(global_data: &mut GlobalData<State, AppSignal>) {
     // Check if we're editing a block
     if let Some(editing_idx) = global_data.state.editing_block_index {
         if let Some(buffer) = &global_data.state.editing_buffer {
@@ -408,19 +446,20 @@ fn save_editing_block_on_exit(
 
             // Extract operation info from the EditableText
             let operation_info = if let Some(element) = element_tree.get(editing_idx) {
-                element.find_editable_text()
-                    .and_then(|editable| {
-                            if let UIElement::EditableText { operations, .. } = editable {
-                                operations.first().map(|op| (
-                                    op.descriptor.name.clone(),
-                                    op.descriptor.table.clone(),
-                                    op.descriptor.id_column.clone(),
-                                    get_field_name(op),
-                                ))
-                        } else {
-                            None
-                        }
-                    })
+                element.find_editable_text().and_then(|editable| {
+                    if let UIElement::EditableText { operations, .. } = editable {
+                        operations.first().map(|op| {
+                            (
+                                op.descriptor.name.clone(),
+                                op.descriptor.entity_name.clone(), // Use entity_name instead of table
+                                op.descriptor.id_column.clone(),
+                                get_field_name(op),
+                            )
+                        })
+                    } else {
+                        None
+                    }
+                })
             } else {
                 None
             };
@@ -458,12 +497,13 @@ fn save_editing_block_on_exit(
                             let table_name = table.clone();
                             let id_val = id_str.to_string();
                             let field_name = field.clone();
-                            let value = rusty_knowledge::storage::types::Value::String(buffer_content);
+                            let value = holon_api::Value::String(buffer_content);
 
                             // Build parameters for the operation
                             let mut params = std::collections::HashMap::new();
-                            params.insert("id".to_string(), rusty_knowledge::storage::types::Value::String(id_val));
-                            params.insert("field".to_string(), rusty_knowledge::storage::types::Value::String(field_name));
+                            params.insert("id".to_string(), holon_api::Value::String(id_val));
+                            params
+                                .insert("field".to_string(), holon_api::Value::String(field_name));
                             params.insert("value".to_string(), value);
 
                             // Spawn a new thread with its own runtime to execute the blocking save
@@ -471,13 +511,19 @@ fn save_editing_block_on_exit(
                             let result = std::thread::spawn(move || -> Result<(), String> {
                                 let rt = match tokio::runtime::Runtime::new() {
                                     Ok(rt) => rt,
-                                    Err(e) => return Err(format!("Failed to create runtime: {}", e)),
+                                    Err(e) => {
+                                        return Err(format!("Failed to create runtime: {}", e))
+                                    }
                                 };
                                 rt.block_on(async {
                                     // Get entity name from table mapping, fallback to table name if not mapped
-                                    let entity_name = engine.get_entity_for_table(&table_name).await
+                                    let entity_name = engine
+                                        .get_entity_for_table(&table_name)
+                                        .await
                                         .unwrap_or_else(|| table_name.clone());
-                                    engine.execute_operation(&entity_name, &operation_name, params).await
+                                    engine
+                                        .execute_operation(&entity_name, &operation_name, params)
+                                        .await
                                 })
                                 .map_err(|e| format!("Operation error: {}", e))
                             })
@@ -487,11 +533,13 @@ fn save_editing_block_on_exit(
 
                             match result {
                                 Ok(_) => {
-                                    global_data.state.status_message = "Saved before exit".to_string();
+                                    global_data.state.status_message =
+                                        "Saved before exit".to_string();
                                 }
                                 Err(e) => {
                                     eprintln!("Failed to save before exit: {}", e);
-                                    global_data.state.status_message = format!("Save failed: {}", e);
+                                    global_data.state.status_message =
+                                        format!("Save failed: {}", e);
                                 }
                             }
                         }

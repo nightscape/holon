@@ -1,0 +1,39 @@
+# Catppuccin theme family
+themes:
+  catppuccinLatte:
+    name: "Catppuccin Latte"
+    isDark: false
+    colors:
+      primary: "#1E66F5"
+      primaryDark: "#1E3A8A"
+      primaryLight: "#3B82F6"
+      textPrimary: "#4C4F69"
+      textSecondary: "#5C5F77"
+      textTertiary: "#9CA0B0"
+      background: "#EFF1F5"
+      backgroundSecondary: "#E6E9EF"
+      sidebarBackground: "#E6E9EF"
+      border: "#CCD0DA"
+      borderFocus: "#1E66F5"
+      success: "#40A02B"
+      error: "#D20F39"
+      warning: "#DF8E1D"
+
+  catppuccinMocha:
+    name: "Catppuccin Mocha"
+    isDark: true
+    colors:
+      primary: "#89B4FA"
+      primaryDark: "#74C7EC"
+      primaryLight: "#B4BEFE"
+      textPrimary: "#CDD6F4"
+      textSecondary: "#BAC2DE"
+      textTertiary: "#6C7086"
+      background: "#1E1E2E"
+      backgroundSecondary: "#181825"
+      sidebarBackground: "#181825"
+      border: "#45475A"
+      borderFocus: "#89B4FA"
+      success: "#A6E3A1"
+      error: "#F38BA8"
+      warning: "#F9E2AF"

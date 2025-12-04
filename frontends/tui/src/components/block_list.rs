@@ -1,14 +1,15 @@
+use crate::config::{Action, BindingContext};
 use crate::render_interpreter::RenderInterpreter;
 use crate::state::{AppSignal, State};
 use crate::ui_element::UIElement;
-use crate::config::{BindingContext, Action};
 use r3bl_tui::{
-    BoxedSafeComponent, CommonResult, Component, EventPropagation, FlexBox, FlexBoxId,
-    GlobalData, HasFocus, InputEvent, Key, KeyPress, KeyState, RenderPipeline, SpecialKey,
-    SurfaceBounds, TerminalWindowMainThreadSignal, render_pipeline, send_signal, throws_with_return, ZOrder,
-    EditorEngineApplyEventResult, SystemClipboard, engine_public_api, row, EditorEngine, EditorEngineConfig,
-    Size, width, height, EditorEvent,
+    engine_public_api, height, render_pipeline, row, send_signal, throws_with_return, width,
+    BoxedSafeComponent, CommonResult, Component, EditorEngine, EditorEngineApplyEventResult,
+    EditorEngineConfig, EditorEvent, EventPropagation, FlexBox, FlexBoxId, GlobalData, HasFocus,
+    InputEvent, Key, KeyPress, KeyState, RenderPipeline, Size, SpecialKey, SurfaceBounds,
+    SystemClipboard, TerminalWindowMainThreadSignal, ZOrder,
 };
+use tracing::debug;
 
 // Helper function to extract field name from OperationWiring
 // For "set_field" operations, tries to extract from descriptor params, otherwise uses modified_param
@@ -21,17 +22,23 @@ fn get_field_name(op: &query_render::OperationWiring) -> String {
 
 /// Extract operation info from an element at the given index
 /// Returns (operation_name, table, id_column, field) if found
-fn extract_operation_info(element_tree: &[UIElement], index: usize) -> Option<(String, String, String, String)> {
-    element_tree.get(index)
+fn extract_operation_info(
+    element_tree: &[UIElement],
+    index: usize,
+) -> Option<(String, String, String, String)> {
+    element_tree
+        .get(index)
         .and_then(|element| element.find_editable_text())
         .and_then(|editable| {
             if let UIElement::EditableText { operations, .. } = editable {
-                operations.first().map(|op| (
-                    op.descriptor.name.clone(),
-                    op.descriptor.table.clone(),
-                    op.descriptor.id_column.clone(),
-                    get_field_name(op),
-                ))
+                operations.first().map(|op| {
+                    (
+                        op.descriptor.name.clone(),
+                        op.descriptor.entity_name.clone(), // Use entity_name instead of table
+                        op.descriptor.id_column.clone(),
+                        get_field_name(op),
+                    )
+                })
             } else {
                 None
             }
@@ -68,7 +75,7 @@ fn send_save_operation_signal(
     if let Some(row_data) = global_data.state.data.get(editing_idx) {
         if let Some(id_value) = row_data.get(&id_column) {
             if let Some(id_str) = id_value.as_string() {
-                let new_value = rusty_knowledge::storage::types::Value::String(buffer_content);
+                let new_value = holon_api::Value::String(buffer_content);
                 let op_signal = AppSignal::ExecuteOperation {
                     operation_name: operation_name.clone(),
                     table,
@@ -147,12 +154,74 @@ fn save_current_block_without_exit(
 
 /// Execute an operation and set status message
 fn execute_operation_with_status(
+    component: &BlockListComponent,
     global_data: &mut GlobalData<State, AppSignal>,
     op_name: &str,
     success_msg: &str,
-    ui_state: Option<rusty_knowledge::api::UiState>,
+    ui_state: Option<holon::api::UiState>,
 ) -> bool {
-    match global_data.state.execute_operation_on_selected(op_name, ui_state) {
+    // Get the selected UIElement
+    let selected_element = match component.element_tree.get(global_data.state.selected_index) {
+        Some(element) => element,
+        None => {
+            global_data.state.status_message = format!(
+                "No element at selected index {}",
+                global_data.state.selected_index
+            );
+            debug!(
+                "No element at index {} (tree len: {})",
+                global_data.state.selected_index,
+                component.element_tree.len()
+            );
+            return false;
+        }
+    };
+
+    // Debug: Log all available operations on this element
+    let available_ops = BlockListComponent::collect_all_operation_names(selected_element);
+    debug!(
+        "Looking for operation '{}' on element at index {}",
+        op_name, global_data.state.selected_index
+    );
+    debug!("Available operations: {:?}", available_ops);
+    debug!(
+        "Element type: {:?}",
+        std::mem::discriminant(selected_element)
+    );
+
+    // Find the operation descriptor
+    let operation_descriptor = match selected_element.find_operation_descriptor(op_name) {
+        Some(descriptor) => {
+            debug!(
+                "Found operation '{}' with entity_name='{}', name='{}'",
+                op_name, descriptor.entity_name, descriptor.name
+            );
+            descriptor
+        }
+        None => {
+            let available_ops_str = if available_ops.is_empty() {
+                "none".to_string()
+            } else {
+                format!("{:?}", available_ops)
+            };
+            global_data.state.status_message = format!(
+                "Operation '{}' not found. Available: {}",
+                op_name, available_ops_str
+            );
+            debug!(
+                "Operation '{}' not found on selected element. Available operations: {:?}",
+                op_name, available_ops
+            );
+            debug!("Element structure: {:?}", selected_element);
+            return false;
+        }
+    };
+
+    // Execute with descriptor
+    match global_data
+        .state
+        .execute_operation_on_selected(op_name, operation_descriptor, ui_state)
+    {
         Ok(_) => {
             global_data.state.status_message = success_msg.to_string();
             true
@@ -187,49 +256,66 @@ fn toggle_completion(
                         if let Some(id_str) = id_value.as_string() {
                             if let Some(field_value) = row.get(&get_field_name(operation)) {
                                 let bool_val = match field_value {
-                                    rusty_knowledge::storage::types::Value::Boolean(b) => *b,
-                                    rusty_knowledge::storage::types::Value::Integer(i) => *i != 0,
+                                    holon_api::Value::Boolean(b) => *b,
+                                    holon_api::Value::Integer(i) => *i != 0,
                                     _ => {
-                                        global_data.state.status_message = format!("Field {} is not a boolean or integer", get_field_name(operation));
+                                        global_data.state.status_message = format!(
+                                            "Field {} is not a boolean or integer",
+                                            get_field_name(operation)
+                                        );
                                         return Ok(EventPropagation::ConsumedRender);
                                     }
                                 };
                                 let op_signal = AppSignal::ExecuteOperation {
                                     operation_name: operation.descriptor.name.clone(),
-                                    table: operation.descriptor.table.clone(),
+                                    table: operation.descriptor.entity_name.clone(),
                                     id_column: operation.descriptor.id_column.clone(),
                                     id_value: id_str.to_string(),
                                     field: get_field_name(operation),
-                                    new_value: rusty_knowledge::storage::types::Value::Boolean(!bool_val),
+                                    new_value: holon_api::Value::Boolean(!bool_val),
                                 };
                                 send_signal!(
                                     global_data.main_thread_channel_sender,
                                     TerminalWindowMainThreadSignal::ApplyAppSignal(op_signal)
                                 );
-                                global_data.state.status_message = "Toggling completion...".to_string();
+                                global_data.state.status_message =
+                                    "Toggling completion...".to_string();
                                 EventPropagation::ConsumedRender
                             } else {
-                                global_data.state.status_message = format!("Field {} not found in row", get_field_name(operation));
+                                global_data.state.status_message =
+                                    format!("Field {} not found in row", get_field_name(operation));
                                 EventPropagation::ConsumedRender
                             }
                         } else {
-                            global_data.state.status_message = format!("ID column {} is not a string", operation.descriptor.id_column);
+                            global_data.state.status_message = format!(
+                                "ID column {} is not a string",
+                                operation.descriptor.id_column
+                            );
                             EventPropagation::ConsumedRender
                         }
                     } else {
-                        global_data.state.status_message = format!("ID column {} not found", operation.descriptor.id_column);
+                        global_data.state.status_message =
+                            format!("ID column {} not found", operation.descriptor.id_column);
                         EventPropagation::ConsumedRender
                     }
                 } else {
-                    global_data.state.status_message = format!("No data at index {}", global_data.state.selected_index);
+                    global_data.state.status_message =
+                        format!("No data at index {}", global_data.state.selected_index);
                     EventPropagation::ConsumedRender
                 }
             } else {
-                global_data.state.status_message = format!("No operation found for element at index {}", global_data.state.selected_index);
+                global_data.state.status_message = format!(
+                    "No operation found for element at index {}",
+                    global_data.state.selected_index
+                );
                 EventPropagation::ConsumedRender
             }
         } else {
-            global_data.state.status_message = format!("Selected index {} out of bounds (len: {})", global_data.state.selected_index, component.element_tree.len());
+            global_data.state.status_message = format!(
+                "Selected index {} out of bounds (len: {})",
+                global_data.state.selected_index,
+                component.element_tree.len()
+            );
             EventPropagation::ConsumedRender
         }
     });
@@ -255,14 +341,20 @@ fn handle_split_block(
                 return Ok(EventPropagation::ConsumedRender);
             }
         };
-        let ui_state = rusty_knowledge::api::UiState {
-            cursor_pos: Some(rusty_knowledge::api::CursorPosition {
+        let ui_state = holon::api::UiState {
+            cursor_pos: Some(holon::api::CursorPosition {
                 block_id: block_id.clone(),
                 offset: cursor_offset,
             }),
             focused_id: Some(block_id),
         };
-        if execute_operation_with_status(global_data, "split_block", "Splitting block...", Some(ui_state)) {
+        if execute_operation_with_status(
+            component,
+            global_data,
+            "split_block",
+            "Splitting block...",
+            Some(ui_state),
+        ) {
             exit_edit_mode(component, global_data);
         }
         EventPropagation::ConsumedRender
@@ -288,6 +380,25 @@ impl BlockListComponent {
 
     pub fn new_boxed(id: FlexBoxId) -> BoxedSafeComponent<State, AppSignal> {
         Box::new(Self::new(id))
+    }
+
+    /// Collect all operation names from a UIElement recursively
+    fn collect_all_operation_names(element: &UIElement) -> Vec<String> {
+        let mut ops = Vec::new();
+        match element {
+            UIElement::Checkbox { operations, .. } | UIElement::EditableText { operations, .. } => {
+                for op in operations {
+                    ops.push(op.descriptor.name.clone());
+                }
+            }
+            UIElement::Row { children } => {
+                for child in children {
+                    ops.extend(Self::collect_all_operation_names(child));
+                }
+            }
+            _ => {}
+        }
+        ops
     }
 
     /// Rebuild element tree from current state
@@ -318,7 +429,13 @@ impl BlockListComponent {
             match action {
                 Action::Operation(op_name) => {
                     // Execute operation on selected block
-                    execute_operation_with_status(global_data, op_name, &format!("Executing {}...", op_name), None);
+                    execute_operation_with_status(
+                        self,
+                        global_data,
+                        op_name,
+                        &format!("Executing {}...", op_name),
+                        None,
+                    );
                     EventPropagation::ConsumedRender
                 }
                 Action::Special(special_action) => {
@@ -344,7 +461,8 @@ impl BlockListComponent {
                             return handle_split_block(self, global_data);
                         }
                         _ => {
-                            global_data.state.status_message = format!("Unknown special action: {}", special_action);
+                            global_data.state.status_message =
+                                format!("Unknown special action: {}", special_action);
                             EventPropagation::ConsumedRender
                         }
                     }
@@ -392,7 +510,8 @@ impl BlockListComponent {
 
                         // CRITICAL: Set viewport on EditorEngine before processing events
                         // Operations require a valid viewport size
-                        editor_engine.current_box.style_adjusted_bounds_size = width(200) + height(50);
+                        editor_engine.current_box.style_adjusted_bounds_size =
+                            width(200) + height(50);
 
                         // Move cursor to end of initial content
                         let end_key_event = InputEvent::Keyboard(KeyPress::Plain {
@@ -408,8 +527,10 @@ impl BlockListComponent {
                         global_data.state.editing_buffer = Some(buffer);
                         self.editor_engine = Some(editor_engine);
 
-                        global_data.state.editing_block_index = Some(global_data.state.selected_index);
-                        global_data.state.status_message = "Editing... (Esc or Ctrl+Enter to save, Enter for newline)".to_string();
+                        global_data.state.editing_block_index =
+                            Some(global_data.state.selected_index);
+                        global_data.state.status_message =
+                            "Editing... (Esc or Ctrl+Enter to save, Enter for newline)".to_string();
                         EventPropagation::ConsumedRender
                     } else {
                         EventPropagation::Propagate
@@ -494,7 +615,8 @@ impl Component<State, AppSignal> for BlockListComponent {
                             // Handle Esc: save and exit edit mode (check BEFORE passing to EditorEngine)
                             if let Key::SpecialKey(SpecialKey::Esc) = key {
                                 // Escape: save and exit edit mode
-                                global_data.state.status_message = "Esc - saving and exiting".to_string();
+                                global_data.state.status_message =
+                                    "Esc - saving and exiting".to_string();
                                 let editing_idx = global_data.state.editing_block_index.unwrap();
                                 save_and_exit_edit_mode(self, global_data, editing_idx);
                                 return Ok(EventPropagation::ConsumedRender);
@@ -508,7 +630,8 @@ impl Component<State, AppSignal> for BlockListComponent {
                                 // Check if we're at the first line
                                 if caret_row == 0 {
                                     // At first line: save current block and move to previous
-                                    let editing_idx = global_data.state.editing_block_index.unwrap();
+                                    let editing_idx =
+                                        global_data.state.editing_block_index.unwrap();
                                     save_current_block_without_exit(self, global_data, editing_idx);
                                     exit_edit_mode(self, global_data);
                                     global_data.state.select_previous();
@@ -539,7 +662,8 @@ impl Component<State, AppSignal> for BlockListComponent {
 
                                 if is_last_line {
                                     // At last line: save current block and move to next
-                                    let editing_idx = global_data.state.editing_block_index.unwrap();
+                                    let editing_idx =
+                                        global_data.state.editing_block_index.unwrap();
                                     save_current_block_without_exit(self, global_data, editing_idx);
                                     exit_edit_mode(self, global_data);
                                     global_data.state.select_next();
@@ -556,7 +680,9 @@ impl Component<State, AppSignal> for BlockListComponent {
                             if let Key::SpecialKey(SpecialKey::Enter) = key {
                                 // Plain Enter: let EditorEngine handle it (inserts newline)
                                 // Don't intercept - pass through to EditorEngine
-                                global_data.state.status_message = "Enter - inserting newline (use Esc or Ctrl+Enter to save)".to_string();
+                                global_data.state.status_message =
+                                    "Enter - inserting newline (use Esc or Ctrl+Enter to save)"
+                                        .to_string();
                             }
 
                             // Check for Ctrl+Enter in Plain handler (some terminals send it as Plain)
@@ -579,7 +705,8 @@ impl Component<State, AppSignal> for BlockListComponent {
                                     return Ok(EventPropagation::ConsumedRender);
                                 }
                                 Err(e) => {
-                                    global_data.state.status_message = format!("Editor error: {}", e);
+                                    global_data.state.status_message =
+                                        format!("Editor error: {}", e);
                                     return Ok(EventPropagation::ConsumedRender);
                                 }
                             }
@@ -606,11 +733,23 @@ impl Component<State, AppSignal> for BlockListComponent {
                             // 'x' is now handled via keybindings (Ctrl+x), so removed from fallback
                             ']' => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "indent", "Indenting...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "indent",
+                                    "Indenting...",
+                                    None,
+                                );
                             }
                             '[' => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "outdent", "Outdenting...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "outdent",
+                                    "Outdenting...",
+                                    None,
+                                );
                             }
                             _ => {}
                         }
@@ -638,7 +777,8 @@ impl Component<State, AppSignal> for BlockListComponent {
                                 global_data.state.select_previous();
                                 // Only try to start editing if the selected block has editable_text
                                 if global_data.state.selected_index < self.element_tree.len() {
-                                    let element = &self.element_tree[global_data.state.selected_index];
+                                    let element =
+                                        &self.element_tree[global_data.state.selected_index];
                                     if element.find_editable_text().is_some() {
                                         return self.start_editing_selected_block(global_data);
                                     }
@@ -651,7 +791,8 @@ impl Component<State, AppSignal> for BlockListComponent {
                                 global_data.state.select_next();
                                 // Only try to start editing if the selected block has editable_text
                                 if global_data.state.selected_index < self.element_tree.len() {
-                                    let element = &self.element_tree[global_data.state.selected_index];
+                                    let element =
+                                        &self.element_tree[global_data.state.selected_index];
                                     if element.find_editable_text().is_some() {
                                         return self.start_editing_selected_block(global_data);
                                     }
@@ -667,7 +808,13 @@ impl Component<State, AppSignal> for BlockListComponent {
                             }
                             SpecialKey::Tab => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "indent", "Indenting...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "indent",
+                                    "Indenting...",
+                                    None,
+                                );
                             }
                             _ => {}
                         }
@@ -677,11 +824,11 @@ impl Component<State, AppSignal> for BlockListComponent {
                     // Check keybindings config first (before handling edit mode)
                     let context = self.get_current_context(global_data);
 
-                    if let Some(action) = global_data.state.keybindings.find_binding(
-                        &key,
-                        &mask,
-                        context,
-                    ) {
+                    if let Some(action) = global_data
+                        .state
+                        .keybindings
+                        .find_binding(&key, &mask, context)
+                    {
                         // Found binding - clone action and execute it
                         let action = action.clone();
                         return self.handle_key_binding_action(&action, global_data);
@@ -689,8 +836,10 @@ impl Component<State, AppSignal> for BlockListComponent {
 
                     // DEBUG: Log all WithModifiers events when editing
                     if global_data.state.editing_block_index.is_some() {
-                        global_data.state.status_message = format!("WithModifiers: key={:?}, shift={:?}, ctrl={:?}",
-                            key, mask.shift_key_state, mask.ctrl_key_state);
+                        global_data.state.status_message = format!(
+                            "WithModifiers: key={:?}, shift={:?}, ctrl={:?}",
+                            key, mask.shift_key_state, mask.ctrl_key_state
+                        );
                     }
 
                     // Handle edit mode first - forward WithModifiers events to EditorEngine
@@ -708,14 +857,17 @@ impl Component<State, AppSignal> for BlockListComponent {
                                     return handle_split_block(self, global_data);
                                 } else if mask.ctrl_key_state == KeyState::Pressed {
                                     // Ctrl+Enter: save and exit edit mode
-                                    global_data.state.status_message = "Ctrl+Enter - saving".to_string();
-                                    let editing_idx = global_data.state.editing_block_index.unwrap();
+                                    global_data.state.status_message =
+                                        "Ctrl+Enter - saving".to_string();
+                                    let editing_idx =
+                                        global_data.state.editing_block_index.unwrap();
                                     save_and_exit_edit_mode(self, global_data, editing_idx);
                                     return Ok(EventPropagation::ConsumedRender);
                                 } else if mask.shift_key_state == KeyState::Pressed {
                                     // Shift+Enter: manually create InsertNewLine event and apply it
                                     // EditorEvent::try_from() only converts Plain Enter, not WithModifiers Enter
-                                    global_data.state.status_message = "Shift+Enter detected - inserting newline".to_string();
+                                    global_data.state.status_message =
+                                        "Shift+Enter detected - inserting newline".to_string();
                                     EditorEvent::apply_editor_event(
                                         editor_engine,
                                         buffer,
@@ -727,7 +879,8 @@ impl Component<State, AppSignal> for BlockListComponent {
                                     // Enter without modifiers in WithModifiers: shouldn't happen, but let EditorEngine handle it
                                     global_data.state.status_message = "Enter (WithModifiers but no modifiers) - passing to EditorEngine".to_string();
                                     // Enter without Shift: save and exit edit mode
-                                    let editing_idx = global_data.state.editing_block_index.unwrap();
+                                    let editing_idx =
+                                        global_data.state.editing_block_index.unwrap();
                                     save_and_exit_edit_mode(self, global_data, editing_idx);
                                     return Ok(EventPropagation::ConsumedRender);
                                 }
@@ -747,7 +900,8 @@ impl Component<State, AppSignal> for BlockListComponent {
                                         // Event not handled by editor - fall through to app-level handlers below
                                     }
                                     Err(e) => {
-                                        global_data.state.status_message = format!("Editor error: {}", e);
+                                        global_data.state.status_message =
+                                            format!("Editor error: {}", e);
                                         return Ok(EventPropagation::ConsumedRender);
                                     }
                                 }
@@ -760,23 +914,53 @@ impl Component<State, AppSignal> for BlockListComponent {
                         match special_key {
                             SpecialKey::Tab if mask.shift_key_state == KeyState::Pressed => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "outdent", "Outdenting...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "outdent",
+                                    "Outdenting...",
+                                    None,
+                                );
                             }
                             SpecialKey::Up if mask.ctrl_key_state == KeyState::Pressed => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "move_up", "Moving up...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "move_up",
+                                    "Moving up...",
+                                    None,
+                                );
                             }
                             SpecialKey::Down if mask.ctrl_key_state == KeyState::Pressed => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "move_down", "Moving down...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "move_down",
+                                    "Moving down...",
+                                    None,
+                                );
                             }
                             SpecialKey::Right if mask.ctrl_key_state == KeyState::Pressed => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "indent", "Indenting...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "indent",
+                                    "Indenting...",
+                                    None,
+                                );
                             }
                             SpecialKey::Left if mask.ctrl_key_state == KeyState::Pressed => {
                                 event_consumed = true;
-                                execute_operation_with_status(global_data, "outdent", "Outdenting...", None);
+                                execute_operation_with_status(
+                                    self,
+                                    global_data,
+                                    "outdent",
+                                    "Outdenting...",
+                                    None,
+                                );
                             }
                             _ => {}
                         }
@@ -812,16 +996,16 @@ impl Component<State, AppSignal> for BlockListComponent {
             pipeline.push(ZOrder::Normal, {
                 let mut render_ops = r3bl_tui::RenderOpIRVec::new();
 
-            // Use new element tree rendering with focus state
-            RenderInterpreter::render_element_tree(
-                &self.element_tree,
-                &mut render_ops,
-                surface_bounds.origin_pos.row_index.as_usize(),
-                &global_data.state.data,
-                is_focused,
-                global_data.state.editing_block_index,
-                global_data.state.editing_buffer.as_ref(),
-            );
+                // Use new element tree rendering with focus state
+                RenderInterpreter::render_element_tree(
+                    &self.element_tree,
+                    &mut render_ops,
+                    surface_bounds.origin_pos.row_index.as_usize(),
+                    &global_data.state.data,
+                    is_focused,
+                    global_data.state.editing_block_index,
+                    global_data.state.editing_buffer.as_ref(),
+                );
 
                 render_ops
             });

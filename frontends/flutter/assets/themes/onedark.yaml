@@ -1,0 +1,20 @@
+# One Dark theme family
+themes:
+  oneDark:
+    name: "One Dark"
+    isDark: true
+    colors:
+      primary: "#61AFEF"
+      primaryDark: "#528BCC"
+      primaryLight: "#7BC8FF"
+      textPrimary: "#ABB2BF"
+      textSecondary: "#C8CCD4"
+      textTertiary: "#5C6370"
+      background: "#282C34"
+      backgroundSecondary: "#21252B"
+      sidebarBackground: "#21252B"
+      border: "#3E4451"
+      borderFocus: "#61AFEF"
+      success: "#98C379"
+      error: "#E06C75"
+      warning: "#E5C07B"

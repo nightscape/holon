@@ -1,0 +1,38 @@
+{
+  "constants": [],
+  "enums": [
+    {
+      "mirror": false,
+      "name": "crate::api/UnusedEnum",
+      "sources": [
+        "Normal"
+      ],
+      "visibility": "Public"
+    }
+  ],
+  "existing_handler": null,
+  "extra_dart_output_code": {
+    "body": "",
+    "header": {
+      "file_top": "",
+      "import": "",
+      "part": ""
+    }
+  },
+  "extra_rust_output_code": "",
+  "functions": [],
+  "skips": [],
+  "structs": [
+    {
+      "mirror": false,
+      "name": "crate::api/UnusedStruct",
+      "sources": [
+        "Normal"
+      ],
+      "visibility": "Public"
+    }
+  ],
+  "trait_impls": [],
+  "traits": [],
+  "types": []
+}

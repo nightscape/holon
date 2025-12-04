@@ -5,13 +5,13 @@ on:
     branches: [main, master]
     paths:
       - 'frontends/flutter/**'
-      - 'crates/rusty-knowledge/**'
+      - 'crates/holon/**'
       - '.github/workflows/ci.yml'
   pull_request:
     branches: [main, master]
     paths:
       - 'frontends/flutter/**'
-      - 'crates/rusty-knowledge/**'
+      - 'crates/holon/**'
       - '.github/workflows/ci.yml'
   workflow_dispatch:
 
@@ -41,7 +41,7 @@ jobs:
         with:
           filters: |
             rust:
-              - 'crates/rusty-knowledge/**'
+              - 'crates/holon/**'
               - 'Cargo.toml'
               - 'Cargo.lock'
             flutter:
@@ -85,7 +85,7 @@ jobs:
         run: cargo clippy -- -D warnings
 
       - name: Run Rust tests
-        run: cargo test --workspace --exclude rust_lib_rusty_knowledge
+        run: cargo test --workspace --exclude rust_lib_holon
 
   # Flutter + FRB integration tests
   flutter-integration:
@@ -385,7 +385,7 @@ jobs:
           cd build/ios/iphoneos
           mkdir -p Payload
           cp -r Runner.app Payload/
-          zip -r ../../../rusty-knowledge.ipa Payload
+          zip -r ../../../holon.ipa Payload
           cd ../../..
 
       - name: Upload artifacts
@@ -394,7 +394,7 @@ jobs:
           name: ${{ matrix.artifact_name }}
           path: |
             frontends/flutter/${{ matrix.artifact_path }}
-            ${{ matrix.platform == 'ios' && 'frontends/flutter/rusty-knowledge.ipa' || '' }}
+            ${{ matrix.platform == 'ios' && 'frontends/flutter/holon.ipa' || '' }}
           retention-days: 30
           if-no-files-found: error
 

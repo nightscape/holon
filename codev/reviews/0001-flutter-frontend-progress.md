@@ -1,6 +1,6 @@
 # Progress Report: Flutter Frontend Implementation
 
-**Project**: rusty-knowledge Flutter Frontend
+**Project**: holon Flutter Frontend
 **Plan**: `codev/plans/0001-flutter-frontend.md`
 **Date**: 2025-10-25 (Updated)
 **Status**: Phase 4 Complete - Core Outliner UI Working, 50% Progress
@@ -12,7 +12,7 @@
 ### ✅ Phase 2A: Core Data Model & CRUD Operations
 
 **Duration**: Complete
-**Implementation**: `crates/rusty-knowledge/src/api/loro_backend.rs`
+**Implementation**: `crates/holon/src/api/loro_backend.rs`
 
 #### Deliverables
 
@@ -54,7 +54,7 @@
 - **Test**: `test_loro_backend_state_machine`
 - **Configuration**: 20 test cases, 1-20 sequential transitions each
 - **Coverage**: All CRUD operations + batch operations
-- **Implementation**: `crates/rusty-knowledge/src/api/loro_backend_pbt.rs`
+- **Implementation**: `crates/holon/src/api/loro_backend_pbt.rs`
 - **Architecture**: MemoryBackend (reference) vs LoroBackend (SUT) comparison
 
 **PBT Components**:
@@ -99,7 +99,7 @@
 ### 🔄 Phase 2B: State Sync API (Batch & Notifications)
 
 **Duration**: Partially Complete
-**Implementation**: `crates/rusty-knowledge/src/api/loro_backend.rs`
+**Implementation**: `crates/holon/src/api/loro_backend.rs`
 
 #### Completed Deliverables
 
@@ -321,7 +321,7 @@ Phase 3A introduced mirror types on the Rust side, but the Dart repository still
 
 **Flutter Analyze**: ✅ Zero errors, zero warnings
 ```bash
-Analyzing rusty_knowledge...
+Analyzing holon...
 No issues found! (ran in 0.9s)
 ```
 
@@ -500,31 +500,31 @@ The Dart repository is now a **fully functional, production-ready** foundation:
 ## Code Locations
 
 ### Implementation
-- `crates/rusty-knowledge/src/api/loro_backend.rs` (~1100 lines)
+- `crates/holon/src/api/loro_backend.rs` (~1100 lines)
   - Lines 1-100: Traits and helpers
   - Lines 102-229: Backend initialization
   - Lines 231-647: DocumentRepository implementation
   - Lines 902-930: Fixed delete_blocks with error handling & deduplication
   - Lines 843-1089: Unit tests
 
-- `crates/rusty-knowledge/src/api/memory_backend.rs` (~560 lines)
+- `crates/holon/src/api/memory_backend.rs` (~560 lines)
   - Lines 63-72: MemoryState with next_id_counter
   - Lines 86-93: Deterministic ID generation
   - Lines 45-60: Custom Clone implementation
   - Lines 528-561: Fixed delete_blocks with error handling & deduplication
 
-- `crates/rusty-knowledge/src/api/loro_backend_pbt.rs` (~440 lines)
+- `crates/holon/src/api/loro_backend_pbt.rs` (~440 lines)
   - Property-based test implementation
   - Lines 344-349: BlockTreeTest with id_map
   - Lines 56-127: ID translation logic
   - Lines 372-416: Just-in-time translation in apply
 
 ### Supporting Files
-- `crates/rusty-knowledge/src/api/mod.rs` - Module exports
-- `crates/rusty-knowledge/src/api/types.rs` - Type definitions
-- `crates/rusty-knowledge/src/api/repository.rs` - Trait definition
-- `crates/rusty-knowledge/src/sync.rs` - Transactional facade
-- `crates/rusty-knowledge/Cargo.toml` - Dependencies
+- `crates/holon/src/api/mod.rs` - Module exports
+- `crates/holon/src/api/types.rs` - Type definitions
+- `crates/holon/src/api/repository.rs` - Trait definition
+- `crates/holon/src/sync.rs` - Transactional facade
+- `crates/holon/Cargo.toml` - Dependencies
 
 ---
 

@@ -31,7 +31,7 @@ This is a minimal viable product (MVP) of the Rusty Knowledge application built 
 ## Project Structure
 
 ```
-rusty-knowledge/
+holon/
 ├── src/                      # Rust library code
 │   ├── lib.rs
 │   ├── tasks.rs             # Task data structures and store

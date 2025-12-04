@@ -1,4 +1,4 @@
-# Testing Patterns: R3BL vs Rusty-Knowledge - Quick Summary
+# Testing Patterns: R3BL vs holon - Quick Summary
 
 **Status:** Analysis Complete
 **Created:** 2025-11-07
@@ -8,7 +8,7 @@
 
 ## TL;DR - What You Need to Know
 
-**R3BL has production-grade testing infrastructure that Rusty-Knowledge should partially adopt.**
+**R3BL has production-grade testing infrastructure that holon should partially adopt.**
 
 ### Immediate Actions (1 hour total)
 1. Add `Deadline` utility for timeout enforcement
@@ -24,7 +24,7 @@
 
 ## Key Differences
 
-| Aspect | R3BL | Rusty-Knowledge |
+| Aspect | R3BL | holon |
 |--------|------|-----------------|
 | **File Organization** | Categorical fixtures (`pty_test_fixtures/`, `input_device_fixtures/`) | Centralized `/tests/` |
 | **PTY Testing** | `generate_pty_test!` macro | Manual setup per test |
@@ -126,7 +126,7 @@ page.navigate_down_with_delay(Duration::from_millis(50))?;
 
 ---
 
-## Current Rusty-Knowledge Strengths to Keep
+## Current holon Strengths to Keep
 
 1. **PageObject Pattern** - High-level test readability
 2. **Direct PTY Implementation** - Easy to understand
@@ -183,7 +183,7 @@ After implementation:
 
 ## Key Takeaway
 
-R3BL's infrastructure is **comprehensive but heavy** (927 LOC of fixtures). Rusty-Knowledge's approach is **simpler and more maintainable**. The sweet spot is adopting 2-3 critical patterns (Deadline, ANSI handling, key timing) while keeping the simpler architecture.
+R3BL's infrastructure is **comprehensive but heavy** (927 LOC of fixtures). holon's approach is **simpler and more maintainable**. The sweet spot is adopting 2-3 critical patterns (Deadline, ANSI handling, key timing) while keeping the simpler architecture.
 
 ---
 
@@ -198,4 +198,4 @@ R3BL Reference Code:
 - Fixtures: `/Users/martin/Workspaces/rust/r3bl-open-core/tui/src/core/test_fixtures/`
 
 Current Implementation:
-- Tests: `/Users/martin/Workspaces/pkm/rusty-knowledge/frontends/tui/tests/`
+- Tests: `/Users/martin/Workspaces/pkm/holon/frontends/tui/tests/`

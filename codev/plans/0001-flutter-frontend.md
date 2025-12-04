@@ -4,7 +4,7 @@
 **Updated with Agent Feedback** - GPT-5 and Gemini-2.5-Pro reviewed, ready for user approval
 
 ## Overview
-Implementation plan for adding a Flutter frontend to rusty-knowledge using outliner-flutter and Flutter-Rust-Bridge. This plan breaks down the specification into executable phases following the SPIDER IDE loop (Implement → Defend → Evaluate).
+Implementation plan for adding a Flutter frontend to holon using outliner-flutter and Flutter-Rust-Bridge. This plan breaks down the specification into executable phases following the SPIDER IDE loop (Implement → Defend → Evaluate).
 
 ## Reference
 - **Specification**: `codev/specs/0001-flutter-frontend.md` (v0.3)
@@ -26,15 +26,15 @@ Each phase follows the IDE loop:
 ### Implement
 
 **1.1 Create Shared API Module**
-- Create `crates/rusty-knowledge/src/api/` directory structure
-- Update `crates/rusty-knowledge/src/lib.rs` to expose api module
+- Create `crates/holon/src/api/` directory structure
+- Update `crates/holon/src/lib.rs` to expose api module
 - Define core types in `api/types.rs`:
   - `Block`, `BlockMetadata`
   - `InitialState`
   - `ApiError` enum
   - `NewBlock`
   - `BlockChange`, `ChangeOrigin`
-- Add dependencies to `crates/rusty-knowledge/Cargo.toml` (proptest-stateful for dev)
+- Add dependencies to `crates/holon/Cargo.toml` (proptest-stateful for dev)
 
 **1.2 Define Repository Trait**
 - Create `api/repository.rs`
@@ -54,7 +54,7 @@ Each phase follows the IDE loop:
 
 **1.3 Flutter Project Structure**
 - Create `frontends/flutter/` directory
-- Run `flutter create rusty_knowledge` (or appropriate name)
+- Run `flutter create holon` (or appropriate name)
 - Configure Flutter for Android and Desktop platforms
 - Set up project structure:
   - `lib/data/` - Repository layer
@@ -97,7 +97,7 @@ Each phase follows the IDE loop:
 - Basic FRB codegen test (ping/pong pattern)
 
 **Acceptance Criteria**:
-- [x] `crates/rusty-knowledge` with api module compiles without errors
+- [x] `crates/holon` with api module compiles without errors
 - [x] All api types are documented with examples
 - [x] Types implement required traits (Clone, Debug, serde, Send + Sync where needed)
 - [x] Flutter project created and runs hello-world on Android + Desktop
@@ -129,7 +129,7 @@ Each phase follows the IDE loop:
 - **Goal**: Validate entire toolchain (Rust → FRB → Dart) before building all operations
 
 **2A.2 Set Up Loro Data Model**
-- Create `crates/rusty-knowledge/src/api/loro_backend.rs`
+- Create `crates/holon/src/api/loro_backend.rs`
 - Implement `LoroBackend` struct wrapping `CollaborativeDoc`
 - Initialize Loro document with normalized structure:
   - `blocks_by_id`: LoroMap<String, BlockData>
@@ -498,7 +498,7 @@ For each operation below, write property-based tests FIRST, then implement:
 - ✅ Architecture (3-layer) is sound and well-structured
 
 **Current Approach**: Opaque Types with Auto-Accessors
-- Types from external crate (`rusty-knowledge`) are treated as opaque (RustOpaqueInterface)
+- Types from external crate (`holon`) are treated as opaque (RustOpaqueInterface)
 - FRB generates automatic getters/setters for all fields
 - Data lives in Rust, accessed via FFI calls
 
@@ -1191,7 +1191,7 @@ Future<MirrorBlock?> getBlock(String id) async {
 - Add to `docs/setup/flutter.md`
 
 **8.6 API Documentation**
-- Generate rustdoc for `rusty-knowledge` crate (especially api module)
+- Generate rustdoc for `holon` crate (especially api module)
 - Document all types and traits
 - Add usage examples
 - Document error codes
@@ -1335,7 +1335,7 @@ Phase 8 (Polish & Documentation) ← Final phase
 **Integrated API into main crate**
 
 **Architectural Change**:
-- Changed Phase 1 from creating separate `crates/rusty-knowledge-api` to integrated `crates/rusty-knowledge/src/api/` module
+- Changed Phase 1 from creating separate `crates/holon-api` to integrated `crates/holon/src/api/` module
 - Simplifies build configuration and dependencies
 - Maintains same clean interface boundaries for cross-frontend consistency
 - Updated all path references throughout plan

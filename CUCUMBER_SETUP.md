@@ -180,7 +180,7 @@ Current status:
 ### Tests won't run
 ```bash
 # Ensure you're in project root
-cd /path/to/rusty-knowledge
+cd /path/to/holon
 
 # Clean and rebuild
 cargo clean

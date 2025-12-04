@@ -3,6 +3,7 @@
 # Added by cargo
 
 /target
+/build
 
 # Frontend
 node_modules/

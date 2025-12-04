@@ -1,10 +1,9 @@
+use portable_pty::{Child, PtyPair};
 /// PTY session infrastructure for TUI testing
 ///
 /// Provides a wrapper around PTY pairs for easier testing.
-
 use std::io::{BufRead, BufReader, Write};
 use std::time::{Duration, Instant};
-use portable_pty::{PtyPair, Child};
 
 pub mod page_objects;
 
@@ -58,7 +57,10 @@ pub struct PtySession {
 impl PtySession {
     pub fn new(pty_pair: PtyPair, child: Box<dyn Child + Send + Sync>) -> Self {
         let reader = BufReader::new(
-            pty_pair.master.try_clone_reader().expect("Failed to get reader")
+            pty_pair
+                .master
+                .try_clone_reader()
+                .expect("Failed to get reader"),
         );
         let writer = pty_pair.master.take_writer().expect("Failed to get writer");
 

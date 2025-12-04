@@ -207,7 +207,7 @@ Error: Wrong document! Expected 'project-notes' but got ALPN: 'loro-sync/wrong-d
 ### Simple: One Document Per Peer
 
 ```rust
-use rusty_knowledge::sync::CollaborativeDoc;
+use holon::sync::CollaborativeDoc;
 
 // Create a document with its own endpoint (easiest way)
 let doc = CollaborativeDoc::with_new_endpoint("project-notes".to_string()).await?;
@@ -227,7 +227,7 @@ doc.accept_sync_from_peer().await?;
 ### Advanced: Multiple Documents Sharing One Endpoint
 
 ```rust
-use rusty_knowledge::sync::CollaborativeDoc;
+use holon::sync::CollaborativeDoc;
 use std::sync::Arc;
 
 // Create ONE endpoint that can handle multiple documents

@@ -1,0 +1,20 @@
+# Dracula theme family
+themes:
+  dracula:
+    name: "Dracula"
+    isDark: true
+    colors:
+      primary: "#BD93F9"
+      primaryDark: "#6272A4"
+      primaryLight: "#FF79C6"
+      textPrimary: "#F8F8F2"
+      textSecondary: "#E0E0E0"
+      textTertiary: "#6272A4"
+      background: "#282A36"
+      backgroundSecondary: "#21222C"
+      sidebarBackground: "#21222C"
+      border: "#44475A"
+      borderFocus: "#BD93F9"
+      success: "#50FA7B"
+      error: "#FF5555"
+      warning: "#F1FA8C"

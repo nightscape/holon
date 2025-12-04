@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module type="EMPTY_MODULE" version="4">
+  <component name="NewModuleRootManager">
+    <content url="file://$MODULE_DIR$">
+      <sourceFolder url="file://$MODULE_DIR$/crates/query-render/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/query-render/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/holon-macros-test/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/holon-macros/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/holon-todoist/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/holon-todoist/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/holon/examples" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/holon/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/crates/holon/tests" isTestSource="true" />
+      <sourceFolder url="file://$MODULE_DIR$/frontends/tui/src" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/frontends/tui/tests" isTestSource="true" />
+      <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <orderEntry type="inheritedJdk" />
+    <orderEntry type="sourceFolder" forTests="false" />
+  </component>
+</module>

@@ -1,16 +1,16 @@
-# Tatuin vs Rusty-Knowledge: Comparison & Reusable Techniques
+# Tatuin vs holon: Comparison & Reusable Techniques
 
 ## Executive Summary
 
-**Tatuin** is a terminal-based task aggregator (TUI) that brings together tasks from multiple external providers (Todoist, Obsidian, GitLab, GitHub, iCal, CalDAV). It's simpler, more focused, and has already solved several problems that Rusty-Knowledge will face.
+**Tatuin** is a terminal-based task aggregator (TUI) that brings together tasks from multiple external providers (Todoist, Obsidian, GitLab, GitHub, iCal, CalDAV). It's simpler, more focused, and has already solved several problems that holon will face.
 
-**Key Insight**: While architecturally different (TUI aggregator vs. desktop PKM), Tatuin has **production-ready patterns** for external system integration that align perfectly with Rusty-Knowledge's Phase 2-3 goals.
+**Key Insight**: While architecturally different (TUI aggregator vs. desktop PKM), Tatuin has **production-ready patterns** for external system integration that align perfectly with holon's Phase 2-3 goals.
 
 ---
 
 ## Architecture Alignment Matrix
 
-| Feature | Tatuin | Rusty-Knowledge (Planned) | Reusability |
+| Feature | Tatuin | holon (Planned) | Reusability |
 |---------|--------|--------------------------|-------------|
 | **External System Integration** | ✅ 6+ providers | ✅ Planned (Todoist, Gmail, Jira, Linear) | **HIGH** |
 | **Provider Trait System** | ✅ Trait-based plugins | ✅ Planned adapter pattern | **HIGH** |
@@ -57,7 +57,7 @@ pub trait TaskProviderTrait {
 }
 ```
 
-**Why It's Perfect for Rusty-Knowledge:**
+**Why It's Perfect for holon:**
 - ✅ Already handles 6+ different external systems
 - ✅ Supports varying capabilities (read-only, full CRUD, partial update)
 - ✅ Async-first design (won't block UI)
@@ -66,7 +66,7 @@ pub trait TaskProviderTrait {
 
 **How to Adapt:**
 ```rust
-// Rusty-Knowledge adaptation
+// holon adaptation
 #[async_trait]
 pub trait ExternalProvider: Send + Sync {
     fn name(&self) -> String;
@@ -140,7 +140,7 @@ provider.update(&[patch]).await?;
 - ✅ Type-safe representation of "optional changes"
 - ✅ Works across different external APIs with different update semantics
 
-**Rusty-Knowledge Adaptation:**
+**holon Adaptation:**
 ```rust
 // Could be used in StorageBackend trait
 pub enum FieldUpdate<T> {
@@ -230,7 +230,7 @@ impl TodoistProvider {
 }
 ```
 
-**Why This Matters for Rusty-Knowledge:**
+**Why This Matters for holon:**
 - ✅ **Todoist is in the roadmap** (architecture.md Phase 2)
 - ✅ Can be adapted directly with minimal changes
 - ✅ Already handles all edge cases (completed tasks, projects, priorities)
@@ -240,7 +240,7 @@ impl TodoistProvider {
 1. Keep the Todoist API client almost unchanged
 2. Replace in-memory cache with `StorageBackend` trait
 3. Add dirty tracking for bidirectional sync
-4. Use Rusty-Knowledge's schema system for type safety
+4. Use holon's schema system for type safety
 
 **Code Location:**
 - `tatuin-providers/src/todoist.rs` (320 lines) - **READY TO REUSE**
@@ -282,7 +282,7 @@ tasks.retain(|t| matches_filter(t, &ui_filter));
 filter_widget.toggle_state(FilterState::Completed);
 ```
 
-**Rusty-Knowledge Adaptation:**
+**holon Adaptation:**
 ```rust
 // Extends to more dimensions (location, energy, people)
 pub struct Filter {
@@ -354,7 +354,7 @@ impl Settings {
 - ✅ Per-provider settings (paths, URLs, filters)
 - ✅ Human-readable TOML format
 
-**Rusty-Knowledge Adaptation:**
+**holon Adaptation:**
 ```rust
 // Extend to include sync intervals, conflict strategies
 [providers.todoist]
@@ -393,7 +393,7 @@ async_jobs.add("Syncing Todoist tasks...").await;
 async_jobs.remove(job_id).await;
 ```
 
-**Rusty-Knowledge Use Case:**
+**holon Use Case:**
 - Background sync jobs (don't block UI)
 - Show sync status in Tauri status bar
 - Track multiple simultaneous syncs
@@ -430,7 +430,7 @@ impl ProviderTrait {
 // UI can disable "Create Task" button if !provider.capabilities().create_task
 ```
 
-**Rusty-Knowledge Use Case:**
+**holon Use Case:**
 - Dynamic UI based on provider capabilities
 - Show/hide features based on what's supported
 - Graceful degradation for read-only providers
@@ -448,7 +448,7 @@ impl ProviderTrait {
 
 2. **Create adapter layer**:
    ```rust
-   // Adapter converts Tatuin's ProviderTrait to Rusty-Knowledge's ExternalProvider
+   // Adapter converts Tatuin's ProviderTrait to holon's ExternalProvider
    struct TatuinProviderAdapter<P: ProviderTrait> {
        inner: P,
        storage: Arc<Mutex<dyn StorageBackend>>,
@@ -468,7 +468,7 @@ impl ProviderTrait {
 1. Copy `tatuin-providers/src/todoist.rs`
 2. Replace in-memory cache with SQLite storage
 3. Add dirty tracking for bidirectional sync
-4. Test against Rusty-Knowledge's StorageBackend trait
+4. Test against holon's StorageBackend trait
 5. Add version tracking (etags) for conflict detection
 
 ### Phase 3: Add More Providers (1 week each)
@@ -480,7 +480,7 @@ impl ProviderTrait {
 
 ## Key Differences to Address
 
-| Tatuin | Rusty-Knowledge | Migration Strategy |
+| Tatuin | holon | Migration Strategy |
 |--------|-----------------|-------------------|
 | In-memory cache | SQLite/Loro storage | Replace cache with StorageBackend calls |
 | Manual reload (Ctrl+R) | Periodic background sync | Add sync scheduler with intervals |
@@ -495,7 +495,7 @@ impl ProviderTrait {
 ## Implementation Timeline
 
 ### Immediate (Next 2 Weeks)
-1. ✅ **Create `external-providers` crate** in Rusty-Knowledge
+1. ✅ **Create `external-providers` crate** in holon
 2. ✅ **Copy core traits** from tatuin-core
 3. ✅ **Adapt Todoist provider** with StorageBackend integration
 4. ✅ **Write integration tests** against mock StorageBackend
@@ -521,7 +521,7 @@ impl ProviderTrait {
    - `tatuin-core/src/task_patch.rs` - Incremental update pattern
 
 2. **Create Proof of Concept:**
-   - Copy `tatuin-providers/src/todoist.rs` into Rusty-Knowledge
+   - Copy `tatuin-providers/src/todoist.rs` into holon
    - Implement `TatuinProviderAdapter` to bridge trait systems
    - Test sync_from_remote() with SQLite backend
    - Verify conflict handling works
@@ -543,7 +543,7 @@ impl ProviderTrait {
 
 ## Conclusion
 
-**Tatuin is a goldmine for Rusty-Knowledge's external integration layer.** The code is:
+**Tatuin is a goldmine for holon's external integration layer.** The code is:
 - ✅ Production-ready (not a toy project)
 - ✅ Well-architected (trait-based, modular)
 - ✅ Directly applicable (Todoist provider can be reused almost unchanged)
@@ -553,6 +553,6 @@ impl ProviderTrait {
 1. **Todoist provider** (320 lines) - Ready to adapt for Phase 2
 2. **ProviderTrait system** - Perfect match for architecture.md's adapter pattern
 3. **ValuePatch pattern** - Solves incremental update problem elegantly
-4. **Filter system** - Good foundation for Rusty-Knowledge's extended filters
+4. **Filter system** - Good foundation for holon's extended filters
 
 **Estimated Time Savings:** 2-4 weeks of development + testing by reusing Tatuin's provider infrastructure instead of building from scratch.

@@ -384,7 +384,7 @@ pub mod __operations_MutableTaskDataSource {
 
 ### GenericProviderState
 
-**Location**: `crates/rusty-knowledge/src/testing/generic_provider_state.rs` (new file)
+**Location**: `crates/holon/src/testing/generic_provider_state.rs` (new file)
 
 ```rust
 use std::collections::{HashMap, HashSet};
@@ -1531,7 +1531,7 @@ If no operations are executable, `proptest-state-machine` will error when trying
 
 ### Our Built-in `#[require(...)]` Implementation
 
-**Location**: `crates/rusty-knowledge-macros/src/lib.rs`
+**Location**: `crates/holon-macros/src/lib.rs`
 
 We've implemented a custom precondition system that's integrated with `#[operations_trait]`. It automatically extracts preconditions and makes them available for property-based testing.
 
@@ -1697,7 +1697,7 @@ fn test_type_hint_serde_backward_compat() {
 ### Phase 2: Macro Enhancement (Non-Breaking)
 
 **Files to modify**:
-- `crates/rusty-knowledge-macros/src/lib.rs`
+- `crates/holon-macros/src/lib.rs`
 
 **Tasks**:
 1. Parse parameter names for `_id` suffix
@@ -1760,12 +1760,12 @@ fn test_macro_entity_detection() {
 ### Phase 3: Generic Test Infrastructure (New Module)
 
 **Files to create**:
-- `crates/rusty-knowledge/src/testing/mod.rs`
-- `crates/rusty-knowledge/src/testing/generic_provider_state.rs`
+- `crates/holon/src/testing/mod.rs`
+- `crates/holon/src/testing/generic_provider_state.rs`
 
 **Files to modify**:
-- `crates/rusty-knowledge/src/lib.rs` - Add `pub mod testing` under `#[cfg(test)]`
-- `crates/rusty-knowledge/Cargo.toml` - Add `proptest-state-machine` dev-dependency
+- `crates/holon/src/lib.rs` - Add `pub mod testing` under `#[cfg(test)]`
+- `crates/holon/Cargo.toml` - Add `proptest-state-machine` dev-dependency
 
 **Tasks**:
 1. Implement `GenericProviderState<P>` struct
@@ -1780,8 +1780,8 @@ fn test_macro_entity_detection() {
 ### Phase 4: Todoist Integration (Validation)
 
 **Files to modify**:
-- `crates/rusty-knowledge-todoist/src/lib.rs`
-- `crates/rusty-knowledge-todoist/tests/property_tests.rs` (new)
+- `crates/holon-todoist/src/lib.rs`
+- `crates/holon-todoist/tests/property_tests.rs` (new)
 
 **Tasks**:
 1. Ensure Todoist operations have correct `TypeHint` metadata
@@ -1795,7 +1795,7 @@ fn test_macro_entity_detection() {
 #[cfg(test)]
 mod property_tests {
     use super::*;
-    use rusty_knowledge::testing::GenericProviderState;
+    use holon::testing::GenericProviderState;
     use proptest::proptest;
 
     proptest! {
@@ -1824,11 +1824,11 @@ mod property_tests {
 ### Phase 5: Documentation & Examples
 
 **Files to create**:
-- `crates/rusty-knowledge/docs/provider-testing-guide.md`
+- `crates/holon/docs/provider-testing-guide.md`
 
 **Files to modify**:
 - `README.md` - Add testing section
-- `crates/rusty-knowledge-todoist/README.md` - Document testing approach
+- `crates/holon-todoist/README.md` - Document testing approach
 
 **Tasks**:
 1. Write provider testing guide

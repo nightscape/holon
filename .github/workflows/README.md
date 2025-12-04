@@ -37,7 +37,7 @@ The workflow adapts based on the trigger:
 
 1. **rust-checks**
    - Runs formatting, linting, and tests on Rust code
-   - Excludes `rust_lib_rusty_knowledge` (FRB wrapper) from tests
+   - Excludes `rust_lib_holon` (FRB wrapper) from tests
 
 2. **flutter-integration**
    - Verifies FRB integration works correctly
@@ -80,7 +80,7 @@ Build artifacts (main/master builds only):
 |------------------------|---------------------------------------|------------------------|
 | `android-apk`          | `app-release.apk`                     | Direct installation    |
 | `android-aab`          | `app-release.aab`                     | Google Play upload     |
-| `ios-app`              | `Runner.app` + `rusty-knowledge.ipa`  | Testing/TestFlight     |
+| `ios-app`              | `Runner.app` + `holon.ipa`  | Testing/TestFlight     |
 | `macos-app`            | `.app` bundle                         | macOS distribution     |
 | `linux-bundle`         | Complete Linux bundle                 | Linux distribution     |
 | `windows-executable`   | `.exe` and DLLs                       | Windows distribution   |
@@ -96,7 +96,7 @@ Retention: 30 days
 
 # Paths that trigger the workflow:
 - frontends/flutter/**
-- crates/rusty-knowledge/**
+- crates/holon/**
 - .github/workflows/ci.yml
 
 # Manual trigger

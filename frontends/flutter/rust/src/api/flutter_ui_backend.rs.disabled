@@ -14,8 +14,8 @@
 
 #[cfg(FALSE)]
 mod disabled {
-    use rusty_knowledge::api::repository::CoreOperations;
-    use rusty_knowledge::api::types::{ApiError, Block, NewBlock};
+    use holon::api::repository::CoreOperations;
+    use holon::api::types::{ApiError, Block, NewBlock};
     use super::super::ui_test_bridge::{BlockData, NewBlockData, UiCommand, UiCommandResult};
     use async_trait::async_trait;
     use std::collections::HashMap;
@@ -84,7 +84,7 @@ mod disabled {
             // updated_at: data.updated_at,
             // deleted_at: None,
             children: vec![],
-            metadata: rusty_knowledge::api::types::BlockMetadata {
+            metadata: holon::api::types::BlockMetadata {
                 created_at: data.created_at,
                 updated_at: data.updated_at,
             },

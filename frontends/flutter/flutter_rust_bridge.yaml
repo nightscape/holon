@@ -1,4 +1,15 @@
-rust_input: crate::api,query-render
+# Minimize FFI surface: expose crate::api (BackendEngine) and holon-api types only
+# Low-level query-render functions (parser, lineage) should be accessed via BackendEngine API
+# All types exposed to FRB are now in holon-api:
+# - Value, Number (fundamental types)
+# - RenderSpec, OperationDescriptor, OperationParam (moved from query-render to reverse dependency)
+# query-render now depends on holon-api (dependency reversed)
+rust_input: crate::holon-api
 rust_root: rust/
 dart_output: lib/src/rust
 dump:
+rust_preamble: |
+  use holon_api::{Value, PreconditionChecker};
+# NOTE: HashMap<String, Value> is configured as non-opaque using doc comments on function parameters:
+# Add `/// flutter_rust_bridge:non_opaque` comment above params: HashMap<String, Value> parameters
+# in crates/holon/src/api/ffi_bridge.rs and frontends/flutter/rust/src/api/ffi_bridge.rs

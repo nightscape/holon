@@ -524,7 +524,7 @@ impl Operation for SplitOperation {
 
 ### Migration Steps
 
-1. **Phase 1**: Add Turso database with CDC. **DONE** in `crates/rusty-knowledge/src/storage/turso.rs`
+1. **Phase 1**: Add Turso database with CDC. **DONE** in `crates/holon/src/storage/turso.rs`
 2. **Phase 2**: Implement query-render crate **DONE** in `crates/query-render/src/lib.rs`
 3. **Phase 3**: Build Flutter widget mappings
 4. **Phase 4**: Register operations

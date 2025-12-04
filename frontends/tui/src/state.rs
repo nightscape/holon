@@ -1,12 +1,13 @@
+use crate::config::KeyBindingConfig;
+use holon::api::backend_engine::BackendEngine;
+use holon::storage::turso::{ChangeData, RowChange};
+use holon::storage::types::StorageEntity; // StorageEntity is HashMap<String, Value>
+use holon_api::Value;
+use query_render::RenderSpec;
+use r3bl_tui::{row, DialogBuffer, EditorBuffer, FlexBoxId, HasDialogBuffers, HasEditorBuffers};
 use std::collections::HashMap;
 use std::fmt;
 use std::sync::{Arc, Mutex};
-use rusty_knowledge::api::backend_engine::BackendEngine;
-use rusty_knowledge::storage::types::{Value, StorageEntity}; // StorageEntity is HashMap<String, Value>
-use rusty_knowledge::storage::turso::{RowChange, ChangeData};
-use query_render::RenderSpec;
-use r3bl_tui::{EditorBuffer, DialogBuffer, FlexBoxId, HasEditorBuffers, HasDialogBuffers, row};
-use crate::config::KeyBindingConfig;
 
 #[derive(Clone)]
 pub struct State {
@@ -19,7 +20,11 @@ pub struct State {
     /// Track the ID of the currently selected block to maintain selection after re-sorting
     pub selected_block_id_cache: Option<String>,
     /// Channel to send main thread signal sender to CDC watcher task
-    pub main_thread_sender_channel: Arc<Mutex<Option<tokio::sync::mpsc::Sender<r3bl_tui::TerminalWindowMainThreadSignal<AppSignal>>>>>,
+    pub main_thread_sender_channel: Arc<
+        Mutex<
+            Option<tokio::sync::mpsc::Sender<r3bl_tui::TerminalWindowMainThreadSignal<AppSignal>>>,
+        >,
+    >,
     /// Flag indicating there are pending CDC changes to process
     pub has_pending_cdc_changes: Arc<Mutex<bool>>,
 
@@ -62,7 +67,7 @@ impl State {
     pub fn new(
         engine: Arc<BackendEngine>,
         render_spec: RenderSpec,
-        initial_data: Vec<rusty_knowledge::storage::types::StorageEntity>, // Generic StorageEntity
+        initial_data: Vec<holon::storage::types::StorageEntity>, // Generic StorageEntity
         cdc_receiver: Arc<Mutex<tokio::sync::mpsc::UnboundedReceiver<RowChange>>>,
         keybindings: Arc<KeyBindingConfig>,
     ) -> Self {
@@ -90,7 +95,10 @@ impl State {
     }
 
     /// Initialize the CDC watcher task with the main thread signal sender
-    pub fn start_cdc_watcher(&self, sender: tokio::sync::mpsc::Sender<r3bl_tui::TerminalWindowMainThreadSignal<AppSignal>>) {
+    pub fn start_cdc_watcher(
+        &self,
+        sender: tokio::sync::mpsc::Sender<r3bl_tui::TerminalWindowMainThreadSignal<AppSignal>>,
+    ) {
         let mut channel_guard = self.main_thread_sender_channel.lock().unwrap();
         *channel_guard = Some(sender);
     }
@@ -125,17 +133,42 @@ impl State {
     ///
     /// # Arguments
     /// * `op_name` - Name of the operation to execute (e.g., "indent", "outdent", "move_up")
+    /// * `operation_descriptor` - Operation descriptor containing entity and table metadata
     /// * `ui_state_override` - Optional UI state to set before executing (for operations like split that need cursor position)
     pub fn execute_operation_on_selected(
         &mut self,
         op_name: &str,
-        ui_state_override: Option<rusty_knowledge::api::UiState>,
+        operation_descriptor: &holon_api::OperationDescriptor,
+        _ui_state_override: Option<holon::api::UiState>,
     ) -> Result<(), String> {
         // Get the full row data for the selected block - operations may need more than just id
-        let row_data = match self.data.get(self.selected_index) {
+        let mut row_data = match self.data.get(self.selected_index) {
             Some(row) => row.clone(),
             None => return Err("No block selected".to_string()),
         };
+
+        // Allow operations to inject additional parameters that are not present
+        // in the selected row itself.
+        match operation_descriptor.name.as_str() {
+            "indent" => {
+                if self.selected_index == 0 {
+                    return Err("Cannot indent the first block".to_string());
+                }
+                let previous_row = self
+                    .data
+                    .get(self.selected_index - 1)
+                    .ok_or_else(|| "No previous block to indent under".to_string())?;
+                let new_parent_id = previous_row
+                    .get("id")
+                    .and_then(|v| v.as_string())
+                    .ok_or_else(|| "Previous block has no id".to_string())?;
+                row_data.insert(
+                    "parent_id".to_string(),
+                    Value::String(new_parent_id.to_string()),
+                );
+            }
+            _ => {}
+        }
 
         // Clone Arc for async operation
         let engine = self.engine.clone();
@@ -147,14 +180,14 @@ impl State {
         // Cache selected block ID so selection follows the block after CDC re-sort
         self.selected_block_id_cache = self.selected_block_id();
 
+        // Use entity_name directly from operation descriptor
+        let entity_name = operation_descriptor.entity_name.clone();
+        let mapped_op_name = operation_descriptor.name.clone();
+
         // Spawn async operation in background - does NOT block the UI
         tokio::spawn(async move {
-            // Get entity name from table mapping (block operations are on "blocks" table)
-            let entity_name = engine.get_entity_for_table("blocks").await
-                .unwrap_or_else(|| "blocks".to_string());
-
             // Check if operation is available before executing
-            let has_op = engine.has_operation(&entity_name, &op_name_owned).await;
+            let has_op = engine.has_operation(&entity_name, &mapped_op_name).await;
 
             if !has_op {
                 // Operation not available - send error signal
@@ -162,17 +195,26 @@ impl State {
                     let signal = AppSignal::OperationResult {
                         operation_name: op_name_owned.clone(),
                         success: false,
-                        error_message: Some(format!("Operation '{}' is not available", op_name_owned)),
+                        error_message: Some(format!(
+                            "Operation '{}' is not available",
+                            op_name_owned
+                        )),
                     };
-                    let _ = sender.send(r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(signal)).await;
+                    let _ = sender
+                        .send(r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(
+                            signal,
+                        ))
+                        .await;
                 } else {
                     eprintln!("Operation '{}' is not available", op_name_owned);
                 }
                 return;
             }
 
-            // Execute the operation
-            let result: anyhow::Result<()> = engine.execute_operation(&entity_name, &op_name_owned, row_data).await;
+            // Execute the operation with mapped name
+            let result: anyhow::Result<()> = engine
+                .execute_operation(&entity_name, &mapped_op_name, row_data)
+                .await;
 
             // Send result back to UI thread via signal
             if let Some(sender) = sender_opt {
@@ -183,8 +225,17 @@ impl State {
                 };
 
                 // Send signal to main thread
-                if sender.send(r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(signal)).await.is_err() {
-                    eprintln!("Failed to send operation result signal for '{}'", op_name_owned);
+                if sender
+                    .send(r3bl_tui::TerminalWindowMainThreadSignal::ApplyAppSignal(
+                        signal,
+                    ))
+                    .await
+                    .is_err()
+                {
+                    eprintln!(
+                        "Failed to send operation result signal for '{}'",
+                        op_name_owned
+                    );
                 }
             } else {
                 // Fallback: log errors if signal channel is not available
@@ -205,8 +256,9 @@ impl State {
     /// Helper method for operations that need cursor position (like split).
     /// Returns the character offset from the start of the text.
     pub fn calculate_cursor_offset(&self) -> Result<u32, String> {
-        let buffer = self.editing_buffer.as_ref()
-            .ok_or_else(|| "Cannot calculate cursor offset: block is not being edited".to_string())?;
+        let buffer = self.editing_buffer.as_ref().ok_or_else(|| {
+            "Cannot calculate cursor offset: block is not being edited".to_string()
+        })?;
 
         let caret = buffer.get_caret_raw();
         let caret_row = caret.row_index.as_usize();
@@ -242,7 +294,11 @@ impl State {
             // Count graphemes up to caret_col (to handle multi-byte characters correctly)
             use unicode_segmentation::UnicodeSegmentation;
             let graphemes: Vec<&str> = line_content.graphemes(true).collect();
-            offset += graphemes.iter().take(caret_col.min(graphemes.len())).map(|g| g.chars().count()).sum::<usize>() as u32;
+            offset += graphemes
+                .iter()
+                .take(caret_col.min(graphemes.len()))
+                .map(|g| g.chars().count())
+                .sum::<usize>() as u32;
         } else {
             // If no line content, just use caret_col as character offset
             offset += caret_col as u32;
@@ -306,7 +362,8 @@ impl State {
         let mut children_map: HashMap<Option<String>, Vec<HashMap<String, Value>>> = HashMap::new();
 
         for row in self.data.drain(..) {
-            let parent_id = row.get("parent_id")
+            let parent_id = row
+                .get("parent_id")
                 .and_then(|v| v.as_string())
                 .map(|s| s.to_string());
 
@@ -351,7 +408,8 @@ impl State {
     ) {
         if let Some(children) = children_map.get(&parent_id) {
             for child in children {
-                let child_id = child.get("id")
+                let child_id = child
+                    .get("id")
                     .and_then(|v| v.as_string())
                     .map(|s| s.to_string());
 
@@ -362,7 +420,12 @@ impl State {
                 result.push(child_with_depth);
 
                 // Recursively collect this child's children with incremented depth
-                Self::collect_children_recursively(result, children_map, child_id, current_depth + 1);
+                Self::collect_children_recursively(
+                    result,
+                    children_map,
+                    child_id,
+                    current_depth + 1,
+                );
             }
         }
     }
@@ -397,7 +460,10 @@ impl State {
 
         // Find and update existing entity
         if let Some(pos) = self.data.iter().position(|row| {
-            row.get("id").and_then(|v| v.as_string()).map(|id| id == entity_id).unwrap_or(false)
+            row.get("id")
+                .and_then(|v| v.as_string())
+                .map(|id| id == entity_id)
+                .unwrap_or(false)
         }) {
             self.data[pos] = entity;
         }
@@ -421,12 +487,12 @@ pub enum AppSignal {
     Noop,
     /// Execute an operation from a UIElement
     ExecuteOperation {
-        operation_name: String,  // Operation name from descriptor.name
+        operation_name: String, // Operation name from descriptor.name
         table: String,
         id_column: String,
         id_value: String,
         field: String,
-        new_value: rusty_knowledge::storage::types::Value,
+        new_value: holon_api::Value,
     },
     /// Operation result notification (success or failure)
     OperationResult {

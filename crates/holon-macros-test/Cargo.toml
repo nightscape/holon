@@ -1,0 +1,17 @@
+[package]
+name = "holon-macros-test"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "holon_macros_test"
+path = "src/lib.rs"
+
+[dependencies]
+holon-macros = { path = "../holon-macros" }
+holon = { path = "../holon" }
+holon-api = { path = "../holon-api" }
+async-trait = "0.1"
+tokio = { version = "1", features = ["macros", "test-util"] }
+query-render = { path = "../query-render" }
+

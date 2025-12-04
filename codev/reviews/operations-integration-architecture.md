@@ -495,7 +495,7 @@ where
 ### Phase 2: Enhance Macro (Non-Breaking) ✅
 
 **Files to modify:**
-- `crates/rusty-knowledge-macros/src/lib.rs` - Enhance #[operations_trait]
+- `crates/holon-macros/src/lib.rs` - Enhance #[operations_trait]
 
 **Tasks:**
 1. Generate dispatch_operation() helper function per trait

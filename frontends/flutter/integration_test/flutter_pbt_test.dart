@@ -1,12 +1,12 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
-import 'package:rusty_knowledge/src/rust/api/pbt_proptest.dart';
-import 'package:rusty_knowledge/src/rust/api/repository.dart';
-import 'package:rusty_knowledge/src/rust/frb_generated.dart';
+import 'package:holon/src/rust/api/pbt_proptest.dart';
+import 'package:holon/src/rust/api/repository.dart';
+import 'package:holon/src/rust/frb_generated.dart';
 
 /// Integration test for property-based testing of Flutter UI
 ///
-/// This test runs the full proptest PBT infrastructure from rusty-knowledge against
+/// This test runs the full proptest PBT infrastructure from holon against
 /// the actual Flutter UI to prove correctness. It generates random operation sequences
 /// and verifies the UI state matches the reference implementation.
 void main() {

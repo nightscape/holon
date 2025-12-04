@@ -1,15 +1,22 @@
 fn main() {
     let examples = vec![
-        ("single_line", r#"from tasks
-render (row (text "hello"))"#),
-
-        ("multiline_paren", r#"from tasks
+        (
+            "single_line",
+            r#"from tasks
+render (row (text "hello"))"#,
+        ),
+        (
+            "multiline_paren",
+            r#"from tasks
 render (
   row (text "hello")
-)"#),
-
-        ("tuple_syntax", r#"from tasks
-select { ui: render (row (text "hello")) }"#),
+)"#,
+        ),
+        (
+            "tuple_syntax",
+            r#"from tasks
+select { ui: render (row (text "hello")) }"#,
+        ),
     ];
 
     for (name, src) in examples {

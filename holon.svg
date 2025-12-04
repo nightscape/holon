@@ -1,0 +1,74 @@
+<svg
+  width="512"
+  height="512"
+  viewBox="0 0 512 512"
+  xmlns="http://www.w3.org/2000/svg"
+>
+  <defs>
+    <!-- Background gradient -->
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#7D3AC1"/>
+      <stop offset="100%" stop-color="#502B8F"/>
+    </linearGradient>
+
+    <!-- Inner icon gradient (slightly lighter) -->
+    <linearGradient id="innerGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#E1B7FF"/>
+      <stop offset="100%" stop-color="#C388FF"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Rounded-square background -->
+  <rect
+    x="32"
+    y="32"
+    width="448"
+    height="448"
+    rx="112"
+    ry="112"
+    fill="url(#bgGradient)"
+  />
+
+  <!-- Inner rounded square, inset a bit to give depth -->
+  <rect
+    x="88"
+    y="88"
+    width="336"
+    height="336"
+    rx="96"
+    ry="96"
+    fill="url(#innerGradient)"
+  />
+
+  <!-- Concentric circles (holon motif) -->
+  <!-- Outer ring -->
+  <circle
+    cx="256"
+    cy="256"
+    r="120"
+    fill="none"
+    stroke="#B46CFF"
+    stroke-width="20"
+    stroke-linecap="round"
+  />
+
+  <!-- Middle ring -->
+  <circle
+    cx="256"
+    cy="256"
+    r="78"
+    fill="none"
+    stroke="#B46CFF"
+    stroke-width="18"
+    stroke-linecap="round"
+    opacity="0.95"
+  />
+
+  <!-- Inner disc -->
+  <circle
+    cx="256"
+    cy="256"
+    r="40"
+    fill="#B46CFF"
+  />
+</svg>

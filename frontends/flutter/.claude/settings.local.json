@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "mcp__perplexity-ask__perplexity_ask",
+      "Bash(./run_frb_codegen.sh:*)"
+    ],
+    "deny": [],
+    "ask": []
+  }
+}

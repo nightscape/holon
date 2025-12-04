@@ -259,7 +259,7 @@ flutter run
 
 ## Documentation
 
-- **Research**: `/Users/martin/Workspaces/pkm/rusty-knowledge/OUTLINER_FLUTTER_RESEARCH.md` (comprehensive)
+- **Research**: `/Users/martin/Workspaces/pkm/holon/OUTLINER_FLUTTER_RESEARCH.md` (comprehensive)
 - **README**: `/Users/martin/Workspaces/pkm/outliner-flutter/README.md` (official)
 - **Example**: `/Users/martin/Workspaces/pkm/outliner-flutter/example/lib/screens/demo_screen.dart` (reference)
 - **API**: In source files (well documented with doc comments)

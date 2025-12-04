@@ -8,7 +8,11 @@ import 'package:flutter_rust_bridge/flutter_rust_bridge_for_generated.dart';
 import 'package:freezed_annotation/freezed_annotation.dart' hide protected;
 part 'types.freezed.dart';
 
-// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`, `from`, `from`, `from`, `from`
+// These types are ignored because they are neither used by any `pub` functions nor (for structs and enums) marked `#[frb(unignore)]`: `_ChangeOrigin`, `_RowChangePlaceholder`, `_StreamPosition`
+// These function are ignored because they are on traits that is not defined in current crate (put an empty `#[frb]` on it to unignore): `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `assert_receiver_is_total_eq`, `clone`, `clone`, `clone`, `clone`, `eq`, `eq`, `eq`, `fmt`, `fmt`, `fmt`, `fmt`, `fmt`
+
+// Rust type: RustOpaqueMoi<flutter_rust_bridge::for_generated::RustAutoOpaqueInner<SpanContext>>
+abstract class SpanContext implements RustOpaqueInterface {}
 
 @freezed
 sealed class ApiError with _$ApiError implements FrbException {
@@ -30,58 +34,55 @@ sealed class ApiError with _$ApiError implements FrbException {
       ApiError_InternalError;
 }
 
-@freezed
-sealed class BlockChange with _$BlockChange {
-  const BlockChange._();
+/// Trace context for propagating OpenTelemetry trace information across FFI boundary.
+///
+/// Uses W3C TraceContext format (traceparent header format) for serialization.
+/// flutter_rust_bridge:non_opaque
+class TraceContext {
+  /// Trace ID (16-byte hex string, 32 hex characters)
+  final String traceId;
 
-  /// Block was created
-  const factory BlockChange.created({
-    required String id,
-    required String parentId,
-    required String content,
-    required List<String> children,
-    required ChangeOrigin origin,
-  }) = BlockChange_Created;
+  /// Span ID (8-byte hex string, 16 hex characters)
+  final String spanId;
 
-  /// Block content was updated
-  const factory BlockChange.updated({
-    required String id,
-    required String content,
-    required ChangeOrigin origin,
-  }) = BlockChange_Updated;
+  /// Trace flags (1 byte, typically 0x01 for sampled)
+  final int traceFlags;
 
-  /// Block was deleted
-  const factory BlockChange.deleted({
-    required String id,
-    required ChangeOrigin origin,
-  }) = BlockChange_Deleted;
+  /// Optional trace state (key-value pairs)
+  final String? traceState;
 
-  /// Block was moved
-  const factory BlockChange.moved({
-    required String id,
-    required String newParent,
-    String? after,
-    required ChangeOrigin origin,
-  }) = BlockChange_Moved;
-}
+  const TraceContext({
+    required this.traceId,
+    required this.spanId,
+    required this.traceFlags,
+    this.traceState,
+  });
 
-/// Origin of a change event (local vs. remote).
-enum ChangeOrigin {
-  /// Change initiated by this client
-  local,
+  /// Create a new TraceContext from OpenTelemetry span context
+  static Future<TraceContext> fromSpanContext({
+    required SpanContext spanContext,
+  }) => RustLib.instance.api.crateApiTypesTraceContextFromSpanContext(
+    spanContext: spanContext,
+  );
 
-  /// Change received from P2P sync
-  remote,
-}
+  /// Convert to OpenTelemetry span context
+  Future<SpanContext?> toSpanContext() =>
+      RustLib.instance.api.crateApiTypesTraceContextToSpanContext(that: this);
 
-@freezed
-sealed class StreamPosition with _$StreamPosition {
-  const StreamPosition._();
+  @override
+  int get hashCode =>
+      traceId.hashCode ^
+      spanId.hashCode ^
+      traceFlags.hashCode ^
+      traceState.hashCode;
 
-  /// Start from the beginning
-  const factory StreamPosition.beginning() = StreamPosition_Beginning;
-
-  /// Start from a specific version
-  const factory StreamPosition.version(Uint8List field0) =
-      StreamPosition_Version;
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      other is TraceContext &&
+          runtimeType == other.runtimeType &&
+          traceId == other.traceId &&
+          spanId == other.spanId &&
+          traceFlags == other.traceFlags &&
+          traceState == other.traceState;
 }

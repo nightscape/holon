@@ -1,0 +1,35 @@
+[package]
+name = "holon-orgmode"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+default = []
+di = []
+
+[dependencies]
+orgize = "0.10.0-alpha.10"
+anyhow = "1.0"
+async-trait = "0.1"
+chrono = { version = "0.4", features = ["serde"] }
+futures = "0.3"
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+sha2 = "0.10"
+hex = "0.4"
+tokio = { version = "1", features = ["sync", "fs"] }
+tokio-stream = "0.1"
+tracing = "0.1"
+uuid = { version = "1", features = ["v4"] }
+walkdir = "2"
+
+holon = { path = "../holon" }
+holon-macros = { path = "../holon-macros" }
+holon-api = { path = "../holon-api" }
+holon-filesystem = { path = "../holon-filesystem" }
+ferrous-di = { path = "/Users/martin/Workspaces/rust/ferrous-di", default-features = false }
+
+[dev-dependencies]
+proptest = "1.6"
+tempfile = "3"
+

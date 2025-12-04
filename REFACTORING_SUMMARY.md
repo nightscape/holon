@@ -2,11 +2,11 @@
 
 ## What Was Done
 
-Successfully separated Todoist-specific code into `rusty-knowledge-todoist` crate while keeping generic infrastructure in the main `rusty-knowledge` crate.
+Successfully separated Todoist-specific code into `holon-todoist` crate while keeping generic infrastructure in the main `holon` crate.
 
-## New Crate: rusty-knowledge-todoist
+## New Crate: holon-todoist
 
-**Location**: `crates/rusty-knowledge-todoist/`
+**Location**: `crates/holon-todoist/`
 
 **Contains**:
 - `src/contracts.rs` - Todoist-specific contract specifications
@@ -19,7 +19,7 @@ Successfully separated Todoist-specific code into `rusty-knowledge-todoist` crat
 - 4 contract tests
 - 1 fake implementation test
 
-## Main Crate: rusty-knowledge
+## Main Crate: holon
 
 **Kept (Generic Infrastructure)**:
 - `src/sync/external_system.rs`:
@@ -32,9 +32,9 @@ Successfully separated Todoist-specific code into `rusty-knowledge-todoist` crat
   - Now just documentation pointing to system-specific crates
 
 **Removed (Todoist-Specific)**:
-- ❌ `src/contracts/todoist.rs` - Moved to rusty-knowledge-todoist
-- ❌ `TodoistFake` implementation - Moved to rusty-knowledge-todoist
-- ❌ `TodoistClient` implementation - Moved to rusty-knowledge-todoist
+- ❌ `src/contracts/todoist.rs` - Moved to holon-todoist
+- ❌ `TodoistFake` implementation - Moved to holon-todoist
+- ❌ `TodoistClient` implementation - Moved to holon-todoist
 
 **Tests**: ✅ 1 test passing (schema initialization)
 
@@ -42,19 +42,19 @@ Successfully separated Todoist-specific code into `rusty-knowledge-todoist` crat
 
 The new crate depends on:
 ```toml
-rusty-knowledge = { path = "../rusty-knowledge" }
+holon = { path = "../holon" }
 ```
 
 This creates a clean dependency flow:
 ```
-rusty-knowledge-todoist
-    ├─> rusty-knowledge (generic infrastructure)
+holon-todoist
+    ├─> holon (generic infrastructure)
 ```
 
 ## Benefits
 
 1. **Clean Separation**: Generic infrastructure vs system-specific code
-2. **Extensibility**: Easy to add more system crates (rusty-knowledge-notion, etc.)
+2. **Extensibility**: Easy to add more system crates (holon-notion, etc.)
 3. **Reusability**: `ExternalSystem` trait can be implemented by any system
 4. **No Code Duplication**: Shared helpers like `json_to_value()` remain in main crate
 5. **Better Organization**: Each external system gets its own crate
@@ -63,14 +63,14 @@ rusty-knowledge-todoist
 
 To add a new external system:
 
-1. Create `crates/rusty-knowledge-{system}/`
+1. Create `crates/holon-{system}/`
 2. Implement contracts in `src/contracts.rs`
 3. Implement `ExternalSystem` for fake and real clients
 4. Add to workspace `Cargo.toml`
 
 Example:
 ```
-crates/rusty-knowledge-notion/
+crates/holon-notion/
     src/
         fake.rs         # NotionFake
         client.rs       # NotionClient
@@ -80,7 +80,7 @@ crates/rusty-knowledge-notion/
 ## Test Results
 
 ```
-✅ rusty-knowledge-todoist: 5 tests passing
-✅ rusty-knowledge: 1 test passing (command_sourcing)
+✅ holon-todoist: 5 tests passing
+✅ holon: 1 test passing (command_sourcing)
 ✅ All previous functionality preserved
 ```

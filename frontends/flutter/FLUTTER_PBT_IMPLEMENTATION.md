@@ -69,7 +69,7 @@ Total: 50 random operations verified against reference implementation
 
 ### 1. Shared Infrastructure (`pbt_infrastructure.rs`)
 
-**Location**: `crates/rusty-knowledge/src/api/pbt_infrastructure.rs`
+**Location**: `crates/holon/src/api/pbt_infrastructure.rs`
 
 **Purpose**: ~90% of PBT logic shared between LoroBackend and Flutter tests
 
@@ -204,7 +204,7 @@ flutter test integration_test/flutter_pbt_test.dart
 flutter test integration_test/flutter_pbt_test.dart --plain-name "Full Proptest"
 
 # Run LoroBackend PBT tests
-cd ../../crates/rusty-knowledge
+cd ../../crates/holon
 cargo test loro_backend_pbt --lib
 ```
 
@@ -236,7 +236,7 @@ frontends/flutter/
 └── lib/src/rust/api/
     └── pbt_proptest.dart              # Generated FRB bindings
 
-crates/rusty-knowledge/src/api/
+crates/holon/src/api/
 ├── pbt_infrastructure.rs              # Shared PBT helpers (~95% of logic)
 ├── loro_backend_pbt.rs                # LoroBackend tests (now using shared helpers)
 └── memory_backend.rs                  # Reference implementation

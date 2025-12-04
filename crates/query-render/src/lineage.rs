@@ -23,11 +23,11 @@
 //! ```
 
 use anyhow::{Context, Result};
-use prqlc::prql_to_pl;
 use prqlc::internal::pl_to_lineage;
 use prqlc::ir::pl::Lineage;
-use std::collections::{HashMap, HashSet};
+use prqlc::prql_to_pl;
 use regex::Regex;
+use std::collections::{HashMap, HashSet};
 
 /// Discovered function in render() expression
 #[derive(Debug, Clone)]
@@ -48,32 +48,26 @@ pub struct DerivedColumn {
 pub struct ColumnSource {
     pub table: String,
     pub column: String,
-    pub is_direct: bool,  // false if computed/derived
+    pub is_direct: bool, // false if computed/derived
 }
 
 /// Widget to operation mapping
 #[derive(Debug, Clone)]
 pub struct WidgetOperationMapping {
-    pub widget_alias: String,       // "checkbox_el_0"
-    pub widget_type: String,        // "checkbox"
-    pub modified_param: String,     // "checked"
-    pub operation: OperationWiring,
-}
-
-/// Operation wiring information
-#[derive(Debug, Clone)]
-pub struct OperationWiring {
-    pub table: String,              // "blocks"
-    pub id_column: String,          // "id"
-    pub field: String,              // "completed"
+    pub widget_alias: String,                  // "checkbox_el_0"
+    pub widget_type: String,                   // "checkbox"
+    pub modified_param: String,                // "checked"
+    pub operation: holon_api::OperationWiring, // Use the canonical OperationWiring from holon-api
 }
 
 /// Lineage preprocessor for automatic operation inference
-pub struct LineagePreprocessor;
+/// Using empty struct body for FRB compatibility (unit structs not supported)
+/// flutter_rust_bridge:non_opaque
+pub struct LineagePreprocessor {}
 
 impl LineagePreprocessor {
     pub fn new() -> Self {
-        Self
+        Self {}
     }
 
     /// Analyze query with s-string stub injection to preserve lineage
@@ -85,6 +79,7 @@ impl LineagePreprocessor {
     /// 2. Generate s-string stubs that preserve lineage
     /// 3. Inject stubs and run lineage analysis directly
     /// 4. Return lineage for tree walker to use
+    /// flutter_rust_bridge:ignore
     pub fn analyze_query(&self, original_query: &str) -> Result<Lineage> {
         // Step 1: Extract the query before render() and the render expression
         let (before_render, render_expr) = self.extract_render_parts(original_query)?;
@@ -106,7 +101,7 @@ impl LineagePreprocessor {
         let (prql_directive, query_body) = if trimmed.starts_with("prql") {
             if let Some(pos) = trimmed.find('\n') {
                 let directive = trimmed[..pos].trim().to_string();
-                let body = trimmed[pos+1..].trim_start().to_string();
+                let body = trimmed[pos + 1..].trim_start().to_string();
                 (Some(directive), body)
             } else {
                 (Some(trimmed.trim().to_string()), String::new())
@@ -137,9 +132,15 @@ impl LineagePreprocessor {
             // Put prql directive first (if present), then stubs, then query body, then derive
             // Note: prql directive must come before let statements
             if let Some(prql) = prql_directive {
-                format!("{}\n\n{}\n\n{}\nderive {{_render_expr = {}}}", prql, stubs, query_body, render_expr_prefixed)
+                format!(
+                    "{}\n\n{}\n\n{}\nderive {{_render_expr = {}}}",
+                    prql, stubs, query_body, render_expr_prefixed
+                )
             } else {
-                format!("{}\n\n{}\nderive {{_render_expr = {}}}", stubs, query_body, render_expr_prefixed)
+                format!(
+                    "{}\n\n{}\nderive {{_render_expr = {}}}",
+                    stubs, query_body, render_expr_prefixed
+                )
             }
         };
 
@@ -169,8 +170,8 @@ impl LineagePreprocessor {
 
     /// Extract the query before render() and the render expression itself
     fn extract_render_parts(&self, query: &str) -> Result<(String, String)> {
-        let render_re = Regex::new(r"(?s)(.*)render\s+(.*)$")
-            .context("Failed to compile render regex")?;
+        let render_re =
+            Regex::new(r"(?s)(.*)render\s+(.*)$").context("Failed to compile render regex")?;
 
         if let Some(caps) = render_re.captures(query) {
             let before = caps.get(1).unwrap().as_str().trim_end().to_string();
@@ -191,11 +192,15 @@ impl LineagePreprocessor {
         self.discover_functions_recursive(render_expr, &mut functions);
 
         // Convert to sorted FunctionDiscovery structs
-        let mut result: Vec<FunctionDiscovery> = functions.into_iter()
+        let mut result: Vec<FunctionDiscovery> = functions
+            .into_iter()
             .map(|(name, params)| {
                 let mut sorted_params: Vec<String> = params.into_iter().collect();
                 sorted_params.sort();
-                FunctionDiscovery { name, params: sorted_params }
+                FunctionDiscovery {
+                    name,
+                    params: sorted_params,
+                }
             })
             .collect();
 
@@ -204,7 +209,11 @@ impl LineagePreprocessor {
     }
 
     /// Recursively discover functions in expression
-    fn discover_functions_recursive(&self, expr: &str, functions: &mut HashMap<String, HashSet<String>>) {
+    fn discover_functions_recursive(
+        &self,
+        expr: &str,
+        functions: &mut HashMap<String, HashSet<String>>,
+    ) {
         let chars: Vec<char> = expr.chars().collect();
         let mut i = 0;
 
@@ -215,7 +224,11 @@ impl LineagePreprocessor {
                 let start = i;
 
                 // Collect function name (lowercase letters, digits, underscores)
-                while i < chars.len() && (chars[i].is_ascii_lowercase() || chars[i].is_ascii_digit() || chars[i] == '_') {
+                while i < chars.len()
+                    && (chars[i].is_ascii_lowercase()
+                        || chars[i].is_ascii_digit()
+                        || chars[i] == '_')
+                {
                     i += 1;
                 }
 
@@ -259,11 +272,16 @@ impl LineagePreprocessor {
                         } else if depth == 0 && param_chars[j].is_ascii_lowercase() {
                             // Potential parameter name at depth 0
                             let param_start = j;
-                            while j < param_chars.len() && (param_chars[j].is_ascii_lowercase() || param_chars[j].is_ascii_digit() || param_chars[j] == '_') {
+                            while j < param_chars.len()
+                                && (param_chars[j].is_ascii_lowercase()
+                                    || param_chars[j].is_ascii_digit()
+                                    || param_chars[j] == '_')
+                            {
                                 j += 1;
                             }
                             if j < param_chars.len() && param_chars[j] == ':' {
-                                let param_name = param_chars[param_start..j].iter().collect::<String>();
+                                let param_name =
+                                    param_chars[param_start..j].iter().collect::<String>();
                                 current_params.insert(param_name);
                             }
                             continue;
@@ -271,7 +289,8 @@ impl LineagePreprocessor {
                         j += 1;
                     }
 
-                    functions.entry(func_name)
+                    functions
+                        .entry(func_name)
                         .or_insert_with(HashSet::new)
                         .extend(current_params);
 
@@ -291,26 +310,36 @@ impl LineagePreprocessor {
     ///
     /// Functions are prefixed with `ui_` to avoid conflicts with PRQL standard library.
     fn generate_sstring_stubs(&self, functions: &[FunctionDiscovery]) -> String {
-        functions.iter()
+        functions
+            .iter()
             .map(|func| {
                 let ui_name = format!("ui_{}", func.name);
                 if func.params.is_empty() {
                     // Functions with no parameters - simple pass-through
-                    format!("let {} = _items:null -> s\"{}({{_items}})\"", ui_name, func.name)
+                    format!(
+                        "let {} = _items:null -> s\"{}({{_items}})\"",
+                        ui_name, func.name
+                    )
                 } else {
                     // Build parameter list and s-string template
-                    let param_list = func.params.iter()
+                    let param_list = func
+                        .params
+                        .iter()
                         .map(|p| format!("{}:null", p))
                         .collect::<Vec<_>>()
                         .join(" ");
 
-                    let template_params = func.params.iter()
+                    let template_params = func
+                        .params
+                        .iter()
                         .map(|p| format!("{{{}}}", p))
                         .collect::<Vec<_>>()
                         .join(", ");
 
-                    format!("let {} = {} -> s\"{}({})\"",
-                        ui_name, param_list, func.name, template_params)
+                    format!(
+                        "let {} = {} -> s\"{}({})\"",
+                        ui_name, param_list, func.name, template_params
+                    )
                 }
             })
             .collect::<Vec<_>>()
@@ -318,7 +347,7 @@ impl LineagePreprocessor {
     }
 
     /// Extract everything before render() from query
-    #[allow(dead_code)]  // Used in tests
+    #[allow(dead_code)] // Used in tests
     fn extract_before_render(&self, query: &str) -> String {
         if let Some(pos) = query.find("render") {
             query[..pos].trim_end().to_string()
@@ -337,6 +366,189 @@ impl Default for LineagePreprocessor {
 #[cfg(test)]
 mod tests {
     use super::*;
+
+    /// H3: Validate lineage traces columns through CASE expressions
+    ///
+    /// When using CASE to compute parent_id, lineage should still track
+    /// the source columns (parent_id, project_id) from the original tables.
+    #[test]
+    fn test_case_expression_preserves_lineage() {
+        let preprocessor = LineagePreprocessor::new();
+
+        let case_query = r#"
+prql target:sql.sqlite
+
+from tasks
+select {
+  id,
+  effective_parent = case [
+    parent_id != null => parent_id,
+    true => project_id
+  ],
+  content
+}
+"#;
+
+        let lineage = preprocessor
+            .analyze_query(case_query)
+            .expect("Should successfully analyze CASE query");
+
+        // Verify the query parses and produces lineage
+        assert!(
+            !lineage.columns.is_empty(),
+            "CASE query should produce columns in lineage"
+        );
+
+        // Check that we have columns in the output
+        // LineageColumn is an enum - extract names from Single variant
+        use prqlc::ir::pl::LineageColumn;
+        let column_names: Vec<String> = lineage
+            .columns
+            .iter()
+            .filter_map(|col| {
+                if let LineageColumn::Single { name, .. } = col {
+                    name.as_ref().map(|ident| ident.to_string())
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        assert!(
+            column_names
+                .iter()
+                .any(|n| n == "effective_parent" || n.contains("case")),
+            "Should have effective_parent or case-derived column. Found: {:?}",
+            column_names
+        );
+    }
+
+    /// H4: Validate that literal string columns (like node_type) survive through the pipeline
+    #[test]
+    fn test_literal_column_survives_pipeline() {
+        let preprocessor = LineagePreprocessor::new();
+
+        let literal_query = r#"
+prql target:sql.sqlite
+
+from tasks
+select {
+  id,
+  content,
+  node_type = "todoist_tasks"
+}
+"#;
+
+        let lineage = preprocessor
+            .analyze_query(literal_query)
+            .expect("Should successfully analyze literal column query");
+
+        // Verify node_type appears in output columns
+        use prqlc::ir::pl::LineageColumn;
+        let column_names: Vec<String> = lineage
+            .columns
+            .iter()
+            .filter_map(|col| {
+                if let LineageColumn::Single { name, .. } = col {
+                    name.as_ref().map(|ident| ident.to_string())
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        assert!(
+            column_names.contains(&"node_type".to_string()),
+            "node_type literal column should survive pipeline. Found: {:?}",
+            column_names
+        );
+    }
+
+    /// H2 + H4 combined: Validate unified hierarchy pattern with UNION and node_type
+    #[test]
+    fn test_unified_hierarchy_pattern() {
+        let preprocessor = LineagePreprocessor::new();
+
+        // This is the actual pattern we'll use for Todoist hierarchy
+        let hierarchy_query = r#"
+prql target:sql.sqlite
+
+from projects
+select {
+  id,
+  parent_id,
+  content = name,
+  node_type = "todoist_projects"
+}
+append (
+  from tasks
+  select {
+    id,
+    parent_id = case [
+      parent_id != null => parent_id,
+      true => project_id
+    ],
+    content,
+    node_type = "todoist_tasks"
+  }
+)
+select {
+  id,
+  parent_id,
+  content,
+  node_type
+}
+"#;
+
+        let lineage = preprocessor
+            .analyze_query(hierarchy_query)
+            .expect("Should successfully analyze unified hierarchy query");
+
+        // H2: Both source tables tracked
+        assert_eq!(
+            lineage.inputs.len(),
+            2,
+            "Unified hierarchy should track both input tables"
+        );
+
+        let table_names: Vec<String> = lineage
+            .inputs
+            .iter()
+            .map(|input| format!("{:?}", input.table))
+            .collect();
+        let table_names_str = table_names.join(" ");
+
+        assert!(
+            table_names_str.contains("projects"),
+            "Should include 'projects' table. Found: {}",
+            table_names_str
+        );
+        assert!(
+            table_names_str.contains("tasks"),
+            "Should include 'tasks' table. Found: {}",
+            table_names_str
+        );
+
+        // H4: node_type column survives
+        use prqlc::ir::pl::LineageColumn;
+        let column_names: Vec<String> = lineage
+            .columns
+            .iter()
+            .filter_map(|col| {
+                if let LineageColumn::Single { name, .. } = col {
+                    name.as_ref().map(|ident| ident.to_string())
+                } else {
+                    None
+                }
+            })
+            .collect();
+
+        assert!(
+            column_names.contains(&"node_type".to_string()),
+            "node_type should survive through UNION. Found: {:?}",
+            column_names
+        );
+    }
 
     #[test]
     fn test_union_lineage_tracks_both_tables() {
@@ -359,14 +571,21 @@ select {
 }
 "#;
 
-        let lineage = preprocessor.analyze_query(union_query)
+        let lineage = preprocessor
+            .analyze_query(union_query)
             .expect("Should successfully analyze UNION query");
 
         // Verify that both tables are tracked in inputs
-        assert_eq!(lineage.inputs.len(), 2, "UNION query should track both input tables");
+        assert_eq!(
+            lineage.inputs.len(),
+            2,
+            "UNION query should track both input tables"
+        );
 
         // Verify both tables are present by checking table names
-        let table_names: Vec<String> = lineage.inputs.iter()
+        let table_names: Vec<String> = lineage
+            .inputs
+            .iter()
             .map(|input| {
                 // input.table is an Ident, convert to string representation
                 format!("{:?}", input.table)
@@ -374,10 +593,71 @@ select {
             .collect();
 
         let table_names_str = table_names.join(" ");
-        assert!(table_names_str.contains("blocks"),
-            "Should include 'blocks' table. Found: {}", table_names_str);
-        assert!(table_names_str.contains("tasks"),
-            "Should include 'tasks' table. Found: {}", table_names_str);
+        assert!(
+            table_names_str.contains("blocks"),
+            "Should include 'blocks' table. Found: {}",
+            table_names_str
+        );
+        assert!(
+            table_names_str.contains("tasks"),
+            "Should include 'tasks' table. Found: {}",
+            table_names_str
+        );
     }
 
+    /// Test that PRQL lineage sees through CTEs (let statements)
+    ///
+    /// When using `let todoist_hierarchy = (...)` followed by `from todoist_hierarchy`,
+    /// lineage should still track the underlying source tables, not just the CTE name.
+    #[test]
+    fn test_cte_lineage_sees_through_to_source_tables() {
+        let preprocessor = LineagePreprocessor::new();
+
+        let cte_query = r#"
+prql target:sql.sqlite
+
+let todoist_hierarchy = (
+    from todoist_projects
+    select {id, parent_id, content = name, node_type = "todoist_projects"}
+    append (
+        from todoist_tasks
+        select {id, parent_id, content, node_type = "todoist_tasks"}
+    )
+)
+
+from todoist_hierarchy
+select {id, parent_id, content, node_type}
+"#;
+
+        let lineage = preprocessor
+            .analyze_query(cte_query)
+            .expect("Should analyze CTE query");
+
+        // PRQL should see through the CTE to the underlying tables
+        let table_names: Vec<String> = lineage
+            .inputs
+            .iter()
+            .map(|input| input.table.name.clone())
+            .collect();
+
+        println!("CTE lineage inputs: {:?}", table_names);
+
+        assert!(
+            lineage.inputs.len() >= 2,
+            "CTE lineage should see both source tables. Found {} inputs: {:?}",
+            lineage.inputs.len(),
+            table_names
+        );
+
+        assert!(
+            table_names.iter().any(|n| n.contains("todoist_projects")),
+            "Should include 'todoist_projects'. Found: {:?}",
+            table_names
+        );
+        assert!(
+            table_names.iter().any(|n| n.contains("todoist_tasks")),
+            "Should include 'todoist_tasks'. Found: {:?}",
+            table_names
+        );
+    }
 }

@@ -57,12 +57,14 @@ final blockOpsSyncProvider = Provider<BlockOps<RustBlock>?>((ref) {
 ///
 /// This creates an OutlinerNotifier properly typed with RustBlock instead of
 /// the default Block type from outliner_view.
-final rustOutlinerProvider = StateNotifierProvider<
-    OutlinerNotifier<RustBlock>,
-    OutlinerState<RustBlock>>((ref) {
-  final ops = ref.watch(blockOpsSyncProvider);
-  if (ops == null) {
-    throw StateError('BlockOps not yet initialized');
-  }
-  return OutlinerNotifier<RustBlock>(ops);
-});
+final rustOutlinerProvider =
+    StateNotifierProvider<
+      OutlinerNotifier<RustBlock>,
+      OutlinerState<RustBlock>
+    >((ref) {
+      final ops = ref.watch(blockOpsSyncProvider);
+      if (ops == null) {
+        throw StateError('BlockOps not yet initialized');
+      }
+      return OutlinerNotifier<RustBlock>(ops);
+    });

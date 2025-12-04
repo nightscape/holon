@@ -6,7 +6,7 @@ Both `OperationRegistry` and `OperationDispatcher` manage operations, but they s
 
 ## OperationRegistry (Legacy)
 
-**Location**: `crates/rusty-knowledge/src/operations/registry.rs`
+**Location**: `crates/holon/src/operations/registry.rs`
 
 ### Purpose
 - Simple HashMap-based registry for direct operation execution
@@ -53,7 +53,7 @@ async fn execute(
 
 ## OperationDispatcher (Newer)
 
-**Location**: `crates/rusty-knowledge/src/api/operation_dispatcher.rs`
+**Location**: `crates/holon/src/api/operation_dispatcher.rs`
 
 ### Purpose
 - Composite pattern implementation for operation routing
