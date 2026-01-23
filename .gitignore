@@ -13,3 +13,6 @@ package-lock.json
 
 *.db
 *.db-wal
+
+# Auto Claude data directory
+.auto-claude/
