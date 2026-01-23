@@ -19,12 +19,10 @@ pub const MAX_SORT_KEY_LENGTH: usize = 32;
 /// A new sort_key that sorts between prev_key and next_key
 pub fn gen_key_between(prev_key: Option<&str>, next_key: Option<&str>) -> Result<String> {
     let prev_index = prev_key
-        .map(FractionalIndex::from_hex_string)
-        .map(|idx| idx);
+        .map(FractionalIndex::from_hex_string);
 
     let next_index = next_key
-        .map(FractionalIndex::from_hex_string)
-        .map(|idx| idx);
+        .map(FractionalIndex::from_hex_string);
 
     let new_index = FractionalIndex::new(prev_index.as_ref(), next_index.as_ref())
         .context("Failed to generate fractional index between given keys")?;

@@ -79,6 +79,7 @@ impl LineagePreprocessor {
     /// 2. Generate s-string stubs that preserve lineage
     /// 3. Inject stubs and run lineage analysis directly
     /// 4. Return lineage for tree walker to use
+    ///
     /// flutter_rust_bridge:ignore
     pub fn analyze_query(&self, original_query: &str) -> Result<Lineage> {
         // Step 1: Extract the query before render() and the render expression
@@ -291,7 +292,7 @@ impl LineagePreprocessor {
 
                     functions
                         .entry(func_name)
-                        .or_insert_with(HashSet::new)
+                        .or_default()
                         .extend(current_params);
 
                     // Recursively process nested calls in args

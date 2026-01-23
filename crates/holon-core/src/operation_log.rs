@@ -35,7 +35,7 @@ impl OperationStatus {
     }
 
     /// Parse status from database string
-    pub fn from_str(s: &str) -> Option<Self> {
+    pub fn parse(s: &str) -> Option<Self> {
         match s {
             "pending_sync" => Some(OperationStatus::PendingSync),
             "synced" => Some(OperationStatus::Synced),
@@ -120,7 +120,7 @@ impl OperationLogEntry {
 
     /// Get the operation status
     pub fn get_status(&self) -> Option<OperationStatus> {
-        OperationStatus::from_str(&self.status)
+        OperationStatus::parse(&self.status)
     }
 
     /// Check if this operation can be undone
@@ -153,7 +153,7 @@ mod tests {
             OperationStatus::Cancelled,
         ] {
             let s = status.as_str();
-            let parsed = OperationStatus::from_str(s).unwrap();
+            let parsed = OperationStatus::parse(s).unwrap();
             assert_eq!(status, parsed);
         }
     }

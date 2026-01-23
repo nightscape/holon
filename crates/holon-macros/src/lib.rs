@@ -29,7 +29,7 @@ pub fn derive_entity(input: TokenStream) -> TokenStream {
 
     let mut primary_key_field = None;
     let mut field_schemas = Vec::new();
-    let mut lens_definitions: Vec<proc_macro2::TokenStream> = Vec::new();
+    let lens_definitions: Vec<proc_macro2::TokenStream> = Vec::new();
     let mut to_entity_fields = Vec::new();
     let mut from_entity_fields = Vec::new();
     let mut schema_fields = Vec::new();
@@ -49,7 +49,7 @@ pub fn derive_entity(input: TokenStream) -> TokenStream {
             .iter()
             .any(|attr| attr.path().is_ident("indexed"));
 
-        let skip_lens = field.attrs.iter().any(|attr| {
+        let _skip_lens = field.attrs.iter().any(|attr| {
             if attr.path().is_ident("lens")
                 && let Meta::List(meta_list) = &attr.meta
             {
@@ -230,12 +230,8 @@ fn extract_entity_attribute(attrs: &[syn::Attribute]) -> EntityAttribute {
                     .strip_prefix('=')
                     .unwrap_or(after_key);
                 let trimmed = after_equals.trim_start();
-                if trimmed.starts_with('"') {
-                    if let Some(end_quote) = trimmed[1..].find('"') {
-                        Some(trimmed[1..end_quote + 1].to_string())
-                    } else {
-                        None
-                    }
+                if let Some(stripped) = trimmed.strip_prefix('"') {
+                    stripped.find('"').map(|end_quote| stripped[..end_quote].to_string())
                 } else {
                     None
                 }
@@ -251,12 +247,8 @@ fn extract_entity_attribute(attrs: &[syn::Attribute]) -> EntityAttribute {
                     .strip_prefix('=')
                     .unwrap_or(after_key);
                 let trimmed = after_equals.trim_start();
-                if trimmed.starts_with('"') {
-                    if let Some(end_quote) = trimmed[1..].find('"') {
-                        Some(trimmed[1..end_quote + 1].to_string())
-                    } else {
-                        None
-                    }
+                if let Some(stripped) = trimmed.strip_prefix('"') {
+                    stripped.find('"').map(|end_quote| stripped[..end_quote].to_string())
                 } else {
                     None
                 }
@@ -272,6 +264,7 @@ fn extract_entity_attribute(attrs: &[syn::Attribute]) -> EntityAttribute {
     panic!("Entity derive macro requires #[entity(name = \"...\")]");
 }
 
+#[allow(dead_code)]
 fn extract_entity_name(attrs: &[syn::Attribute]) -> String {
     extract_entity_attribute(attrs).name
 }
@@ -284,13 +277,12 @@ fn parse_provider_name(attr: &TokenStream) -> Option<String> {
 
     let attr_str = attr.to_string();
     // Look for provider_name = "value" pattern
-    if let Some(start) = attr_str.find("provider_name") {
-        if let Some(equals) = attr_str[start..].find('=') {
+    if let Some(start) = attr_str.find("provider_name")
+        && let Some(equals) = attr_str[start..].find('=') {
             let value_start = attr_str[start + equals + 1..].find('"')? + start + equals + 1;
             let value_end = attr_str[value_start + 1..].find('"')? + value_start + 1;
             return Some(attr_str[value_start + 1..value_end].to_string());
         }
-    }
     None
 }
 
@@ -360,6 +352,7 @@ fn rust_type_to_sql_type(ty: &syn::Type) -> String {
     }
 }
 
+#[allow(dead_code)]
 fn extract_inner_type(ty: &syn::Type) -> proc_macro2::TokenStream {
     let type_str = quote! { #ty }.to_string();
 
@@ -375,6 +368,7 @@ fn extract_inner_type(ty: &syn::Type) -> proc_macro2::TokenStream {
     }
 }
 
+#[allow(dead_code)]
 fn to_camel_case(s: &str) -> String {
     s.split('_')
         .map(|word| {
@@ -478,13 +472,11 @@ pub fn operations_trait(attr: TokenStream, item: TokenStream) -> TokenStream {
                         // This is a simplified approach - we assume the first generic param is the entity type
                         let mut new_pred = pred_type.clone();
                         // Replace T with E in the type path
-                        if let syn::Type::Path(type_path) = &mut new_pred.bounded_ty {
-                            if let Some(segment) = type_path.path.segments.first_mut() {
-                                if segment.ident == "T" {
+                        if let syn::Type::Path(type_path) = &mut new_pred.bounded_ty
+                            && let Some(segment) = type_path.path.segments.first_mut()
+                                && segment.ident == "T" {
                                     segment.ident = syn::Ident::new("E", segment.ident.span());
                                 }
-                            }
-                        }
                         Some(quote! { #new_pred })
                     } else {
                         None
@@ -700,7 +692,7 @@ pub fn operations_trait(attr: TokenStream, item: TokenStream) -> TokenStream {
             let name_lit = method_name.to_string();
             let display_name = to_display_name(&name_lit);
             let description = extract_doc_comments(&method.attrs);
-            let desc_lit = if description.is_empty() {
+            let _desc_lit = if description.is_empty() {
                 format!("Execute {}", display_name)
             } else {
                 description.clone()
@@ -955,13 +947,13 @@ pub fn operations_trait(attr: TokenStream, item: TokenStream) -> TokenStream {
                         let original_type_str = quote! { #pat_type.ty }.to_string();
                         let original_type_contains_value = original_type_str.contains("Value");
                         if original_type_contains_value {
-                            let crate_path_clone = crate_path.clone();
+                            let _crate_path_clone = crate_path.clone();
                             quote! {
                                 let #param_name_ident: std::collections::HashMap<String, holon_api::Value> = params.clone();
                             }
                         } else {
                             // Fallback for other HashMap types
-                            let crate_path_clone = crate_path.clone();
+                            let _crate_path_clone = crate_path.clone();
                             quote! {
                                 let #param_name_ident: holon_api::Value = params.get(#param_name_str)
                                     .cloned()
@@ -975,7 +967,7 @@ pub fn operations_trait(attr: TokenStream, item: TokenStream) -> TokenStream {
                         }
                     } else if type_str_cleaned == "Value" {
                         // For Value type, clone directly
-                        let crate_path_clone = crate_path.clone();
+                        let _crate_path_clone = crate_path.clone();
                         if is_optional {
                             quote! {
                                 let #param_name_ident: Option<holon_api::Value> = params.get(#param_name_str).cloned();
@@ -989,7 +981,7 @@ pub fn operations_trait(attr: TokenStream, item: TokenStream) -> TokenStream {
                         }
                     } else {
                         // For other types, try to clone Value and let the trait method handle conversion
-                        let crate_path_clone = crate_path.clone();
+                        let _crate_path_clone = crate_path.clone();
                         quote! {
                             let #param_name_ident: holon_api::Value = params.get(#param_name_str)
                                 .cloned()
@@ -1271,11 +1263,10 @@ fn extract_require_precondition(attrs: &[syn::Attribute]) -> Option<proc_macro2:
                 && attr.path().segments[0].ident == "holon_macros"
                 && attr.path().segments[1].ident == "require");
 
-        if is_require {
-            if let Meta::List(meta_list) = &attr.meta {
+        if is_require
+            && let Meta::List(meta_list) = &attr.meta {
                 preconditions.push(meta_list.tokens.clone());
             }
-        }
     }
 
     if preconditions.is_empty() {
@@ -1303,8 +1294,8 @@ fn extract_affected_fields(attrs: &[syn::Attribute]) -> Vec<String> {
                 && attr.path().segments[0].ident == "holon_macros"
                 && attr.path().segments[1].ident == "affects");
 
-        if is_affects_attr {
-            if let Meta::List(meta_list) = &attr.meta {
+        if is_affects_attr
+            && let Meta::List(meta_list) = &attr.meta {
                 // Parse the tokens - format is: #[affects("field1", "field2")]
                 let tokens_str = meta_list.tokens.to_string();
 
@@ -1312,18 +1303,16 @@ fn extract_affected_fields(attrs: &[syn::Attribute]) -> Vec<String> {
                 let mut fields = Vec::new();
                 for part in tokens_str.split(',') {
                     let trimmed = part.trim();
-                    // Remove quotes if present
-                    if trimmed.starts_with('"') && trimmed.ends_with('"') {
-                        let field_name = &trimmed[1..trimmed.len() - 1];
-                        fields.push(field_name.to_string());
-                    } else if trimmed.starts_with('\'') && trimmed.ends_with('\'') {
+                    // Remove quotes if present (both single and double quotes)
+                    if (trimmed.starts_with('"') && trimmed.ends_with('"'))
+                        || (trimmed.starts_with('\'') && trimmed.ends_with('\''))
+                    {
                         let field_name = &trimmed[1..trimmed.len() - 1];
                         fields.push(field_name.to_string());
                     }
                 }
                 return fields;
             }
-        }
 
         // Also check for operation(affects = [...]) format
         let is_operation_attr = attr.path().is_ident("operation")
@@ -1331,8 +1320,8 @@ fn extract_affected_fields(attrs: &[syn::Attribute]) -> Vec<String> {
                 && attr.path().segments[0].ident == "holon_macros"
                 && attr.path().segments[1].ident == "operation");
 
-        if is_operation_attr {
-            if let Meta::List(meta_list) = &attr.meta {
+        if is_operation_attr
+            && let Meta::List(meta_list) = &attr.meta {
                 let tokens_str = meta_list.tokens.to_string();
                 // Look for "affects = [" pattern
                 if let Some(start_idx) = tokens_str.find("affects = [") {
@@ -1342,10 +1331,10 @@ fn extract_affected_fields(attrs: &[syn::Attribute]) -> Vec<String> {
                         let mut fields = Vec::new();
                         for part in fields_str.split(',') {
                             let trimmed = part.trim();
-                            if trimmed.starts_with('"') && trimmed.ends_with('"') {
-                                let field_name = &trimmed[1..trimmed.len() - 1];
-                                fields.push(field_name.to_string());
-                            } else if trimmed.starts_with('\'') && trimmed.ends_with('\'') {
+                            // Remove quotes if present (both single and double quotes)
+                            if (trimmed.starts_with('"') && trimmed.ends_with('"'))
+                                || (trimmed.starts_with('\'') && trimmed.ends_with('\''))
+                            {
                                 let field_name = &trimmed[1..trimmed.len() - 1];
                                 fields.push(field_name.to_string());
                             }
@@ -1354,7 +1343,6 @@ fn extract_affected_fields(attrs: &[syn::Attribute]) -> Vec<String> {
                     }
                 }
             }
-        }
     }
     Vec::new()
 }
@@ -1387,8 +1375,8 @@ fn extract_param_mappings(attrs: &[syn::Attribute]) -> Vec<ParsedParamMapping> {
                 && attr.path().segments[0].ident == "holon_macros"
                 && attr.path().segments[1].ident == "triggered_by");
 
-        if is_triggered_by_attr {
-            if let Meta::List(meta_list) = &attr.meta {
+        if is_triggered_by_attr
+            && let Meta::List(meta_list) = &attr.meta {
                 let tokens_str = meta_list.tokens.to_string();
 
                 // Parse: availability_of = "tree_position", providing = ["parent_id", "after_block_id"]
@@ -1405,11 +1393,10 @@ fn extract_param_mappings(attrs: &[syn::Attribute]) -> Vec<ParsedParamMapping> {
                         .unwrap_or(after_key);
                     let trimmed = after_equals.trim_start();
                     // Extract quoted string
-                    if trimmed.starts_with('"') {
-                        if let Some(end_quote) = trimmed[1..].find('"') {
+                    if trimmed.starts_with('"')
+                        && let Some(end_quote) = trimmed[1..].find('"') {
                             availability_of_value = Some(trimmed[1..end_quote + 1].to_string());
                         }
-                    }
                 }
 
                 // Extract "providing" array (optional)
@@ -1422,8 +1409,8 @@ fn extract_param_mappings(attrs: &[syn::Attribute]) -> Vec<ParsedParamMapping> {
                         .unwrap_or(after_key);
                     let trimmed = after_equals.trim_start();
                     // Find array bounds
-                    if let Some(bracket_start) = trimmed.find('[') {
-                        if let Some(bracket_end) = trimmed.find(']') {
+                    if let Some(bracket_start) = trimmed.find('[')
+                        && let Some(bracket_end) = trimmed.find(']') {
                             let array_content = &trimmed[bracket_start + 1..bracket_end];
                             // Parse comma-separated quoted strings
                             for part in array_content.split(',') {
@@ -1433,7 +1420,6 @@ fn extract_param_mappings(attrs: &[syn::Attribute]) -> Vec<ParsedParamMapping> {
                                 }
                             }
                         }
-                    }
                 }
 
                 if let Some(availability_of) = availability_of_value {
@@ -1450,7 +1436,6 @@ fn extract_param_mappings(attrs: &[syn::Attribute]) -> Vec<ParsedParamMapping> {
                     });
                 }
             }
-        }
     }
 
     mappings
@@ -1573,7 +1558,7 @@ fn generate_precondition_closure(
                 }
             } else {
                 // For other types, try to use Value directly or return error
-                let crate_path_clone = crate_path.clone();
+                let _crate_path_clone = crate_path.clone();
                 if is_optional {
                     quote! {
                         let #param_name_ident: Option<holon_api::Value> = params.get(#param_name_str)
@@ -1694,8 +1679,8 @@ fn parse_param_type_hint(
 
     for attr in attrs {
         // Check for #[entity_ref("name")]
-        if attr.path().is_ident("entity_ref") {
-            if let Meta::List(meta_list) = &attr.meta {
+        if attr.path().is_ident("entity_ref")
+            && let Meta::List(meta_list) = &attr.meta {
                 let tokens = &meta_list.tokens;
                 // Try to extract string literal from tokens
                 let token_str = quote! { #tokens }.to_string();
@@ -1707,7 +1692,6 @@ fn parse_param_type_hint(
                     entity_ref_override = Some(stripped.to_string());
                 }
             }
-        }
 
         // Check for #[not_entity]
         if attr.path().is_ident("not_entity") {
