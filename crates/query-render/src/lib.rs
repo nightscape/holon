@@ -203,7 +203,7 @@ fn extract_columns_from_rq(rq: &prqlc::ir::rq::RelationalQuery) -> Vec<String> {
 ///
 /// For each FunctionCall with ColumnRef parameters that reference "this.",
 /// attach an auto-operation for updating that column.
-fn annotate_tree_with_operations(expr: &mut RenderExpr, table_name: &str) {
+fn annotate_tree_with_operations(expr: &mut RenderExpr, _table_name: &str) {
     match expr {
         RenderExpr::FunctionCall {
             name,
@@ -261,21 +261,21 @@ fn annotate_tree_with_operations(expr: &mut RenderExpr, table_name: &str) {
 
             // Recurse into nested expressions
             for arg in args.iter_mut() {
-                annotate_tree_with_operations(&mut arg.value, table_name);
+                annotate_tree_with_operations(&mut arg.value, _table_name);
             }
         }
         RenderExpr::Array { items } => {
             for item in items.iter_mut() {
-                annotate_tree_with_operations(item, table_name);
+                annotate_tree_with_operations(item, _table_name);
             }
         }
         RenderExpr::BinaryOp { left, right, .. } => {
-            annotate_tree_with_operations(left, table_name);
-            annotate_tree_with_operations(right, table_name);
+            annotate_tree_with_operations(left, _table_name);
+            annotate_tree_with_operations(right, _table_name);
         }
         RenderExpr::Object { fields } => {
             for value in fields.values_mut() {
-                annotate_tree_with_operations(value, table_name);
+                annotate_tree_with_operations(value, _table_name);
             }
         }
         _ => {} // ColumnRef, Literal - no recursion needed

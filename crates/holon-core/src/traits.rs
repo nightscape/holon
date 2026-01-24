@@ -439,22 +439,25 @@ where
         let old_depth = block.depth();
 
         // Query predecessor and successor sort_keys
-        let (prev_key, next_key): (Option<String>, Option<String>) = if after_block_id.is_none() {
-            // No after_block_id means "move to beginning" - insert before first child
-            let first_child: Option<T> = self.get_first_child(Some(parent_id)).await?;
-            let first_key = first_child.map(|c| c.sort_key().to_string());
-            (None, first_key)
-        } else {
-            // Insert after specific block
-            let maybe_after_block: Option<T> = self.get_by_id(after_block_id.unwrap()).await?;
-            let after_block: T =
-                maybe_after_block.ok_or_else(|| anyhow::anyhow!("Reference block not found"))?;
-            let prev_key = Some(after_block.sort_key().to_string());
+        let (prev_key, next_key): (Option<String>, Option<String>) = match after_block_id {
+            None => {
+                // No after_block_id means "move to beginning" - insert before first child
+                let first_child: Option<T> = self.get_first_child(Some(parent_id)).await?;
+                let first_key = first_child.map(|c| c.sort_key().to_string());
+                (None, first_key)
+            }
+            Some(after_id) => {
+                // Insert after specific block
+                let maybe_after_block: Option<T> = self.get_by_id(after_id).await?;
+                let after_block: T =
+                    maybe_after_block.ok_or_else(|| anyhow::anyhow!("Reference block not found"))?;
+                let prev_key = Some(after_block.sort_key().to_string());
 
-            // Find next sibling after the anchor block
-            let next_sibling: Option<T> = self.get_next_sibling(after_block_id.unwrap()).await?;
-            let next_key: Option<String> = next_sibling.map(|s: T| s.sort_key().to_string());
-            (prev_key, next_key)
+                // Find next sibling after the anchor block
+                let next_sibling: Option<T> = self.get_next_sibling(after_id).await?;
+                let next_key: Option<String> = next_sibling.map(|s: T| s.sort_key().to_string());
+                (prev_key, next_key)
+            }
         };
 
         // Generate new sort_key
@@ -466,20 +469,22 @@ where
             self.rebalance_siblings(Some(parent_id)).await?;
 
             // Re-query neighbors after rebalancing
-            let (prev_key, next_key): (Option<String>, Option<String>) = if after_block_id.is_none()
-            {
-                let first_child: Option<T> = self.get_first_child(Some(parent_id)).await?;
-                let first_key = first_child.map(|c| c.sort_key().to_string());
-                (None, first_key)
-            } else {
-                let maybe_after_block: Option<T> = self.get_by_id(after_block_id.unwrap()).await?;
-                let after_block: T = maybe_after_block
-                    .ok_or_else(|| anyhow::anyhow!("Reference block not found"))?;
-                let prev_key = Some(after_block.sort_key().to_string());
-                let next_sibling: Option<T> =
-                    self.get_next_sibling(after_block_id.unwrap()).await?;
-                let next_key: Option<String> = next_sibling.map(|s: T| s.sort_key().to_string());
-                (prev_key, next_key)
+            let (prev_key, next_key): (Option<String>, Option<String>) = match after_block_id {
+                None => {
+                    let first_child: Option<T> = self.get_first_child(Some(parent_id)).await?;
+                    let first_key = first_child.map(|c| c.sort_key().to_string());
+                    (None, first_key)
+                }
+                Some(after_id) => {
+                    let maybe_after_block: Option<T> = self.get_by_id(after_id).await?;
+                    let after_block: T = maybe_after_block
+                        .ok_or_else(|| anyhow::anyhow!("Reference block not found"))?;
+                    let prev_key = Some(after_block.sort_key().to_string());
+                    let next_sibling: Option<T> = self.get_next_sibling(after_id).await?;
+                    let next_key: Option<String> =
+                        next_sibling.map(|s: T| s.sort_key().to_string());
+                    (prev_key, next_key)
+                }
             };
 
             new_sort_key = gen_key_between(prev_key.as_deref(), next_key.as_deref())
@@ -663,7 +668,7 @@ where
             .ok_or_else(|| anyhow::anyhow!("Cannot move root block"))?
             .to_string();
         let old_predecessor = self.get_prev_sibling(id).await?;
-        let next_sibling = self.get_next_sibling(id).await?;
+        let _next_sibling = self.get_next_sibling(id).await?;
 
         let prev_sibling: T = self
             .get_prev_sibling(id)
@@ -809,7 +814,7 @@ where
             id,
             "due_date",
             due_date
-                .map(|d| Value::from_datetime(d))
+                .map(Value::from_datetime)
                 .unwrap_or(Value::Null),
         )
         .await

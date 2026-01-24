@@ -47,7 +47,7 @@ fn expand_functions_in_expr(expr: &mut Expr, module: &ModuleDef) -> Result<()> {
             for arg in &mut func_call.args {
                 expand_functions_in_expr(arg, module)?;
             }
-            for (_name, arg) in &mut func_call.named_args {
+            for arg in func_call.named_args.values_mut() {
                 expand_functions_in_expr(arg, module)?;
             }
 
@@ -158,7 +158,7 @@ fn substitute_params(
             for arg in &mut func_call.args {
                 substitute_params(arg, substitutions)?;
             }
-            for (_name, arg) in &mut func_call.named_args {
+            for arg in func_call.named_args.values_mut() {
                 substitute_params(arg, substitutions)?;
             }
         }
@@ -186,18 +186,15 @@ fn substitute_params(
 fn extract_render_from_module(module: &mut ModuleDef) -> Result<Expr> {
     // PRQL queries are typically in a VarDef with kind Main
     for stmt in &mut module.stmts {
-        match &mut stmt.kind {
-            StmtKind::VarDef(var_def) => {
-                // Check if this is the main query
-                if matches!(var_def.kind, VarDefKind::Main) {
-                    if let Some(value) = &mut var_def.value {
-                        if let Some(render) = extract_render_from_expr(value) {
-                            return Ok(render);
-                        }
+        if let StmtKind::VarDef(var_def) = &mut stmt.kind {
+            // Check if this is the main query
+            if matches!(var_def.kind, VarDefKind::Main) {
+                if let Some(value) = &mut var_def.value {
+                    if let Some(render) = extract_render_from_expr(value) {
+                        return Ok(render);
                     }
                 }
             }
-            _ => {}
         }
     }
 
@@ -207,17 +204,14 @@ fn extract_render_from_module(module: &mut ModuleDef) -> Result<Expr> {
 /// Extract render() from an expression if it's a pipeline ending with render()
 /// Returns the render expression and modifies the input to remove it
 fn extract_render_from_expr(expr: &mut Expr) -> Option<Expr> {
-    match &mut expr.kind {
-        ExprKind::Pipeline(pipeline) => {
-            // Check if last element is render()
-            if let Some(last) = pipeline.exprs.last() {
-                if is_render_call(last) {
-                    // Remove and return the render call
-                    return pipeline.exprs.pop();
-                }
+    if let ExprKind::Pipeline(pipeline) = &mut expr.kind {
+        // Check if last element is render()
+        if let Some(last) = pipeline.exprs.last() {
+            if is_render_call(last) {
+                // Remove and return the render call
+                return pipeline.exprs.pop();
             }
         }
-        _ => {}
     }
     None
 }
@@ -305,37 +299,38 @@ fn extract_row_templates_from_expr(
                                 if let ExprKind::Tuple(tuple_items) = &mut arg.kind {
                                     for item in tuple_items {
                                         // Check if this item has alias "ui" and is a render() call
-                                        if item.alias.as_deref() == Some("ui") {
-                                            if is_render_call(item) {
-                                                // Extract the render expression
-                                                let entity_name = table_name.clone()
-                                                    .ok_or_else(|| anyhow::anyhow!(
-                                                        "derive {{ ui = (render ...) }} found but no source table detected. \
-                                                        Use `from <table>` before derive."
-                                                    ))?;
+                                        if item.alias.as_deref() == Some("ui")
+                                            && is_render_call(item)
+                                        {
+                                            // Extract the render expression
+                                            let entity_name = table_name.clone().ok_or_else(|| {
+                                                anyhow::anyhow!(
+                                                    "derive {{ ui = (render ...) }} found but no source table detected. \
+                                                    Use `from <table>` before derive."
+                                                )
+                                            })?;
 
-                                                let index = templates.len();
+                                            let index = templates.len();
 
-                                                // Clone the render expression before we replace it
-                                                // Function expansion happens in second pass
-                                                let render_expr = item.clone();
+                                            // Clone the render expression before we replace it
+                                            // Function expansion happens in second pass
+                                            let render_expr = item.clone();
 
-                                                templates.push(ExtractedRowTemplate {
-                                                    index,
-                                                    entity_name,
-                                                    render_expr,
-                                                });
+                                            templates.push(ExtractedRowTemplate {
+                                                index,
+                                                entity_name,
+                                                render_expr,
+                                            });
 
-                                                // Replace the render() call with an integer literal
-                                                *item = Expr {
-                                                    kind: ExprKind::Literal(Literal::Integer(
-                                                        index as i64,
-                                                    )),
-                                                    span: item.span.clone(),
-                                                    alias: Some("ui".to_string()),
-                                                    doc_comment: None,
-                                                };
-                                            }
+                                            // Replace the render() call with an integer literal
+                                            *item = Expr {
+                                                kind: ExprKind::Literal(Literal::Integer(
+                                                    index as i64,
+                                                )),
+                                                span: item.span,
+                                                alias: Some("ui".to_string()),
+                                                doc_comment: None,
+                                            };
                                         }
                                     }
                                 }
