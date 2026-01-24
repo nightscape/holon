@@ -279,10 +279,10 @@ fn parse_provider_name(attr: &TokenStream) -> Option<String> {
     // Look for provider_name = "value" pattern
     if let Some(start) = attr_str.find("provider_name")
         && let Some(equals) = attr_str[start..].find('=') {
-            let value_start = attr_str[start + equals + 1..].find('"')? + start + equals + 1;
-            let value_end = attr_str[value_start + 1..].find('"')? + value_start + 1;
-            return Some(attr_str[value_start + 1..value_end].to_string());
-        }
+        let value_start = attr_str[start + equals + 1..].find('"')? + start + equals + 1;
+        let value_end = attr_str[value_start + 1..].find('"')? + value_start + 1;
+        return Some(attr_str[value_start + 1..value_end].to_string());
+    }
     None
 }
 
