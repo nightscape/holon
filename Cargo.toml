@@ -12,6 +12,7 @@ members = [
     "crates/holon-macros",
     "crates/holon-macros-test",
     "frontends/mcp",
+    "frontends/waterui",
 ]
 resolver = "2"
 
