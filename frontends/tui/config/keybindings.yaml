@@ -1,0 +1,61 @@
+bindings:
+  # Character keys
+  - key: "x"
+    modifiers: ["ctrl"]
+    context: "navigation"
+    action: "toggle_completion"
+
+  - key: "]"
+    context: "navigation"
+    action: "indent"
+
+  - key: "["
+    context: "navigation"
+    action: "outdent"
+
+  # Special keys without modifiers
+  - key: "Tab"
+    context: "navigation"
+    action: "indent"
+
+  - key: "Enter"
+    context: "navigation"
+    action: "start_editing"
+
+  # Special keys with modifiers
+  - key: "Tab"
+    modifiers: ["shift"]
+    context: "navigation"
+    action: "outdent"
+
+  - key: "Up"
+    modifiers: ["alt"]
+    context: "navigation"
+    action: "move_up"
+
+  - key: "Down"
+    modifiers: ["alt"]
+    context: "navigation"
+    action: "move_down"
+
+  - key: "Right"
+    modifiers: ["alt"]
+    context: "navigation"
+    action: "indent"
+
+  - key: "Left"
+    modifiers: ["alt"]
+    context: "navigation"
+    action: "outdent"
+
+  # Editing context bindings
+  - key: "Enter"
+    modifiers: ["alt"]
+    context: "editing"
+    action: "split_block"
+
+  - key: "Enter"
+    modifiers: ["ctrl"]
+    context: "editing"
+    action: "save_and_exit"
+

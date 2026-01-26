@@ -11,6 +11,7 @@ members = [
     "crates/holon-prql-render",
     "crates/holon-macros",
     "crates/holon-macros-test",
+    "frontends/tui",
     "frontends/mcp",
 ]
 resolver = "2"

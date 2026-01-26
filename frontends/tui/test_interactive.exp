@@ -1,0 +1,51 @@
+#!/usr/bin/env expect
+
+set timeout 5
+spawn cargo run -p tui-frontend
+
+# Wait for TUI to start
+sleep 1
+
+# Take initial snapshot
+send "\r"
+sleep 0.5
+
+# Navigate down to first editable block
+send "\033[B"  ; # Down arrow
+sleep 0.3
+
+# Press Enter to start editing
+send "\r"
+sleep 0.5
+
+# Type some text
+send "Edited content"
+sleep 0.5
+
+# Press Enter to save
+send "\r"
+sleep 0.5
+
+# Navigate to another block
+send "\033[B"
+sleep 0.3
+
+# Press Enter to edit again
+send "\r"
+sleep 0.5
+
+# Type different text
+send "Another edit"
+sleep 0.5
+
+# Press Escape to cancel
+send "\033"
+sleep 0.5
+
+# Exit
+send "q"
+sleep 0.5
+
+expect eof
+
+

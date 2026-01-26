@@ -1,0 +1,56 @@
+[package]
+name = "tui-frontend"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "tui_r3bl_frontend"
+path = "src/lib.rs"
+
+[[bin]]
+name = "tui-frontend"
+path = "src/main.rs"
+
+[dependencies]
+# R3BL TUI Framework
+r3bl_tui.workspace = true
+
+# Async runtime
+tokio = { workspace = true, features = ["full"] }
+tokio-stream.workspace = true
+
+# Error handling
+anyhow.workspace = true
+thiserror.workspace = true
+miette.workspace = true
+async-trait.workspace = true
+chrono.workspace = true
+
+# Data handling
+serde.workspace = true
+serde_json.workspace = true
+serde_yaml.workspace = true
+unicode-segmentation.workspace = true
+
+# Local dependencies
+libsql.workspace = true
+holon.workspace = true
+holon-todoist.workspace = true
+holon-api.workspace = true
+holon-prql-render.workspace = true
+ferrous-di = { workspace = true, features = ["async"] }
+uuid.workspace = true
+
+# Logging
+tracing.workspace = true
+tracing-core.workspace = true
+tracing-subscriber.workspace = true
+
+[dev-dependencies]
+# PTY testing infrastructure
+portable-pty.workspace = true
+is_ci.workspace = true
+strip-ansi-escapes.workspace = true
+# Property-based testing
+proptest.workspace = true
+proptest-state-machine.workspace = true
