@@ -1,0 +1,4 @@
+[submodule "frontends/flutter/external/flutter_rust_bridge"]
+	path = frontends/flutter/external/flutter_rust_bridge
+	url = https://github.com/nightscape/flutter_rust_bridge.git
+	branch = generic-enums-with-concrete-type-aliases

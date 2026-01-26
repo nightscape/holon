@@ -1,0 +1,373 @@
+// NOTE: FlutterUiBackend is currently a design prototype.
+// It demonstrates how CoreOperations could be implemented by delegating
+// to Flutter UI. For now, we'll use the simpler batch command approach
+// in ui_test_bridge.rs for PBT testing.
+//
+// The entire implementation is disabled via #[cfg(FALSE)] to avoid compilation issues.
+// To enable this in the future:
+// 1. Fix BlockData <-> Block conversion to match actual Block structure
+//    (Block has children: Vec<String> and metadata: BlockMetadata,
+//     not flat created_at/updated_at/deleted_at fields)
+// 2. Implement the channel-based executor in Flutter
+// 3. Wire up the backend in PBT tests
+// 4. Change #[cfg(FALSE)] to #[cfg(feature = "flutter-ui-backend")]
+
+#[cfg(FALSE)]
+mod disabled {
+    use holon::api::repository::CoreOperations;
+    use holon::api::types::{ApiError, Block, NewBlock};
+    use super::super::ui_test_bridge::{BlockData, NewBlockData, UiCommand, UiCommandResult};
+    use async_trait::async_trait;
+    use std::collections::HashMap;
+    use std::sync::atomic::{AtomicU32, Ordering};
+    use std::sync::{Arc, Mutex};
+    use tokio::sync::{mpsc, oneshot};
+
+    /// Request sent from Rust backend to Flutter UI
+    struct UiRequest {
+        command: UiCommand,
+        response_tx: oneshot::Sender<Result<UiCommandResult, ApiError>>,
+    }
+
+    /// FlutterUiBackend implements CoreOperations by delegating to Flutter UI
+    #[derive(Clone)]
+    pub struct FlutterUiBackend {
+        command_tx: mpsc::UnboundedSender<UiRequest>,
+        next_command_id: Arc<AtomicU32>,
+        pending_responses: Arc<Mutex<HashMap<u32, oneshot::Sender<Result<UiCommandResult, ApiError>>>>>,
+    }
+
+    impl FlutterUiBackend {
+        pub fn new() -> (Self, mpsc::UnboundedReceiver<UiRequest>) {
+            let (command_tx, command_rx) = mpsc::unbounded_channel();
+
+            let backend = Self {
+                command_tx,
+                next_command_id: Arc::new(AtomicU32::new(1)),
+                pending_responses: Arc::new(Mutex::new(HashMap::new())),
+            };
+
+            (backend, command_rx)
+        }
+
+        async fn execute_command(&self, command: UiCommand) -> Result<UiCommandResult, ApiError> {
+            let (response_tx, response_rx) = oneshot::channel();
+
+            let request = UiRequest {
+                command,
+                response_tx,
+            };
+
+            self.command_tx
+                .send(request)
+                .map_err(|_| ApiError::InternalError("Failed to send command to UI".into()))?;
+
+            response_rx
+                .await
+                .map_err(|_| ApiError::InternalError("UI executor dropped response channel".into()))?
+        }
+
+        fn next_id(&self) -> u32 {
+            self.next_command_id.fetch_add(1, Ordering::SeqCst)
+        }
+    }
+
+    /// Convert BlockData to Block - NEEDS FIXING
+    fn block_data_to_block(data: BlockData) -> Block {
+        Block {
+            id: data.id,
+            parent_id: data.parent_id,
+            content: data.content,
+            // FIXME: These fields don't exist in Block!
+            // Block has: children: Vec<String>, metadata: BlockMetadata
+            // created_at: data.created_at,
+            // updated_at: data.updated_at,
+            // deleted_at: None,
+            children: vec![],
+            metadata: holon::api::types::BlockMetadata {
+                created_at: data.created_at,
+                updated_at: data.updated_at,
+            },
+        }
+    }
+
+    /// Convert NewBlock to NewBlockData
+    fn new_block_to_data(block: NewBlock) -> NewBlockData {
+        NewBlockData {
+            parent_id: block.parent_id,
+            content: block.content,
+            id: block.id,
+            after: block.after,
+        }
+    }
+
+    #[async_trait]
+    impl CoreOperations for FlutterUiBackend {
+        async fn get_block(&self, id: &str) -> Result<Block, ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::GetBlock {
+                id: id.to_string(),
+                command_id,
+            };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlockRetrieved { block, .. } => Ok(block_data_to_block(block)),
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for get_block".into(),
+                )),
+            }
+        }
+
+        async fn get_root_blocks(&self) -> Result<Vec<String>, ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::GetRootBlocks { command_id };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::RootBlocksRetrieved { ids, .. } => Ok(ids),
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for get_root_blocks".into(),
+                )),
+            }
+        }
+
+        async fn get_all_blocks(&self) -> Result<Vec<Block>, ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::GetAllBlocks { command_id };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::AllBlocksRetrieved { blocks, .. } => {
+                    Ok(blocks.into_iter().map(block_data_to_block).collect())
+                }
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for get_all_blocks".into(),
+                )),
+            }
+        }
+
+        async fn list_children(&self, parent_id: &str) -> Result<Vec<String>, ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::ListChildren {
+                parent_id: parent_id.to_string(),
+                command_id,
+            };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::ChildrenRetrieved { ids, .. } => Ok(ids),
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for list_children".into(),
+                )),
+            }
+        }
+
+        async fn create_block(
+            &self,
+            parent_id: Option<String>,
+            content: String,
+            id: Option<String>,
+        ) -> Result<Block, ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::CreateBlock {
+                parent_id,
+                content,
+                command_id,
+            };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlockCreated { block_id, .. } => {
+                    self.get_block(&block_id).await
+                }
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for create_block".into(),
+                )),
+            }
+        }
+
+        async fn update_block(&self, id: &str, content: String) -> Result<(), ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::UpdateBlock {
+                id: id.to_string(),
+                content,
+                command_id,
+            };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlockUpdated { .. } => Ok(()),
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for update_block".into(),
+                )),
+            }
+        }
+
+        async fn delete_block(&self, id: &str) -> Result<(), ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::DeleteBlock {
+                id: id.to_string(),
+                command_id,
+            };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlockDeleted { .. } => Ok(()),
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for delete_block".into(),
+                )),
+            }
+        }
+
+        async fn move_block(
+            &self,
+            id: &str,
+            new_parent: Option<String>,
+            after: Option<String>,
+        ) -> Result<(), ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::MoveBlock {
+                id: id.to_string(),
+                new_parent,
+                after,
+                command_id,
+            };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlockMoved { .. } => Ok(()),
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for move_block".into(),
+                )),
+            }
+        }
+
+        async fn get_blocks(&self, ids: Vec<String>) -> Result<Vec<Block>, ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::GetBlocks { ids, command_id };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlocksRetrieved { blocks, .. } => {
+                    Ok(blocks.into_iter().map(block_data_to_block).collect())
+                }
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for get_blocks".into(),
+                )),
+            }
+        }
+
+        async fn create_blocks(&self, blocks: Vec<NewBlock>) -> Result<Vec<Block>, ApiError> {
+            let command_id = self.next_id();
+            let block_data: Vec<NewBlockData> = blocks.into_iter().map(new_block_to_data).collect();
+
+            let command = UiCommand::CreateBlocks {
+                blocks: block_data,
+                command_id,
+            };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlocksCreated { blocks, .. } => {
+                    Ok(blocks.into_iter().map(block_data_to_block).collect())
+                }
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for create_blocks".into(),
+                )),
+            }
+        }
+
+        async fn delete_blocks(&self, ids: Vec<String>) -> Result<(), ApiError> {
+            let command_id = self.next_id();
+            let command = UiCommand::DeleteBlocks { ids, command_id };
+
+            let result = self.execute_command(command).await?;
+
+            match result {
+                UiCommandResult::BlocksDeleted { .. } => Ok(()),
+                UiCommandResult::Error { message, .. } => {
+                    Err(ApiError::InternalError(format!("UI error: {}", message)))
+                }
+                _ => Err(ApiError::InternalError(
+                    "Unexpected result type for delete_blocks".into(),
+                )),
+            }
+        }
+    }
+
+    #[cfg(test)]
+    mod tests {
+        use super::*;
+
+        #[tokio::test]
+        async fn test_flutter_ui_backend_request_response() {
+            let (backend, mut command_rx) = FlutterUiBackend::new();
+
+            // Spawn a task to simulate Flutter UI executor
+            let executor_handle = tokio::spawn(async move {
+                if let Some(request) = command_rx.recv().await {
+                    match request.command {
+                        UiCommand::CreateBlock { command_id, .. } => {
+                            let result = UiCommandResult::BlockCreated {
+                                command_id,
+                                block_id: "test-block-123".to_string(),
+                            };
+                            let _ = request.response_tx.send(Ok(result));
+                        }
+                        _ => {}
+                    }
+                }
+            });
+
+            // Test create_block
+            let result = backend
+                .create_block(None, "Test content".to_string(), None)
+                .await;
+
+            assert!(result.is_err());
+
+            executor_handle.await.unwrap();
+        }
+    }
+}

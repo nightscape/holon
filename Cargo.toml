@@ -12,6 +12,7 @@ members = [
     "crates/holon-macros",
     "crates/holon-macros-test",
     "frontends/mcp",
+    "frontends/flutter/rust",
 ]
 resolver = "2"
 
@@ -86,6 +87,9 @@ portable-pty = "0.8"
 is_ci = "1.2"
 strip-ansi-escapes = "0.2"
 
+# === Flutter ===
+flutter_rust_bridge = "2"
+
 # === Other ===
 orgize = "0.10.0-alpha.10"
 libsql = { version = "0.9", features = ["core", "remote"] }
@@ -123,5 +127,7 @@ debug = true
 # Coverage instrumentation is enabled via RUSTFLAGS environment variable
 # See scripts/run-with-coverage.sh for usage
 
-#[patch.crates-io]
+[patch.crates-io]
 #sqlparser = { version = "0.33", default-features = false, features = [] }
+flutter_rust_bridge = { git = "https://github.com/nightscape/flutter_rust_bridge.git", branch = "generic-enums-with-concrete-type-aliases" }
+flutter_rust_bridge_macros = { git = "https://github.com/nightscape/flutter_rust_bridge.git", branch = "generic-enums-with-concrete-type-aliases" }

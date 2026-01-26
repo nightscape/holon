@@ -1,0 +1,1 @@
+- [ ] Add logging support https://github.com/fzyzcjy/flutter_rust_bridge/issues/486

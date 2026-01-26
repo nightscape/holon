@@ -1,0 +1,73 @@
+# Prek / pre-commit configuration for Flutter frontend
+# Contains both Dart and Rust code
+
+minimum_prek_version: '0.2.0'
+
+# Global exclusions - applies to all hooks
+exclude: |
+  (?x)^(
+    external/.*|          # Git submodules
+    lib/src/rust/.*|      # Generated FRB code
+    build/.*|             # Build artifacts
+    \.dart_tool/.*
+  )$
+
+repos:
+  # General file cleanliness
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v6.0.0
+    hooks:
+      - id: trailing-whitespace
+        args: [--markdown-linebreak-ext=md]
+      - id: end-of-file-fixer
+      - id: check-yaml
+      - id: check-toml
+      - id: check-merge-conflict
+      - id: mixed-line-ending
+        args: [--fix=lf]
+
+  # Typo checking
+  - repo: https://github.com/crate-ci/typos
+    rev: v1.40.0
+    hooks:
+      - id: typos
+
+  # Dart import sorting (must run before formatting)
+  - repo: local
+    hooks:
+      - id: dart-import-sorter
+        name: dart import sorter
+        entry: dart run import_sorter:main
+        language: system
+        types: [dart]
+        pass_filenames: false
+
+  # Dart formatting (after import sorting)
+  - repo: https://github.com/Cretezy/dart-format-pre-commit
+    rev: f728adc8b9ba2b414959cc8beb892e480425cf60
+    hooks:
+      - id: dart-format
+
+  # Analysis and Rust hooks
+  - repo: local
+    hooks:
+      - id: dart-analyze
+        name: dart analyze
+        entry: dart analyze --fatal-infos lib test
+        language: system
+        types: [dart]
+        pass_filenames: false
+
+      - id: rust-fmt
+        name: rustfmt (rust/)
+        entry: cargo fmt --manifest-path rust/Cargo.toml
+        language: system
+        types: [rust]
+        pass_filenames: false
+
+      - id: rust-clippy
+        name: clippy (rust/)
+        entry: cargo clippy --manifest-path rust/Cargo.toml -- -D warnings
+        language: system
+        types: [rust]
+        pass_filenames: false
