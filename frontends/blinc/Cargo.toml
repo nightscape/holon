@@ -1,0 +1,38 @@
+[package]
+name = "holon-blinc"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+hot-reload = ["subsecond"]
+
+[dependencies]
+subsecond = { version = "0.7", optional = true }
+# Blinc UI framework
+blinc_app = { git = "https://github.com/project-blinc/Blinc", package = "blinc_app" }
+blinc_layout = { git = "https://github.com/project-blinc/Blinc", package = "blinc_layout" }
+blinc_core = { git = "https://github.com/project-blinc/Blinc", package = "blinc_core" }
+blinc_theme = { git = "https://github.com/project-blinc/Blinc", package = "blinc_theme" }
+
+# Holon workspace crates
+holon-frontend.workspace = true
+holon-api.workspace = true
+holon-mcp = { path = "../mcp" }
+
+# Async
+tokio = { workspace = true, features = ["rt-multi-thread", "macros", "sync"] }
+tokio-stream.workspace = true
+tokio-util = "0.7"
+
+# Serialization
+serde_json.workspace = true
+
+# Error handling
+anyhow.workspace = true
+
+# Observability
+tracing.workspace = true
+tracing-subscriber.workspace = true
+
+[build-dependencies]
+base64 = "0.22"
